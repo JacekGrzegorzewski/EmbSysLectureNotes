@@ -1,0 +1,191 @@
+
+   \ex{}
+   {
+       Assume tthat we have processes $P_1$, $P_2$,$\cdots $, $P_n$. Sometimes, they use common resources:
+               $q_i$ --  $P_i$ units have access to resources,
+               $r_i$ --  $P_i$ uses resources.
+               
+               \begin{itemize}
+                       \item We want to avoid a situation, where 2 processes use common resources at the same times:
+                           \begin{equation}
+                               \Box \bigvee_i (r_i \rightarrow \bigvee_{j \neq i} \neg r_j) \text{-- There is no conflict}
+                           \end{equation}
+                       \item none will be starved \\
+                           \begin{equation}
+                               \bigvee_i \Box (q_i \rightarrow q_i \mathcal{U}r_i)
+                           \end{equation}
+                       \item   \begin{equation}
+                                  \bigvee_i \Box (r_i \rightarrow \Diamond \neg r_i)
+                              \end{equation} 
+               \end{itemize}
+   }
+%
+%   \ex{}
+%   {
+%     $\Diamond p$ means p will be true at least once $\Diamond (p \wedge \Circle \Diamond p)$ means that p will be true at least twice.
+%   }
+%
+   \ex{}
+   {
+       $p \wedge  \Diamond (p \rightarrow \Circle \neg p) \wedge \Box (\neg p \rightarrow \Circle p)$ 
+       means that pi is true in even moments, and false in odd moments
+   }
+
+\ex{Properties not describable in LTL}
+   {
+       "p is true in even points"
+       Formally: $phi \in \mathcal{L}_{LTL}(\mathcal{P})$\\
+       $mod( \phi ) = \{ \;\pi : \mathbb{N} \rightarrow P(\mathcal{P}) \mid \pi , 0 \vDash \phi \,\}$ \\
+       $mod(\Diamond p) = \{ \;\pi : \mathbb{N}\rightarrow P(\{p\}) \mid \exists n \pi (n) = \{p\}  \,\}$
+       \nt{There is no $\phi \in \mathcal{L}_{LTL}(\{p\})$ such that $mod(\phi ) = \{ \;\pi :(\forall n )(\pi (2n) = \{p\})$
+   }
+} 
+}
+\thm{Wolper}
+{
+    Let $\rho_i = \{0,0,\cdots ,{p},0,0,\cdots \}$ or equivalently:\\
+    \begin{equation}
+        \rho_i(j) =
+        \begin{cases}
+          \case  0 : j \neq i
+    \case \{p\} : j = i
+        \end{cases}
+    \end{equation}
+}
+
+Let $\phi  \in \mathcal{L}_{LTL}(\mathcal{P})$. If i,j > nd($\phi $), then
+$\rho_i, 0 \vDash \phi \leftrightarrow \rho_j, 0 \vDash \phi $.
+\nt
+{
+    nd: $\mathcal{L}_{LTL}(\mathcal{P}) \rightarrow \mathbb{N}$ is defined by recursion:
+    \begin{enumerate}
+        \item $nd(p) = 0$
+        \item $nd(\phi \vee \psi ) = \max\{nd(\phi ),nd(\psi )\}$
+        \item $nd(\neg \phi ) = nd(\phi)$
+        \item $nd(\Circle \phi ) = nd(\phi ) + 1$
+        \item $nd(\phi \mathcal{U} \psi ) = \max\{nd(\phi ),nd(\psi )\}$
+
+    \end{enumerate}
+}
+
+\nt
+{
+    Wolper's theorem implies the fact, that:
+    Assume taht there is $\phi $ satisfying fact.
+    Then we can find $\phi $ s.t. \\
+    $mod(\phi ') = \{ \pi : (\forall n)(\pi (2n) = \null  \}$ 
+    It is enough to substitute p by $\neg p$.
+
+    \ex{Wolper's example}
+    {
+        $\rho_i \ in mod(\phi ') \equiv 2 \not \mid i$
+        Take $2n, 2n+1 > nd(\phi ')$
+        $\rho_{2n+1}, 0 \vDash \phi ' \leftrightarrow \rho_{2n+1}, 0 \vDash \phi '$, a contradiction.
+    }
+}
+
+
+\dfn{Finite Automata}
+{
+    A is NFA(non-deterministic finite automaton) if: $\mathbb{A} = (S,S_0,\delta,F,\Sigma)$, where:
+    \begin{itemize}
+            \item S - a finite set (a set of states)
+            \item $S_0 \subset S$ (a set of inital states)
+            \item $F \subset S$ (a set of accepted states)
+           \item $\Sigma$ - a finite set(an alphabet)
+            \item  $\delta\,:\,S\times\Sigma \longrightarrow P(S)  $ (a transistion function)
+
+            
+    \end{itemize}
+}
+
+\ex{}
+{
+    Let:
+    \begin{itemize}
+        \item $\Sigma = \{0,1\}$
+        \item S = {a,b,c}
+        \item  $S_0$ = {a,b}
+        \item F = {a,c}
+            
+    \end{itemize}
+    \begin{center}
+    \begin{tabular}{|c|c|c|}
+    \hline
+    S & $\Sigma$ &  $\delta$  \\
+    \hline
+    a & 0 & {a,b} \\
+    \hline
+    a &1 &{a}\\
+    \hline
+    b & 0 & {c} \\
+    \hline
+    b & 1 & \null \\
+    \hline
+    c & 0 & {b}\\
+    \hline
+    c & 1 & {b,c}\\
+    \hline
+    \end{tabular}
+    \end{center}
+HERE BE PICTURE
+
+}
+
+
+\dfn{DFA}
+{
+    $\mathbb{A}$ is DFA(Deterministi finite automaton) if
+    $\mathbb{A}$ is NFA and $(\forall s \in S )(\forall a \in \Sigma ) |\delta(s,a)| = 1$ and $|S_0| = 1$.
+    \nt
+    {
+        Usualy we define DFA not n terms of NFA, but using a similar definition
+    }
+}
+
+\dfn{Language}
+{
+    Let $\mathbb{A}$ be NFA. $L(\mathbb{A}) \subset \Sigma^*$ is a language accepted by $\mathbb{A}$. Where:
+    \begin{itemize}
+        \item $\Sigma^* = \bigcup_{n\in \mathbb{N}} \Sigma^n$ -- set of all words over  $\Sigma$
+        \item $\Sigma^n$ -- set of words of length n
+            
+    \end{itemize}
+ Furthermore:\\
+ $(a_0,a_1,\cdots ,a_{n-1}) \in L(\mathbb{A})$ if and only of $\exists (t_0,t_1,\cdots ,t_n) \in S^{n+1}$ s.t.
+ \begin{itemize}
+         \item $t_0 \in S_0$
+         \item $\forall_i t_{i+1} \in \delta(t_i,a_i) $ 
+         \item $t_n \in F$
+         
+ \end{itemize}
+ \ex{}
+ {
+     $\mathbb{A}$ = 
+     HERE BE PICTURE
+     $L(\mathbb{A}) = 0(0+1)*$ = all words started with 0(this is just a regexp)
+ }
+ \ex{}
+ {
+    $\mathbb{B}$ = 
+    ANOTHER PICTURE
+    $\epsilon$ is an empty word
+    $\mathbb{B} = \epsilon + 0(0+1)*1$
+ }
+}
+
+\thm{}
+{
+    Assume that $\mathbb{A}$ is NFA. Then there exist $\mathbb{B}$ DFA s.t.
+    $L(\mathbb{A)} = L(\mathbb{B})$
+}
+
+\begin{myproof}
+    Or rather a sketch of one \\
+    $\mathbb{A} = (S,S_0,\delta,F,\Sigma)$ \\
+    We will construct $\mathbb{B} = \{P(S),S_0,\bar{\delta},\bar{F},\Sigma\}$ \\
+    $\bar{F}= \{T \subset S: T \cap F \neq \null\}$\\
+    $\bar{\delta}(X,a) = \bigcup_{x\in X}\delta(x,a)$
+
+    HERE BE PICTURE
+\end{myproof}

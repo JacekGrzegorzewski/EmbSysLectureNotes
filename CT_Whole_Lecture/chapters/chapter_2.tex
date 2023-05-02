@@ -1,0 +1,296 @@
+
+\chapter{Stability -- Lyapunov's indirect method}
+
+\section{Introduction}
+
+During this course we'll be dealing with control systems, the general architecture of which can be seen below:
+
+\begin{figure}[h!]
+\centering
+\begin{tikzpicture}[block/.style = {draw, fill=white, rectangle, minimum height=3em, minimum width=3em},
+sum/.style= {draw, fill=white, circle, node distance=1cm},
+input/.style = {coordinate},
+tmp/.style = {coordinate},
+output/.style= {coordinate},
+pinstyle/.style = {pin edge={to-,thin,black}},
+auto,
+node distance = 2cm,
+>=latex'
+]
+\node [input, name=linput] (linput) {};
+\node [block,right of=linput](C){$C$};  %
+\node [block, right of=C](S){$\Sigma$};  %
+\node [output, right of=S] (output) {};
+\node [tmp, below of=C] (tmp_1){};
+
+\draw [->] (linput) -- node{r} (C);
+\draw [->] (C) -- node{u} (S);
+\draw [->] (S) -- node[name = y]{y} (output);
+\draw [->] (output) |- (tmp_1) -| (C);
+
+\end{tikzpicture}
+\caption{A general control system}
+\label{csys}
+\end{figure}
+$\Sigma$ means the control object, which can be represented in either of the following forms:
+\begin{equation} \label{obj:1}
+ \dot{x}= f(x,y,t), y = h(x,u,t)
+\end{equation}
+\begin{equation} \label{obj:2}
+    \dot{x} = f(x,u,t), y = x
+\end{equation} 
+Where the first equation means that the output is some function of the state, and the second that the output \textit{is} the state.\\
+C on the other hand denotes the controller(or more formally the control law), and can be described by the following equations:
+\begin{equation}
+    \label{cont:1}  
+    u = g(x)
+\end{equation}
+\begin{equation}
+    \label{cont:2}
+    u = \alpha(x) + \beta(x)\bar{v}
+\end{equation}
+Where $\bar{v}$ can be a reference signal or auxiliary input.
+In designing a control system from  \ref{csys}, the control engineer always has to ensure:
+\begin{itemize}
+        \item its stability
+        \item good system performance, that satisfies the control objective requirements
+\end{itemize}
+
+Int this part of the lecture, we begin the analysis of issues concerning stability. First, we will answer:
+\begin{itemize}
+        \item what exactly do we mean by stability?
+        \item how to determine if a system is stable?
+        
+\end{itemize}
+\clearpage
+\section{Equilibrium points}
+
+Consider a control system described by equations \ref{obj:2} and \ref{cont:1}. 
+Since there is no $\bar{v}$ in any of these equations, we can say that:
+\begin{equation} 
+    \label{equ:5}
+    \dot{x}=f(x,u(x),t),\; x(0) = x_0,\; \text{where}\; f(x,u(x),t) = \bar{f}(x,t)
+\end{equation}
+
+\nt{The previously analysed equation of the dynamics of a single pendulum with point mass was of the same form:
+\begin{equation}
+    \label{equ:6}
+    \begin{bmatrix}
+        \dot{x_1} \\
+        \dot{x_2}
+    \end{bmatrix}
+    =
+    \begin{bmatrix}
+        x_2 \\
+        \frac{-fv}{ml^2}x_2 - \frac{g}{l}\sin(x_1)
+    \end{bmatrix}
+\end{equation}
+}
+
+In case of dynamical systems representable by the equation \ref{equ:5}, the behaviour of its solutions is near equilibrium points is particularity important.
+\dfn{Equilibrium point}
+{
+    The equilibria point of a dynamical system is a state of the system in which it remains static at all times. 
+    More formally: $x_e \in \mathbb{R}^{n}$ is an equilibrium point of \ref{equ:5} if and only if $\forall t \ge t_0  \;\; \bar{f}(t,x_e) = 0$ 
+    \ex{Equilibrium points of the single pendulum}
+    {
+        An equilibrium point of a system can be found by solving the system of equations obtained by setting the derivative of the state to zero. In the case of the pendulum, we obtain the following system of non-linear equations:
+\begin{equation}
+    \label{pendeq}
+    \begin{bmatrix}
+        0 \\
+        0
+    \end{bmatrix}
+    =
+    \begin{bmatrix}
+        x_2 \\
+        \frac{-fv}{ml^2}x_2 - \frac{g}{l}\sin(x_1)
+    \end{bmatrix}
+\end{equation}
+By solving this system, we can obtain two such points:
+\begin{itemize}
+        \item $x_e = \begin{bmatrix}
+            0  \\
+            0
+        \end{bmatrix}$ -- the pendulum points directly downwards.
+
+    \item $x_e = \begin{bmatrix}
+            0 \\
+            \pi
+    \end{bmatrix}$ -- the pendulum points directly upwards.
+\end{itemize}
+}
+
+    
+}
+We can further divide equilibrium points into \textit{isolated} and \textit{non--isolated}.
+\dfn{Isolated equilibrium points}
+{
+    $x_e$ is an isolated equilibrium point of \ref{equ:5} if and only if(we can also write $\iff$): 
+   \[
+       \exists r > 0 \; K(x_e,r) \equiv \{\,x \in \mathbb{R}^{n} \mid \norm{x - x_e}_2 < r\,\}    
+   .\]  
+   And no equilibrium points are contained in the set $K$ except  $x_e$.
+   What the above equation means, is that there are no equilibrium points in the direct neighbourhood of $x_e$ as defined my the euclidean norm  $\norm{.}_2$. Intuitively, one can interpret this as saying, that there are no equilibrium points directly next to $x_e$.
+   \ex{Single pendulum}
+   {
+       It is very easy to see, that the equilibrium points of the simple pendulum are both isolated.
+   }
+}
+\section{Definitions of stability}
+It may happen, that the system is not in an equilibrium point, but close to it.Depending on weather the system will then return to $x_e$ or not, we can further classify equilibrium points as either  \textit{stable} or  not. Furthermore, we can differentiate between many different kinds of stability.
+\dfn{Stable equilibrium point}
+{
+    $x_e$ is a stable equilibrium point of  \ref{equ:5} if and only if \\
+    \begin{equation}
+        \label{dfn:stab_eq_pt}
+        \forall \epsilon > 0, t_0 \ge \exists \delta > 0 \: \norm{x_0-x_e} < \delta \rightarrow \norm{x(t,t_0,x_0) - x_e} < \epsilon \;\; \forall t \ge t_0   
+    \end{equation}
+    Translated into English the above equation can be read as follows:\\
+    For all epsilons($\epsilon$) which are greater than zero, and all arbitrary values of time($t_0$), there exists a delta($\delta$), which is greater than zero. If the norm($\norm{.}$) of the difference between the equilibrium point and the initial state of the system is less than this delta, this implies that for all future states of this system its distance from the equilibrium point will be less than epsilon($\epsilon$).\\
+    \nt{Because $\epsilon \text{and} t_0$ appear with the for all quantifier, we think of them as independent variables of this condition, as opposed to $\delta$, which is dependant because it occurred with the exists quantifier. This means, that to prove that the above condition holds, we have to find delta which fulfils this conditions as a function of $t_0$ and $\epsilon$, i.e.  $\delta(\epsilon,t_0)$}
+}
+
+\dfn{Uniformly stable equilibrium point}
+{
+    $x_e$ is a uniformly stable equilibrium point of  \ref{equ:5} if and only if \\
+    \begin{equation}
+        \label{dfn:ustab_eq_pt}
+        \forall \epsilon > 0\: \exists \delta > 0\: \forall t_0 \ge  \; \norm{x_0-x_e} < \delta \rightarrow \norm{x(t,t_0,x_0) - x_e} < \epsilon \;\; \forall t \ge t_0   
+    \end{equation}
+
+    \nt
+    {
+    
+        The difference between this and the previous definitions, is that because the for all quantifier of $t_0$ appears after an existence quantifier, it is no longer independent. This means that it can also be described as a function of the independent variables, which means that to prove the uniform stability of a point, we have to only describe $\delta$ as a function of epsilon, i.e.  $\delta(\epsilon)$.  
+        HERE BE PICTURES
+    }
+
+
+}
+
+\dfn{Asymptotically stable equilibrium point}
+{
+    $x_e$ is an asymptotically stable equilibrium point of  \ref{equ:5} if and only if \\
+    \begin{enumerate}
+        \item $x_e$ is a stable equilibrium point
+        \item  \begin{equation}
+                \label{dfn:astab_eq_pt:1}
+                (\forall t_0 \ge 0 \exists  \delta > 0  ) \wedge (\forall t_0\ge 0, \, \epsilon > 0 \: \exists T \ge 0  )\: \norm{x_0-x_e} < \delta \rightarrow \norm{x(t,t_0,x_0)-x_e} < \epsilon, \: t \ge t_0+T
+            \end{equation}
+        \item  \begin{equation}
+                \label{dfn:astab_eq_pt:2}
+                \forall t_0\ge 0 \; \exists \delta \: \: \norm{x_0 -x_e} < \delta \rightarrow \lim_{t \to \infty} \: \norm{x(t,t_0,x_0)-x_e} = 0  
+            \end{equation}
+    \end{enumerate}
+
+   This means that an equilibrium point is asymptotically stable if it is stable, and the distance to the equilibrium point after some time T will be less than an arbitrary value. Also, this could be said to mean that the distance to the equilibrium point tends to 0 as time goes to infinity.
+}
+
+
+
+\dfn{Asymptotically uniformly stable equilibrium point}
+{
+    $x_e$ is an asymptotically uniformly stable equilibrium point of  \ref{equ:5} if and only if \\
+    \begin{enumerate}
+        \item $x_e$ is a uniformly stable equilibrium point
+        \item 
+             \begin{equation}
+                \label{dfn:austab_eq_pt}
+                (\exists \delta > 0 ) \wedge (\forall \epsilon > 0 \exists T \ge 0 \forall t_0 \ge  0) \norm{ x_0 - x_e} < \delta \rightarrow  \norm{x(t,t_0,x_0) - x_e} < \epsilon, t \ge t_0+T
+            \end{equation}
+    \end{enumerate}
+    \nt
+    {To prove asymptotic stabilities, we have to find functions $T(\epsilon, t_0)\text{ and } \delta{t_0}$ for which these definitions hold true(in the case of uniform stability, the dependence on $t_0$ is dropped). 
+    HERE BE PICTURES
+    }
+
+}
+
+\dfn{Exponentially stable equilibrium point}
+{
+
+    $x_e$ is an exponentialy stable equilibrium point of  \ref{equ:5} if and only if \\
+    \begin{equation}
+        \label{dfn:estab_eq_pt}
+        (\exists \alpha > 0 ) \wedge (\forall \epsilon > 0 \: \exists  \norm{x_0-x_e} < \delta) \rightarrow \norm{x(t,t_0,x_0) - x_e} < \epsilon e^{-\alpha(t-t_0)}
+    \end{equation}
+}
+\subsection{Examples}
+Will probably not provide any, consult the handwritten notes of dr. Arent.
+\clearpage
+
+\section{Lyapunov's indirect method}
+Instead of working with these cumbersome definitions, we'll use what's called \textit{Lyapunov's indirect method} for determining the stability of an equilibrium point. This method works by linearly approximating the system at an equilibrium point, and trying to determine the stability of this approximate system. In many cases, this is enough to determine stability, and since it's comparatively easy to gauge the stability o a linear system, we'll almost always begin stability analysis with this theorem.
+\thm{}
+{
+    Expand $\bar{f}$ in \ref{equ:5} in a Taylor series at $x_e$: \\
+    $\bar{f}(x,t) = \bar{f}(x_e,t)+ \pdv{\bar{f}}{x}(x_e,t)(x-x_e) + \text{h.a.t.(Higher Order Terms)} $
+    \nt{For simplicity's sake, I will further refer to $\bar{f}$ as just f, just be sure to remember that although these take on the same values for the same arguments, they are formally different functions}
+    Let:
+    \begin{equation}
+        A(t) := \pdv{f}{x}(x_e,t)
+        \label{thm:lyapA}
+    \end{equation}
+If:
+\begin{itemize}
+        \item $A(t)$ is a bounded function of t,
+    \item  $\lim_{x \to x_e} \sup_{t \ge t_0} \frac{\text{h.o.t.}}{\norm{x-x_e}} = 0$ this can informally be stated -- by analogy with the taylor series of a real valued function -- as $h.o.t. = O((x-x_e)^2)$, though this definition faces problems of defining vector multiplication .
+        \item $z_e$ is an equilibrium point of the system 
+             \begin{equation}
+                \label{thm:lyapZ}
+                \dot{z}(t) = A(t)z(t)
+            \end{equation}
+\end{itemize}
+then the below statements are true:
+\begin{enumerate}
+    \item If  $z_e$ is a uniformly asymptotically stable equilibrium point of \ref{thm:lyapZ}, then $x_e$ a uniformly asymptotically stable equilibrium point of \ref{equ:5}
+    \item If $z_e$ is an unstable equilibrium point of  \ref{thm:lyapZ}, then $x_e$ is an unstable equilibrium point of \ref{equ:5}
+    \item If $z_e$ is a stable or uniformly stable equilibrium point of \ref{thm:lyapZ}, then no conclusions can be drawn concerning stability of $x_e$ in  \ref{equ:5}
+\end{enumerate}
+
+}
+\subsection{Linear systems}
+Using Lyapunov's indirect method we can analyse the stability of a nonlinear system by analysing its linear approximation, the following theorems concern the stability analysis of such linear systems.
+\thm{}
+{
+    Consider the dynamical system
+             \begin{equation}
+                \label{thm:linX}
+                \dot{x}(t) = A(t)x(t)
+            \end{equation}
+     If 
+     \begin{enumerate}
+         \item The entries of matrix A(t) are differentiable and bounded functions of t,
+        \item $Re(\lambda_i(A(t)) \le -\delta \; \forall t\ge 0$ where $\delta > 0$
+        \item $\norm{\dot{A}(t)} \in \alpha_2$, meaning $\sqrt{\int_0^\infty \norm{A(t)}^2 dt}$
+     \end{enumerate}
+    then the equilibrium point $x_e$ of the system  \ref{thm:linX} is uniformly asymptotically stable.
+
+    \ex{}
+    {...}
+}
+\thm{}
+{
+ Consider the system
+ \begin{equation}
+     \label{thm:lincX}
+     \dot{x} = Ax, \: x(t_0) = x_0
+ \end{equation}
+ Where $A \in \mathbb{R}^{n\mul n}$ does not depend on t. The equilibrium point $x_e = 0$ of \ref{thm:lincX} is:
+ \begin{itemize}
+         \item asymptotically stable if and only f $Re(\lambda_i(A)) < 0 \forall i $ 
+         \item stable if and only if $Re(\lambda_i(A) < 0 \forall i \not \in \{j_1, j_2, ..., j_m\}, \text{where } m < n $ and $Re(\lambda_j(A)) = 0$ with  $\lambda_j(A), j \in \{ j_1, \cdots ,j_m\}$ being a semisimple eigenvalue of A.
+         \item unstable if and only if A has an eigenvalue with a positive real part, out with a zero real part that is not semisimple.
+         
+ \end{itemize}
+ \dfn{Semisimple eigenvalue}
+ {
+     $\lambda$ is a semisimple eigenvalue of A if and only if  $Re(\lambda) = 0$ and  $\dim (\ker (\lambda I - A))$ is equal to the multiplicity of  $\lambda$ - a root o the charateristic polynomial of A.
+ }
+
+ \ex{}
+ {}
+}
+
+

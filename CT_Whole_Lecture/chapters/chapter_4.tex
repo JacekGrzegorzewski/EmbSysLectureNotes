@@ -1,0 +1,231 @@
+
+\chapter{Feedback Linearization}
+\section{Intuitive concepts}
+This chapter focuses on the consequences of applying Lyapunov's first method to the feedback loop.
+Linear control is very well developed field, so moving from nonlinear to linear world is desirable.
+The drawback however is that such a control scheme is local, meaning that if we deviate far enough
+from an equilibrium point everything breaks down. A solution to this problem, is the use of 
+auxiliary input in the feedback loop.
+
+
+\ex{Flow from a water tank}
+{
+    \nt{DESCRIPTION OF TO BE INCLUDED PICTURE\\
+        We have a water tank, with flow u(t) into the tank,
+        and the area of the water line A(h) marked. Additionally,
+        distance h from the water level to the output faucet is marked as h,
+        with the area of the output faucet being a constant a}
+        The equation ascribing the flow of water through the facet is the following:
+        \begin{equation}
+            \label{FL:ex}
+            \frac{d}{dt}[\int_0^h A(\bar{h})d\bar{h}] = u(t) - a\sqrt{2gh}
+        \end{equation}
+        Since $ \frac{d}{dt}[\int_0^h A(\bar{h})d\bar{h}]$ is equal to $A(h)\dot{h}$,
+        we have:
+        \begin{equation}
+            \label{FL:ex2}
+            A(h)\dot{h} = u(t) - a\sqrt{2gh}
+        \end{equation}
+
+        Let us set $u(t) = a\sqrt(2gh)+A(h)v$, substituting into  \ref{FL:ex2} we obtain:
+        \begin{equation}
+            \label{FL:ex_3}
+            A(h)\dot{h} = a\sqrt{2gh} + A(h)v - a\sqrt{2gh}
+        \end{equation}
+        After subtracting like terms we obtain $\dot{h} = v$(A linear equation!!!).
+        Based on this we can create a control law:
+        \begin{equation}
+            \label{FL:excl}
+            v = \alpha(h_{ref}-h), \; \alpha > 0
+        \end{equation}
+        Ergo:\\
+        $\dot{h}+\alpha h = \alpha h_{ref}$\\
+        An easily solvable linear equation.
+        This procedure is called perfect linearization
+}
+
+\dfn{Companion form of a system}
+{
+    A system is said to be in a companion form, if it can be described as follows:
+    \begin{equation}
+        \label{FL:dfn_1}
+        \Sigma : \begin{bmatrix}
+             \dot{x_1}  \\
+             \dot{x_2}\\
+             \vdots\\
+             \dot{x_{n_-1}}\\
+             \dot{x_{n}}
+        \end{bmatrix}
+        = \begin{bmatrix}
+            x_2  \\
+            x_3  \\
+             \vdots\\
+            x_n  \\
+            f(x)+b(x)u  
+        \end{bmatrix}
+    \end{equation}
+
+    \begin{equation}
+        \label{FL:dfn_2}
+        C :  u = \frac{1}{b(x)}(v-f(x))
+    \end{equation}
+
+    \begin{equation}
+        \label{FL:dfn_3}
+        Cv :  v = -k_0x-\cdots -k_{n-1}x^{n-1}
+    \end{equation}
+
+    Ultimately we can write:
+    \begin{equation}
+        \label{FL:dfn_4}
+        \Sigma +C +C_v : \begin{bmatrix}
+            \dot{x_1}  \\
+            \dot{x_2}  \\
+            \vdots \\
+            \dot{x_n}  \\
+        \end{bmatrix}
+        = \begin{bmatrix}
+            0 & 1& 0& \cdots &0  \\
+            \vdots &  & \ddots&  &\vdots  \\
+            0 &  & \ddots& 0 & 1  \\
+            -k_0 &  & \cdots &  & -k_{n-1}  \\
+        \end{bmatrix}
+        = \begin{bmatrix}
+            x_1  \\
+            x_2  \\
+            \vdots \\
+            x_n  \\
+        \end{bmatrix}
+    \end{equation}
+    HMS control law guarantees that
+        $ \begin{bmatrix}
+            x_1  \\
+            x_2  \\
+            \vdots \\
+            x_n  \\
+        \end{bmatrix} \rightarrow 0$
+        \\ Suppose that we want that $x \rightarrow x_{ref}$ where $x_r$ is a differentiable time dependant function.
+        In such a case, let: $e(t) = x(t) - x_r(t)$\\
+        $v = x_r^{(n)} - k_{n-1}e^{(n-1)}-\cdots -k_{0}e = 0$\\
+        $\Sigma+ C +V : e^{(n)}+k_{n-1}e^{(n-1)} + \cdots + k_0e=0$
+}
+
+\section{Input-State Linearization}
+From the equations:
+\begin{equation}
+    \begin{cases}
+          \dot{x} = f(x,u)\\
+         z = w(x)
+    \end{cases} \rightarrow 
+    \begin{cases}
+        \dot{z}=\bar{f}(z,u)\\
+        u = g(z,v)
+    \end{cases} \rightarrow  \dot{z} = Az +bv
+\end{equation}
+Where we assume that $w(x)$ is an invertible function. We can then invert the process, and find z as a function of v.
+
+\ex{}
+{
+    \begin{equation}
+        \label{ISL:ex_1}
+        \begin{bmatrix}
+            \dot{x}_1  \\
+            \dot{x}_2
+        \end{bmatrix}
+        = \begin{bmatrix}
+            -2x_1+ax_2+\sin(x_1)  \\
+            -x_2\cos(x_1)+u\cos(2x_1)  
+        \end{bmatrix},\; x_e=\begin{bmatrix}
+            0\\0
+        \end{bmatrix}
+        , u_e=0
+    \end{equation}
+    From this we obtain:
+    \begin{equation}
+        \label{ISL:ex_2}
+       \begin{cases}
+           z_1=x_1\\
+           z_2=ax_2+\sin {x_1}
+       \end{cases}
+       \rightarrow 
+       \begin{cases}
+           x_1=z_1\\
+           x_2=\frac{z_2-\sin{z_1}}{a}
+       \end{cases}
+    \end{equation}
+    And:
+    \begin{equation}
+        \label{ISL:ex_3}
+        \begin{cases}
+            \dot{z}_1 = -2z_1+z_2\\
+            \dot{z}_2 = (\sin{z_1}-2z_1)\cos{z_1}+ua\cos{2z_1}
+        \end{cases}
+    \end{equation}
+    \nt{We obtain the above by noticing that:
+        \begin{equation}
+            \begin{bmatrix}
+                \dot{x}_1 \\ \dot{x}_2
+            \end{bmatrix}
+            =
+            \begin{bmatrix}
+                -2z_1 +z_2 \\
+                \frac{\sin{z_1}\cos{z_1}-z_2\cos{z_1}}{a} +u\cos{2z_1}
+            \end{bmatrix}
+        \end{equation}
+    }
+
+    This ultimately results in:
+    \begin{equation}
+        C : u = \frac{1}{acos(2z_1}[]-(\sin{z_1}-2z_2)\cos{z_1}+v]
+    \end{equation}
+   This control law linearises the system, giving us:
+   \begin{equation}
+       \Sigma +C : \begin{bmatrix}
+           \dot{z}_1 \\\dot{z}_2
+       \end{bmatrix}
+       = \begin{bmatrix}
+           -2 & 1 \\
+           0 & 0
+       \end{bmatrix}
+       \begin{bmatrix}
+           z_1 \\ z_2
+       \end{bmatrix}
+       + \begin{bmatrix}
+           0 \\ 1
+       \end{bmatrix}v
+   \end{equation}
+   Lets make: $v = \begin{bmatrix}
+       -k_1 & -k_2 
+   \end{bmatrix}
+   \begin{bmatrix}
+       z_1 \\ z_2
+   \end{bmatrix}
+   $
+   Then we have:
+   \begin{equation}
+       \begin{bmatrix}
+           \dot{z}_1 \\\dot{z}_2
+       \end{bmatrix}
+       = \begin{bmatrix}
+           -2 & 1 \\
+           -k_1& -k_2
+       \end{bmatrix}
+       \begin{bmatrix}
+           z_1 \\ z_2
+       \end{bmatrix}
+   \end{equation}
+    If we set $k_1=0, k_2=2$, the system will be asymptotically stable.
+
+    The final control law:
+    \begin{equation}
+        \begin{cases}
+            u(z) = \frac{1}{a\cos{2z_1}}[-(\sin{z_1}-2z_1)\cos{z_1}-2z_2]\\
+            u(x) = \frac{1}{a\cos{2x_1}}[-(\sin{z_1}-2z_1)\cos{z_1}-2z_2]
+
+
+        \end{cases}
+        
+    \end{equation}
+
+}
+

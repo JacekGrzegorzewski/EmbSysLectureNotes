@@ -1,0 +1,128 @@
+
+\chapter{Propositional Logic}
+\dfn{Language}
+{The language or propositional logic consists of:
+        \begin{itemize}
+                \item Propositional variables: $p_1,p_2,p_3,\cdots$ where $i \in \{0\}\cup \mathbb{N} but often, these are going to be just lowercase letter$.
+                \item Connectives:
+                        \begin{itemize}
+                                \item $\wedge$ - conjunction
+                                \item  $\vee$ - discjnction 
+                                \item $\rightarrow$ - implication
+                                \item $\leftrightarrow$ - equivalence
+                                \item  $\neg$ - negation
+                        \end{itemize}
+                 \item brackets - (,)
+                 \item (sometimes) Two constants : $\mathbb{1},\mathbb{0}$
+
+
+        \end{itemize}        
+}
+
+\dfn{Sentences}
+{
+ The set of sentences is the smallest set of words(over a desribed alphabet) $\mathcal{S}$ satisfying the following propperties:
+        \begin{itemize}
+                \item $\forall n \in \mathbb{N} \: p_n \in \mathcal{S}$ 
+                \item if $\phi, \psi \in \mathcal{S}$ then $(\phi \wedge \psi)$, $\phi \vee \psi$, $\cdots$,$\neg \phi \in \mathcal{S}$ 
+        \end{itemize}
+
+
+}
+
+\ex{Example of the distinction}{$(p_0\wedge p_1)\rightarrow (p_3 \vee \neg p_2)$ -- is a sentence\\
+    $p_0((\neg p_1$ -- is not a sentence}
+
+\nt{Formally, $p_0 \vee p_1$ is not a sentence(not brackets), but we will omit brackets when possible.
+Convention: 
+\begin{itemize}
+        \item $\neg$ is the strongest binding operatore
+        \item  $\wedge , \vee $ are next
+        \item $\rightarrow, \leftrightarrow $ are the weakest
+\end{itemize}
+\ex{}{$\neg p \vee q \rightarrow r \vee  \neg p \equiv ((\neg p \vee q) \rightarrow (r \vee \neg p ))$}
+}
+
+
+\dfn{Valuation}
+{A valuation is a function $\pi\,:\,\mathbb{N} \longrightarrow \{\mathbb{0},\mathbb{1}\} $ \\
+        We can create $\hat{\pi}\,:\,\mathcal{S} \longrightarrow \{\mathbb{0},\mathbb{1}\}$
+        \ex{Example valuations}
+        {
+                \begin{itemize}
+                        \item $\hat{\pi}(p_i) = \pi_i$ -- The valuation of a variable is equal to the value of the variable
+                        \item $\hat{\pi}(\phi \wedge   \psi) = AND(\hat{\psi},\hat{\phi})$ - The value of the AND function can be read from the table below
+                \end{itemize}
+
+                \begin{center}
+                \begin{tabular}{|c|c|c|c|c|c|}
+                \hline
+                        a & b & AND & OR & If & IFF \\
+                        0 & 0 & 0 & 0 & 1 & 1 \\
+                        0 & 1 & 0 & 1 & 1 & 0 \\
+                        1 & 0 & 0 & 1 & 0 & 0 \\
+                        1 & 1 & 1 & 1 & 1 & 1 \\
+                \hline
+                \end{tabular}
+                And:
+                $NOT(a) = 1-a$
+
+                \end{center}
+        }
+
+}
+\dfn{Tautology}
+{
+        A sentence is a tautology $\phi \vDash $ if there exist $\pi$ such that $\tilde{\pi}(\phi) = \mathbb{1}$ 
+
+}
+\dfn{Satisfiability}
+{A sentence $\phi$ is satisfiable if there exist  $\pi$ suh that  $\tilde{\pi}(\phi)  \mathbb{1}$}
+\clm{}{}{$ \vDash iff \neg \phi is not satisfiable$ -- meaning, a sentence is a tautology only if its negation is not satisfiable}
+\begin{myproof}
+
+Left right implication:
+\begin{enumerate}
+        \item Take any valuation $\pi$
+        \item by assumption $\tilde{\pi}(\phi) = 1$, which means that  $\neg \phi$ is not satisfiable
+\end{enumerate}        
+Right left implication:\\
+Similarily as before
+
+\end{myproof}
+\ex{Tautologies}
+{
+        \begin{itemize}
+                \item $ \vDash \neg (p \vee  q) \leftrightarrow (\neg p \wedge \neg q$
+                \item $\neg (p \vee  q) \leftrightarrow (\neg p \wedge \neg q)$
+                \item $\neg (p \rightarrow q) \leftrightarrow (\neg p \vee  q$ 
+                \item $p \leftrightarrow  q \leftrightarrow ( p \rightarrow q) \wedge (q \rightarrow p)$
+                \item $ (p \leftrightarrow q) \leftrightarrow (p \wedge q) \vee ( \neg p \wedge \neg q)$
+                \item $p \wedge ( q \vee r) \leftrightarrow (p \wedge q) \vee (p \wedge  r)$
+                \item $p \vee  (q \wedge r) \leftrightarrow (p \vee  q) \wedge  ( p \vee  r)$
+                
+        \end{itemize}
+}
+
+\dfn{Conjunctive Normal Form(CNF) and Disjunctive $\cdots $ (DNF)}
+{
+        A sentence is in CNF if it can be written as a conjunction of disjunctions, formally:
+        \begin{equation}
+                \phi = \bigwedge_{i = 1}^{n} \bigvee_{j=1}^{k_i} l_{ij} 
+        \end{equation}
+        where $l_{ij} = p_m \vee l_{ij} = \neg p_m$ for some m.\\
+        And equivalently for DNF.
+}
+\nt
+{
+        If $ \phi $ is in CNF and $ \phi = (p_0 \vee p_1)\wedge \cdots \wedge  (p_{2n} \vee p_{2n-1})$, then the length of its DNF form will be $\approx 2^{n+1}$ 
+}
+
+\dfn{Satisfaction problem -- Boolean satisfying problem}
+{
+        Given $ \phi$, check if it is satisfiable.
+        \nt{If $ \phi $ is in DNF, the problem is trivialy easy, so we assume that $\phi$ is in CNF.\\
+        SAT problem is NP complete}
+}
+
+

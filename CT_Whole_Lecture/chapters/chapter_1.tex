@@ -1,0 +1,72 @@
+
+\chapter{Non-linear dynamical systems -- introduction}
+
+In this section, essential concepts relating to the description of dynamical systems will be introduced. 
+To this end, two simple examples will be provided and analysed: a \textit{DC motor} and a \textit{single pendulum}.
+
+\section{Attributes}
+We assume, that every dynamical system can be described by just a couple of its qualities.
+In the case of a DC motor these are:
+\begin{itemize}
+    \item \unit[U]{V} -- voltage across the motor terminals
+    \item \unit[I]{A} -- current in the motor winding
+    \item \unit[$\phi$]{rad} -- angular position of the motor shaft
+    \item \unitfrac[$\omega$]{rad}{s} -- angular velocity of the motor shaft
+    \item \unit[$\tau$]{Nm} -- motor shaft torque
+\end{itemize}
+And in the case of the single pendulum:
+\begin{itemize}
+    \item $\phi$\unit{rad} -- angle of the pendulum
+\end{itemize}
+In general, the quantities describing a dynamical systems can be identified by intuition, analogy, empirical study, or some other knowledge of the system.
+That is to say, there are no clear cut rules for which attribute in truth describes the system, it's all very context dependant.
+\subsection{Formalization}
+We will use this notion of attributes to formalize what we mean by "Describing" a system. The word system implies that these attributes are somehow related to each other. These relations impose certain constraints on the way this system evolves in time, that is to say, there is a limited number of ways the system can evolve
+in time. The way system attributes evolve in time is called a \textit{Trajectory}, and each system has a set of possible trajectories associated with it.
+\dfn{Time trajectory of a system}
+{
+Following the example of a DC motor, let $w(t) = [U(t), I(t), \phi(t), \omega(t), \tau(t)]$.  Here, $w(t)$ is a trajectory, and it is a vector of, for the moment, arbitrary time functions. The system constrains these functions, meaning that there exist a set of possible time trajectories. Let us call that set  \textit{B}, then:
+    \begin{equation}
+        B =\{w(t)\,:\,\mathbb{R}_+ \longrightarrow \mathbb{R}^5 \mid w(t)  \text{can be observed on the DC motor for some initial conditions }\}.
+    \end{equation}
+We will call set B the model of a dynamical system, in this case, the DC motor.
+Similarity for the single pendulum, or any other dynamical system.
+\nt{When we speak of dynamical systems, we always mean some kind of differential equation. We should note however, that while a differential equation has a unique set of solutions, the set of solutions doesn't have a unique differential equation associated with it. This means, that for any given systems, there are multiple possible models.}
+}
+More specifically, the relationship between the system attributes -- also known as variables -- is causal. Meaning that a change in one produces a sufficient change in the others. In our analysis, we will think of some of those variable as independent, and others as dependant. The independent variables will further be thought of as inputs, and the dependant ones as outputs. The exact relationship between the inputs and outputs is not usually straight forward.
+\nt{This relationship between input and output is mathematically described as map, or equivalently a function. These maps can be quite complex, take multiple inputs and produce multiple outputs. The goal of control theory is to provide such inputs, that the output of the map fulfils some properties of interest. Most often that means stability.}
+
+\subsection{Producing models}
+How does one obtain a model -- also called a representation -- of a dynamical system? There is no easy way to answer this question in general, but more often than not, one may use whatever laws of physics apply to a given system. For example:
+\begin{itemize}
+        \item Ohm's law, Kirchoff's law for electrical circuits
+        \item Newton's laws of motion, Newton-Euler equations for mechanical systems
+        \item Lagrangian or Hamiltonian mechanics for all problems where we can define potential and mechanical energy.
+        
+\end{itemize}
+\nt{Not all subsystems in a model are accurate, or even exist at all in reality. As an example, inertial forces could be modeled in such a system. As another example, friction forces or drag are more often than not very simplified models, which provide only approximate descriptions of actual physical phenomena.}
+We call such an approach Modeling from First Principles. This approach produces sets of differential equations with many auxiliary variables. Usually we try to transform these equations to eliminate these auxiliary variables, and produce a model in the following form:
+\dfn{Input -- State -- Output model}
+{
+    Of particular interest to control theory are models in the following form:
+    \begin{equation} \label{state}
+        \dot{x}(t) = f(x(t),u(t),t)
+    \end{equation}
+    \begin{equation} \label{output}
+        y(t) = h(x(t),u(t),t)
+    \end{equation}
+    Where:
+    \begin{itemize}
+            \item $x(t) \in \mathbb{R}^n$ -- a state variable
+            \item $u(t) \in \mathbb{R}^m$ --an input variable, we assume that it is a piecewise continuous function of time
+            \item $y(t) \in \mathbb{R}^p$ -- an output variable
+    \end{itemize}
+    A state variable is a special kind of auxiliary variable, with the special property that if its value at $t_0$ is known along with the function $u(t)$ for $t \in [t_0,t_1]$, then $y(t)$ is known and well defined on this time interval. This means, that if we know the initial conditions and the input of such a system, it is fully determined!
+}
+The above model has proven to be exceptionally useful for the synthesis and analysis of control algorithms. We wrote them specifically [\ref{state},\ref{output}] to highlight their importance. When analysing a system, it is up to us to select which variables to treat as outputs, and which as inputs, though usually certain choices are obvious or convenient from the knowledge of the system.
+
+\section{Examples}
+
+\ex{Kinematic monocycle}{To do}
+\ex{Double pendulum}{To do}
+\ex{RLC circuit}{To do}

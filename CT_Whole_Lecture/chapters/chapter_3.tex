@@ -1,0 +1,124 @@
+
+\chapter{Stability -- Lyapunov's direct method}
+As we've seen before, examining the stability of an equilibrium point directly using definitions can be cumbersome.
+Due to this difficulty, we learned to employ Lyapunov's indirect method to help us determine stability in a relatively simple way.
+This method however, does not always lead to satisfactory results. This is to be expected, since the differential equations
+describing dynamical systems are varied, so we can't expect to have just one universal method for analysing the all. Lyapunov's
+indirect method has proven to be very useful and covers many cases we'll be interested in, but not all. The next method in lineis
+\textit{Lyapunov's direct method}, which we will describe shortly. First however, some preliminary definitions are needed.
+\section{Basic concepts}
+\dfn{K-class function}
+{
+    A continuous function $\phi \,:\,[0,r) \longrightarrow \mathbb{R}_+ $ (or $\phi \,:\,[0,\infty) \longrightarrow \mathbb{R}_+ $) belongs to the K class iff
+        \begin{enumerate}
+            \item $\phi (0) = 0$
+            \item $\phi (t_1) <  \phi (t_2)$ for $t_1,t_2 \in [0,r], t_1<t_2$
+        \end{enumerate}
+
+    \ex{}
+    {
+        $\phi(x)  = \frac{x^2}{1+x^{2}}, \phi(x) = x \:(x\in [0,\infty))$
+    }
+
+
+}
+
+\dfn{K-class functions of the same order of magnitude}
+{
+    Two K class functions are of the same order of magnitude, if there exist $k_1,k_2\in \mathbb{R}_+$, such that:\\
+    $k_1\phi_1(x) \le \phi_2(x) \le k_2\phi_1(x)$
+}
+
+\dfn{Positive/Negative definite functions}
+{
+    The function $V(t,x)\,:\,\mathbb{R}_+ \times B(r,x_e) \longrightarrow \mathbb{R}$ where $V(t,0) = 0 \forall t \in \mathbb{R}_+ $( $B(r,x_e )$ is a ball in $\mathbb{R}^{n}$, where $x_e$ is the middle, and r the radius of the ball) is positive definite if there exists a continuous K class function $\phi $, such that:\\
+    $(V(t,x) \ge \phi(\norm{x-x_e)}, \forall t \in \mathbb{R}_+, x \in B(r,x_e), r > 0$ \\
+    where $\norm{.}$ is a norm on $\mathbb{R}^{n}$ (ex. the second euclidean). 
+    \nt{$V(t,x)$ is negative definite if $-V(t,x)$ is positive definite.}
+    \ex{}
+    {
+        \begin{enumerate}
+            \item $V(t,x) = \frac{x^{2}}{1-x^{2}}$, $x \in B(1,0)$ -- a positive definite function
+            \item $V(t,x) = \frac{1}{1+t}x^{2}$ -- not a positive definite function
+        \end{enumerate}
+    }
+}
+\dfn{A semipisitive / seminegative definite function}
+{
+    The function $V(t,x)\,:\,\mathbb{R}_+\times B(r,x_e) \longrightarrow  \mathbb{R} $ such that $V(t,x_e) = 0, \forall t \in  \mathbb{R}_+ $ is semipisitive(negative) definite if and only if:\\
+    $V(t,x) \ge 0 (V(t,x) \le 0) \; \forall t \in \mathbb{R}_+, x\in B(r,x_e) \exists r >0 $
+}
+\dfn{A decreasant function}
+{
+    The function $V(t,x)\,:\,\mathbb{R}_+\times B(r,x_e) \longrightarrow  \mathbb{R} $ such that $V(t,x_e) = 0, \forall t \in  \mathbb{R}_+ $ is decresant if there exits a K class function $\phi $ such that:\\
+    $\abs{V(t,x)} \le \phi (\norm{x-x_e)})$
+
+    \ex{}
+    {
+        \begin{itemize}
+            \item $V(t,x) = \frac{1}{1+t}x^{2} $ is a decresant function because $\abs{ \frac{1}{1+t}x^{2}}\le x^{2}$
+            \item $V(t,x) = tx^{2}$ is not a decresant function
+                
+        \end{itemize}
+    }
+    
+}
+\nt
+{
+    Let $\dot{V}$ denote a derivative of $V(x(t,t_0,x_0),t)$ with respect to t, where $x(t,t_0,x_0$ is a solution of $\dot{x} = f(t,x)$. $\dot{V}$ can be expressed in the following way:\\
+    $\dot{V} = \pdv{V}{t} + (\nabla f)^{T}f(t,x),\; \; \nabla V = \begin{bmatrix}
+        \pdv{V}{x_1}, & \cdots, & \pdv{V}{x_n}  
+    \end{bmatrix}$
+}
+With the above definitions, we can finally explain what Lyapunov's direct method is.
+\thm{Lyapunov's direct method}
+{
+    Suppose that there exits a \textit{positive definite} function $V(t,x)\,:\,\mathbb{R}_+\times B(r,x_e) \longrightarrow \mathbb{R} $ with r being greater than 0, such that:
+    \begin{itemize}
+            \item $ \pdv{V}{t}, \pdv{V}{x}$ exist and are continuous
+            \item $V(t,x_e) = 0 \forall t\in \mathbb{R}_+ $ -- meaning that $x_e$ is an equilibrium point
+            
+    \end{itemize}
+    Then:
+    \begin{enumerate}
+        \item If $\dot{V} \le 0$ then $x_e$ is a stable equilibrium point
+        \item If V is decresant and $\dot{V} \le 0 $ then $x_e$ is a uniformly stable equilibrium point
+        \item If $V$ is decrestant and  $\dot{V} < 0$ then $x_e$ is uniformly asymptotically stable equilibrium point
+        \item If $V$ is depressant and there exist $\phi_1,  \phi_2, \phi_3 \in K$ of the same order of magnitude such that:\\
+            $\phi_1(\norm{x-x_e}) \le V(t,x) \le \phi_2(\norm{x-x_e}),\; \; \dot{V}(t,x) \le \phi(\norm{x-x_e})$ \\
+            for all $x \in B(r,x_e), t \in \mathbb{R}_+$, then $x_e$ is an exponentially stable equilibrium point.
+    \end{enumerate}
+
+   \nt
+   {
+        In the case of stationary systems(stationary means not dependant on time directly) their representation as a differential equation has the 
+        following form:
+        \begin{equation}
+            \label{lyapi:thm:nt}
+            \dot{x} = f(x),\;\; x(0) = x_0
+        \end{equation}
+        The function f in  \ref{lyapi:thm:nt} does not depend on time t. Consequently $V(t,x) = V(x)$ does not depend on time either. That in turn implies that
+        it is decresant. The stability of the equilibrium point $x_e$ is identical to uniform stability. The same is true for asymptotic stability and uniform asymptotic stability of the equilibrium point $x_e$.
+   }
+}
+Lyapunov's direct method allows us to determine many types of stability of an equilibrium points. It may happen however, that it doesn't provide all the information, for example we may prove that an equilibrium point is stable, while in reality it is asymptotically stable. We ought therefore to perform some additional test to make sure that our results are in fact correct.
+
+\dfn{An invariant with respect to $\dot{x} = f(x)$}
+{
+    The set $\Omega \in \mathbb{R}^{n}$ is invariant with respect to the equation \ref{lyapi:thm:nt} if and only if:\\
+    $x_0 \in \Omega \rightarrow x(t,t_0,x_0) \in \Omega \; \; \forall t_0, t>t_0 $
+}
+\thm{}
+{
+    Suppose that \ref{lyapi:thm:nt} has the unique solution for all $x_0 \in \Omega$ and that there exists a function $V(x)\,:\,\mathbb{R}^{n} \longrightarrow \mathbb{R} $ such that:
+    \begin{itemize}
+            \item V is positive definite
+            \item $V(x_e) = 0$ 
+            \item $V$ is \textit{radially unbounded} (i.e. there exists a K class function, defined on the set $[0,\infty)$ such that  $\phi(\norm{x-x_e}) \le V(x))$
+        \item $\pdv{V}{x}$ exists and is continuous on $\mathbb{R}^{n}$ 
+
+            
+    \end{itemize}
+}
+
+

@@ -1,0 +1,134 @@
+
+\chapter{Sequential decision problems}
+In sequential decision problems the utility of the agent's actions does not depend on single decision, expressed with the state, which the agent would have gotten into, as the result of this decision, but rather on the whole sequence of agent's actions.
+\ex{}
+{
+    An agent is in the field start, and can move in any direction between the field. Its actions enn when it reaches one of the fields (4,2) or (4,3), with the result marked in those fields. (coordinates start as the start field with one, and increase by one with each tile away from it)
+    \begin{center}
+    \begin{tabular}{|c|c|c|c|}
+    \hline
+        &  &  & +1\\
+    \hline
+        &  &  & -1\\
+    \hline
+        \tiny{START}   &  &  & \\
+    \hline
+    \end{tabular}
+    \end{center}
+}
+If the problem is fully deterministic - and the agents knowledge of its position was complete -- then the problem would be reduced to action planning. For the above example, the correct solution would be the action plan: UURRR. If the single action did not cost anything, then there are infinitely many equivalent solutions.
+
+\section{Uncertainty}
+However, each action can carry some degree of uncertainty. For example, the U action can take the agent up with 0.8 probability, and left or right with 0.1 each.
+We can then compute the expected values of a sequence of moves, and choose those that have the highest expected values.
+\section{Plan vs Policy}
+Because of the above mentioned uncertainty, we can't make a plan per se, but rather describe a policy.
+\dfn{Policy}
+{
+    A policy is a scheme determining which action the agent should take in any possible state it could find itself in.
+    \ex{Conservative policy}
+    {
+
+    \begin{center}
+    \begin{tabular}{|c|c|c|c|}
+    \hline
+        \rightarrow  &\rightarrow  &\rightarrow  & +1\\
+    \hline
+        \uparrow  &$\Box $ & \leftarrow & -1\\
+    \hline
+        \uparrow   & \leftarrow &\leftarrow  &\downarrow \\
+    \hline
+    \end{tabular}
+    \end{center}
+    Here $\Box $ denotes a wall. This policy is optimal, if there is no cost associated with taking an action
+    }
+
+    \ex{A braver policy}
+    {
+        In this policy, we assume that a move costs 0.04 of a unit. Then, the policy bellow is optimal.
+    \begin{center}
+    \begin{tabular}{|c|c|c|c|}
+        
+    \hline
+        \rightarrow  &\rightarrow  &\rightarrow  & +1\\
+    \hline
+        \uparrow  &$\Box $ & \uparrow & -1\\
+    \hline
+        \uparrow   & \rightarrow &\uparrow  &\leftarrow \\
+    \hline
+    \end{tabular}
+    \end{center}
+    }
+}
+
+\section{Markov decision problems}
+Computing the polo Cu as complete mapping from states to the set of actions is called the \textit{Markov decision problem}(MDP), if the probabilities of transitions resulting from the agent's decisions depend only on the current state of the agent, and not on its history.
+Formally, a Markov decision problem is defined as follows:
+\dfn{Markov decision problem }
+{
+    \begin{itemize}
+            \item the set of states with the starting state $s_0$
+            \item the set  \textit{Actions}(s) of actiopns allowed in a state s,
+            \item transistion model $P(s' \mid s,a)$,
+            \item reward function R(s)(also possible is:  $R(s,a)$,  $R(s,a,s')$.
+            
+    \end{itemize}
+    The solution to an MDP is the policy $\pi (s)$ mapping from sates to actions.
+}
+\section{Discounting}
+As can be easily surmised, even in simple examples infinite action sequences are possible. Sometimes however, it is necessary to consider such infinite sequences.
+It is difficult to work with infinities, so we introduce something called a discount.
+
+\dfn{Discounting}
+{
+    A technique of discounting works by reducing the effective utilities of future sets by some factor $\gamma \in (0,1)$. The utility of a sequence os states H is then defined as  $U(H) = \Sigma_i\gamma_iR_i$, or:
+     \begin{equation}
+         U_h([s_0,s_1,\cdots ,s_n]) = R(s_0)+\gamma R(s_1) + \cdots +\gamma^{n}R(s_n)
+    \end{equation}
+for gamma in the previously stated range and R less than its maximal value the values of U are always finite.
+}
+\dfn{Utility of a state}
+{
+    The utility of astate with respect to a policy can be defined as the expected value of the rewards obtained by initiating actions from this state:
+    \begin{equation}
+        U^{\pi}(s) = E[ \Sigma_{t=0}^{\infty} \gamma^{t}R(s_t)]
+    \end{equation}
+    where by $S_t$ we mean the random variable signifying the state the agent will be at step t after starting from state s and executing policy  $\pi $.
+}
+It turns out, that even though theoretically the optimal policy $\pi^* = \argmax_{pi}U^{\pi}(s)$ may depend on the choice of the starting state, for the decision processes with Markov property, for infinite sequences with discounting, there is no such dependance. The agent's optimal policy, determining all her actions, is independent of the starting point.
+
+
+\section{Dynamic programming}
+
+The optimal policy $\pi^*$, being a function defined on the set of states, may then be associated with the (yet unknown) state utility function:
+\begin{equation}
+    \pi^*(s) = \argmax_a \Sigma_{s'}P(s' \mid s,a) U(s')
+\end{equation}
+Where $P(s'\mid s,a)$ is the probability that the agent will reach the state ' if she executes action a in the state s.
+Since we want to express the utility of a sstate as the expecgted calue of a discounted sum of rewards of a sequence of states, then it can be tied to the utilities of its descendant states with the following equation (Bellman, 1957):
+ \begin{equation}
+     U(s) = R(s) + \gamma \max_a \Sigma_{s'}P(s' \mid s,a) U(s')
+\end{equation}
+The methods for solving the above equation are called \textit{Dynamic Programming}.
+
+\dfn{The value iteration algorithm}
+{
+    For problems, which cannot be stated as n-step decision problems, we can compute approximate values of the state utilities in an interative procedure called the value iteration:
+    \begin{equation}
+        U_{t+1}(s) = R(s) + \gamma \max_a \Sigma_{s'} P(s')P(s'\mid s,a) U(s')
+        
+    \end{equation}
+}
+
+
+\dfn{The policy iteration algorithm}
+{
+    Policy iteration works by selecting an arbitrary initial policy $\pi_0$ and initial utilities determined by the policy, according to the following formula
+     \begin{equation}
+         U_{t+1}(s) = R(s) + \gamma \Sigma_{s'} P(s' \mid s, \pi_t(s))U_{t+1}(s')
+    \end{equation}
+    alternating it with subsequent update of the policy
+    \begin{equation}
+        \pi_{t+1}(s) = \argmax_a\Sigma_{s'}P(s' \mid s,a) U_t(s')
+    \end{equation}
+}

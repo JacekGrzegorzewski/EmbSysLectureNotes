@@ -1,0 +1,203 @@
+
+
+
+\qs{AS}{Embedded system -- what it is, main elements}
+\sol An embedded system is a system controling, or otherwise affecting, a greater whole in a spefic way.
+    Usualy with RT constraints. In the context of the lecture, an embedded system consists of an MCU,
+    sensors, and some output element. The MCU itself consists of a microprocessor and various peripherals,
+    with the peripherals performing the majority of the work in a well designed system. An important thing
+    to note about embedded systems, is that they are almost always created for a very specific purpouse, 
+    and so can be optimised for it. Most commonly such optimisation is performed with respect to cost,
+    performace, or their ratio.
+
+ \qs{}{What is a microprocesor? List it's main elements}
+ \sol A microprocessor is a miniaturised device, which can take binary input and produce a binary output when
+    provided with a set of instructions to perform on the input. The main elements of a microprocessor are: \newline
+    - Arithmetic Logic Unit(ALU) \newline
+    - Instruction decoder \newline
+    - Stack pointer \newline
+    - Program Counter \newline
+    - Status register \newline
+    - A set of general purpouse registers \newline
+    - Interrupt system \newline
+    With the most important being the instruction decoder, as this is the part which defines the functionality
+    of a microprocessor. In case of embedded systems, we rarely work with microprocessors by themselves, and
+    instead see them only as a part of a larger whole called a microcontroler(MCU), where it plays a central,
+    but admitadly not that important role.
+
+\qs{}{Program flow in microprocessors. Memory map}
+\sol In general, the program flow in a microprocessor is sequential. After a reset, it starts at the reset pointer
+    and executes the instructions one after another as it reads them. The two exceptions are interrupts and
+    branches. In the case of an interrupt, the program counter(and sometimes the whole state of a microprocessor) is
+    pushed onto the stack, and a jump is executed into the adress provides in the interrupt vector. Once the ISR is 
+    executed, the original adress is poped from the stack and inserted into the Program Counter to resume execution
+    of the original program. The other case are branches, which in assembly take form of conditional jump instructions.
+    In that case, a section of code may or may not be executed depending on the current state of the program. 
+    Both instructions and data have to be read from memory, they don't have to be stored in the same place however.
+    If they aren't we have what is called a split memory map, where program memory is adressed seperatly from data
+    (where we include not only SRAM, but also registers). Otherwise we have a unified memory map. 
+    It should be noted, that not all adresses in a memory map have to be occupied, some may be reserved or forbidden.
+
+\qs{}{Von Neuman vs Harvard architecture. CISC vs RISC}
+\sol We can classify microprocessors according to their architectures or supported instruction sets.
+    In the first case, the classification is done according to the wheather there is a split or shared
+    bus for data and the instructions. In Von Neuman architecture, program data and instructions share 
+    a bus. This was very common back in the day, and is sometimes used even today, due to its simplicty,
+    and in turn, the price. The main drawback of this is that it is slow, as you have to first read the 
+    instruction, and then the data. Another, is that you have to be very mindful of which string of
+    binary values is an instruction, and which just data. In general, these are not very common today,
+    and have mostly been replaced by Harvard architectures. A Harvard architecture is characterised
+    by having split memory and data buses. This allows for an instruction and data to be read simultaniously,
+    which is at least twice as fast as reading from a single bus. It also completly aleviates the problem
+    of confusing data for instructions, as they can't be read from the same bus. This architecture is 
+    hovever more difficult to implement on silicon, which makes it more expensive. This difference in price
+    is becoming lower and lower these days, and most microprocessors produced today use this architecture.
+    The other case is done according to the type of instruction sets, with RISC being simple(reduced), and
+    CISC being complex. CISC is characterised by having a large set of instructions, all performing complex
+    task, multiple adressing modes, and multi clock cycle execution times. The only major family of microprocessors
+    still using this kind of a instruction set is Intel's x86.
+    RISC is characterised by having few, very basic instructions, few adressing modes, but mostly one clock cycle
+    execution times. The first widespread microprocessor utilising a RISC architecture was the Zilog Z80, and
+    almost all misroprocessors produced today use the RISC instruction set. This is because the main advantage of
+    CISC was that you could perform simple task with a single instructions, but today this task is mostly
+    done by the compiler anyway. 
+
+\qs{}{Classification of microcontrollers. SISD vs SIMD vs MIMD}
+
+\sol Microcontrollers can be classified along many different characteristics. According to the number of adress spaces(Von Neuman or Harvard),
+    instruction set(CISC vs RISC), manufacturer, size of the instructions(8-bit vs 16-bit vs 32-bit) etc. Focusing specificaly on processing, we classify microcontrollers as Multiple or Single input(instruction), 
+    and multiple or single output(data). Accordingly, we have 4 cases to consider: \newline
+    -SISD(Single input single data) - this is the most common arrangement. We have a single instruction stream and a single data stream. Most microcontrolers use \newline
+     this kind of constrution, as it is very simple and cheap, but it has the obvious drawback of low efficiency as compared to other options. \newline
+    -MISD - many instruction streams wit hone data steam. Allows for parallel operation, but not much else. Very rarely seen in the wild \newline
+    -SIMD - single instruction stream, multiple data streams. Allows for efficient parallel processing, very common in signal processing aplications. \newline
+    -MIMD - many data and instruction streams. The most expensive and efficient option, allows for parallel and independant operation on multiple data and instruction streams. Rarely seen in embedded systems, as there is little need for such complexity. \newline
+ \newline
+
+    \qs{}{8-bit microcontrollers. Comparison o AVR and PIC microcontroller architecture}
+    \sol The microcontroller market is still filled with 8-bit designs, as quite often, this is more than enough for whatever simple task
+        an embedded system is designed to perform. The 2 main families of such microcontrollers on the market are the AVR and PIC families.
+        Both of them can generaly fufill the same tasks, and comparing the specific characteristics of each would take a very long time, so 
+        the focus will be placed instead on more general differences. Firstly, while both use RISC processors, AVR uses the ARM instruction set
+        , while PIC uses its own propriatery instruction set. Both provide an enclosed development enviornment, but Atmel doesn't provide by 
+        themselves any development boards, while Microchip does. This gap has been filled by Arduino, which provide an open source development
+        for ATMEL products, greatly lowering the barrier of entry to their line of products.
+ 
+\qs{}{Important electrical parameters of microcontrollers}
+\sol The main electrical parameters of microcontrollers are: \newline
+    - Maximum operating voltage -- self explanatory  \newline
+    - Maximum input voltage -- maximum value that can be connected to a pin of a microcontroller, \newline
+                              usually this value is close to the power supply. This value is  \newline
+                              somewhat dependant on the clamp current, meaning that in short \newline
+                              bursts, those pins can handle even kilovolts of electrostatic \newline
+                              discharge, because they carry very little current. \newline
+    - Clamp current -- maximum value of current that and input can sink or an output source, \newline
+                      can again be "extenden" by connecting a series resistor to it \newline
+    - Power consumption -- the power a microcontroller draws while operating. Usually the  \newline
+                          most important electrical parameter of a microcontroller, \newline
+                          and so is the one most often advertised and heavily developed. \newline
+    - Clocking ??? \newline
+\qs{}{Microcontroller clocking}
+\sol Clocking refers to providing a square wave clock signal to synchronize microcontroller operation.
+     A microcontroller can be clocked with various sources, all with their benefits and drawbacks: \newline
+     -External crystal oscillator -- most microcontrollers provide 2 XTAL pins between which one can \newline
+                                    connect a quartz crystall oscillator. It is a relatively high stability \newline
+                                    source, though if a change of frequency is required, a physical object \newline
+                                    must be replaced on the PCB. \newline
+     -External RC oscillator -- A very simple and cheap option, though of very low stability and a limited \newline
+                               range. A change of frequency requires a change on the PCB. \newline
+                               NEVER USE IN ANY DESIGNS EVER \newline
+     -Internal RC oscillator -- As above but the frequency can be easily modified by just chaining a few          \newline
+                               registers in software. Can be used while prototyping.                              \newline
+     - External Clock -- The most expensive, and most stable option. An external clock can be made very           \newline
+                        stable, and in many frequencies. The clock itself is a very complicated component,        \newline
+                        but as long as we don't have to design it, we can treat it as just a one component        \newline
+                        black box providing a clock signal.                                                       \newline
+    - Internal Phase Locked Loop(PLL) -- requires an external clock signal, and the stability depends on it.      \newline
+                                        Can provide a wide range of rational multiples of the source frequencies. \newline
+\qs{}{Types of resets}
+\sol A reset is a process, during which all I O registers are set to their initial values, and the program starts execution from the reset vector.
+     THE RESET CIRCUITRY IS COMPLETELY ASYNCHRONOUS!!!.
+     There are a few reset sources available:  \newline
+     - Power-on Reset -- occurs when the supply voltage is below the power on threshold voltage.  \newline
+     - External Reset -- occurs when the reset pin is set low for a long enough time \newline
+     - Watchdog Reset -- occurs when one doesn't feed the dog \newline
+     - Brown-Out Reset -- occurs when the power supply is below the brownout threshold voltage. \newline
+
+\qs{}{ARM7TDMI operation modes and registers}
+\sol ARM7 has 2 instruction sets, 32-bit ARM and 16-bit Thumb. TDMI stands for Thumb, Debug, Multiplier, Interrupts, which
+     in turn refers to the qualities of the instruction set.
+     There are 37 registers, 6 status and 31 general purpouse. In reality however, this number is lower,
+     as one of those general purpose registers has to be set aside for the program counter, stack pointer, etc.
+     This high number is very useful, as there are no instructions in any of the instruction sets which operate
+     directly on memory, they have to be first loaded into registers.
+    OPERATING MODES???
+\qs{}{ARM instruction set, Thumb Instruction Set}
+   \sol  The Thumb instruction set was developed in order to increase code density. Often, in simple applications, with the usual 32-bit instruction
+     set there was a lot of proverbial boilerplate in each opcode. The Thumb instructions are more limited, but allow to pack twice as many instructions
+     into the same block of memory.
+
+\qs{}{Cortex family members}
+\sol The Cortex family of microprocessors is divided into 3 main branches: A, R and M.
+     The A stands for "Application", and these cores are optimised for running
+     operating systems(not RTOS). These are high end processors used in smart phones, servers
+     etc. They usually suport high clocking frequencies(over 1GHz), and memory management.
+     The R stands for Real-time, members of which are optimised for running RTOSes. They have
+     very low response latency, moderately high clocking rate(over 0.2 but less than 1GHz), and
+     some other features usually found useful in industrial applications.
+     The M family members are designed to work as microcontrollers. They are designed to take 
+     as physical space on the silicon as possible, consume very little power, and be easy
+     to use.
+
+\qs{}{Main elements of Cortes M0 and M0+}
+\sol M0 and M0+ are very similar to each other, with the latter one providing improved computing performance and
+     the least power consumption of all the ARM cores on the market, on the cost of a 2 stage pipeline, instead of M0's 3.
+     They both provide , 1 to 32 interruts(and one NMI), single cycle 32-bit multiply instruction, moderately high interrupt execution delay of 16 cycles,and 56(Only!!!) C-optimised assembly instructions. They both have 16 general purpose registers, as well as several special registers, along with 2 processor modes: one for running the application, and one for interrupt handling.
+     
+
+\qs{}{Cortex M3 vs Cortex M4(F)}
+\sol The main difference between the two, is that M4 has a dedicated floating point and DSP cores. The floating point core
+     has hardware support for even advanced mathematical operations, such as taking the radical, and 32 dedicated 32-bit
+     precision registers, which can also be addressed as 16 double precision registers. The DSP core supports SIMD instructions
+     with saturation, which is essential in any signal processing applications.
+
+\qs{}{Cortex M4(F) vs Cortex M7}
+\sol M7 extends the capabilities of the M4 by providing I and D caches, guard bits to the accumulator, as well as circular and bit reversed addressing.
+     Large ITCM and DTCM have been added(up to 16 MBs), as well as ECC ram to provide some error correction. Aside from that, the instruction set
+     is the same, it just works faster and more safely due to all the caches and extra memory.
+
+\qs{}{What is specal in Cortex M{23} M{33}and M{35}P}
+\sol The new features that they provide are all safety related they all have what's called a TrustZone, which provides isolation between
+     trusted and untrusted resources on the device. M35p goes a step further, and provides Anti-Tampering features, which provide resiliance
+     against physical attacks.
+
+\qs{}{NVIC - features}
+\sol NVIC stands for Nested Vector Interrupt Control. It allows for handling many interrupts with different priorities depending
+     on the core as well as programmers preferences. From M0 up to M1 NVIC supports 32 IRQs, a single NMI, and various system exceptions.
+     The latter cores most importantly differ in the number of supported IRQs, which can range from 240 up to 480, and in the number of
+     system exceptions which can generate an interrupt.
+     In all interrupts there exist the issue of interrupt latency, which is caused mainly by having to push and pop registers to the stack.
+     The exact number of delay varies between 12 and 16 depending on the microprocessor.
+     NVIC, as the name suggets, can support nesting of interrupts(meaning that a higher priority interrupt can take over the execution of
+     a lower priority one). In order to reduce the overhead between different interrupts, NVIC implements a series of features which covers
+     the majority of the cases occurring in normal use:\newline
+     -Tail chaining -- If another interrupt of the same priority is pending when an ISR exits, the processor doesn't load the stored registers from the stack, and
+     instead just starts executing the new IRQ.
+     -Stack pop pre-emption -- if another IRQ occurs during unsticking, the processor abandons the unsticking process and services the new IRC. \newline
+     -Late Arrival -- If a higher priority IRQ arrives during the stacking of a lower one, the processor directly fetches the address of the higher one\newline
+
+\qs{}{CMSIS -- major functionality}
+\sol CMSIS provides a common interface for software developers across many different cortex cores. This lowers the development time of
+     new applications, simplifies software reuse across platforms, and lowers the barrier of entry for new developers.
+     It can generally be divided into the following:\newline
+     - CMSIS-CORE - An API for the Core and peripherals,
+     - CMSIS-DRIVER -An API providing interfaces for middleware and application code(USB drivers, SPI Drivers and so on)
+     - CMSIS-DSP - A signal processing API, which provides optimised C code instructions for applications ranging from filtering
+                   through simple math operations, to statistics and motor control.
+     - CMSIS-NN - a neural network api.
+     - CMSIS-RTOS - A standardized interfase for RTOS systems.
+     -CMSIS-DAP - A standardized debug access port
+     - and s oon
+
+
+ \qs{}{}

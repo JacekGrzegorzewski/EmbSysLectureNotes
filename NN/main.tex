@@ -1,0 +1,143 @@
+\documentclass{report}
+
+\usepackage{amsmath}
+\usepackage{graphics}
+\usepackage{textcomp}
+
+
+%---Scale Command----%
+
+\newcommand\scalemath[2]{\scalebox{#1}{\mbox{\ensuremath{\displaystyle #2}}}}
+
+\input{preamble}
+\input{macros}
+\input{letterfonts}
+
+\pagenumbering{arabic}
+
+\title{\Huge{Neural Networks}\\Perceptron, unidirectional, multilayer, recurrent networks}
+\author{\huge{Jacek Grzegorzewski}}
+\date{}
+
+\begin{document}
+\maketitle
+\newpage% or \cleardoublepage
+% \pdfbookmark[<level>]{<title>}{<dest>}
+\pdfbookmark[section]{\contentsname}{toc}
+\tableofcontents
+\pagebreak
+
+\chapter{Biological Neuron}
+\nt{
+	\begin{tabular}{rl}
+		Similarities & Differences \\
+		Both process information and transmit signals & Biological neuron is more complex and has more functions \\
+		Both use electrical impulses to transfor information & Biological neuron displays synaptic plasticity
+
+
+	\end{tabular}
+
+	\begin{itemize}
+		\item Ease of understanding and analysis
+		\item ability to process information quickly and accurately
+		\item ease in modifying and teaching a network
+	\end{itemize}
+	Disadvantages:
+	\begin{itemize}
+		\item lack of synaptic plasticity
+		\item inability to accurately represent the biological neuron
+
+	\end{itemize}
+}
+	
+
+\chapter{Topology / architecture of ANN}
+\dfn{ Architecture/Topolofy }{}
+\nt{Architecture consist of:
+\begin{itemize}
+	\item Layers - layers of neurons working at different levels of abstraction
+	\item Neurons - basic building blocks processing information in the neural network
+	\item Weights - numerical values determining the strength of connections between neurons
+	\item Activation function a function that processes the input, necessarily non-linear
+	\item Connctions - lines representing input-output relations between different neurons
+	\item Structure - how the layers connect to each other. This quality is most responsible for the behaviour of the network.
+\end{itemize}
+}
+\ex{Topologies}{Examples of different neural network topologies:
+	\begin{itemize}
+		\item Recurrent neural networks - multiple hidden layers with recurrent input output relations inside.
+		\item Perceptron - a single layer of neurons, no hidden layers
+		\item Boltzmann Machine - a cyclical, probabilistic stucture.
+		\item Concolutional networks - networks which change dimensions as the signals propagates through the layers
+		\item Generative adversarial network(GAN) - a type of network which can generate complex data by competing against itself(eg. pictures, music, etc. )
+		\item itd.
+	\end{itemize}
+}
+\chapter{Perceptron}
+
+\dfn{Perceptron}{Today, perceptrons are often associated with single layer one way NNs, usualy employed in classification tasks. Originally however, it was used to describe machines build by Frank Rosenblatt at Cornell in 1960, which were electromechanical prototypes of what we usually consider neural networks of today.}
+
+\nt{The equation describing the output of a single neuron:\\
+\begin{equation}
+	y = \Phi(\Sigma_{i = 0}^n{\omega_i v_i}+b)
+\end{equation}
+where $\Phi$ is a nonlinear activating function, if it were linear, The whole network would be no more than a linear function in $\mathbb{R}^n$}
+
+\ex{Uses of Perceptrons}{
+\begin{itemize}
+	\item Text Classification -perceptrons have been used to classify texts into different thematic, or semantic categories.
+	\item Handwriting recognition - self explanatory
+	\item Speech recognition -- as above
+	\item Medical diagnosis - Perceptrons have successfully been applied to simple diagnostic procedures in medicine.
+\end{itemize}
+}
+
+\nt{Limitations: 
+\begin{itemize}
+	\item Difficulty in solving nonlinear problems
+	\item sensitivity to outliers
+	\item susceptibility to training data corelation
+	\item a need for large amounts of data(relatively)
+	\item Difficulty in handling multidimensional data
+\end{itemize}
+}
+\dfn{Types of connections}
+{
+	There are 5 basc types of connections in NNs:
+	\begin{itemize}
+		\item Unidirectional connections - simplest topology, data simply flows forward from the input to the output
+		\item recurrent connections - Here, information can flow both ways, giving the network a kind of a "memmory".
+		\item Convolutional - black magick
+		\item Heterogeneous - combinations of all of the above in a single NN
+		\item Everything else - something something Alpha zero
+	\end{itemize}
+}
+
+\dfn{Types of layers}
+{
+	There are 3 basic types of NN layers:
+	\begin{itemize}
+		\item Input - initial signal layer
+		\item Hidden - most numerous layer, does most of the processing in a NN, this is the proverbial "Black Box" in a neural network, since it is very difficult to interpret what's happening here.
+		\item Output - the last layer, which provides the output of the NN, whatever it may be(eg. classification probabilities, GAN's output, etc.)
+	\end{itemize}
+	$\textbf{Working principle}$ - 
+}
+
+	\nt{The text above concerned Multilayer feed forward networks, which were described by the lecturer as "Same as perceptron networks", so it was not described. Mistakes were made \dots}
+
+\nt{Limitations of MFFNs: many}
+
+\dfn{Recurrent Neural Networks}
+{
+A type of network where for each neuron a part of its output is fed back into it, giving rise to whole sequences of spontaneous phenomena and signals. Feedback loop rules apply, oscillations arise, fun is had. This network has a memory of sorts
+}
+
+
+
+
+%% dodac haka na tabelki
+
+	
+
+\end{document}

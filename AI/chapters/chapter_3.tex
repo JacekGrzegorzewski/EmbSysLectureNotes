@@ -1,0 +1,121 @@
+
+\chapter{Reinforcement Learning 2023-04-26}
+
+It may happen, that we cannot provide a precise evaluation function, except after the terminal state has been
+reached. The evaluation value of a terminal state is termed a reward or reinforcement. Then, we can define
+the task of the agent as optimizing this reward. This process of maximization is called reinforcement learning.
+\\
+In general, the agent may not have full information about her environment, nor her possible actions.
+The agent then has to learn to act in this environment effectively, most likely to maximize some reinforcement
+criterion.\\
+In this source, we shall consider a probabilistic model of the agent's outcomes. We will assume that
+this probabilistic model can be described as a Markov decision problem.
+
+\section{Passive reinforcement learning}
+Let us first consider a fixed policy $\pi(s)$. The agent is then bound to do what the policy states, but
+the outcomes are random variables. The agent may watch what is happening, and so can know where she is
+and what reward she gets for being there.
+The agent's job is to learn the utilities of the states $U^{\pi} (s)$, computed according to the equation:
+\begin{equation}
+    U^{\pi}(s) = E[\Sigma_{t=0}^{\infty}\gamma^tR(s_t)]
+\end{equation}
+
+\subsection{Trials}
+Recal the previous examples:
+
+    \begin{center}
+    \begin{tabular}{|c|c|c|c|}
+        
+    \hline
+        \rightarrow  &\rightarrow  &\rightarrow  & +1\\
+    \hline
+        \uparrow  &$\Box $ & \uparrow & -1\\
+    \hline
+        \uparrow   & \rightarrow &\uparrow  &\leftarrow \\
+    \hline
+    \end{tabular}
+    \end{center}
+Where we assume a cost of $-0.04$ per move.
+The agent executes the trials where she performs actions according to the policy, and receives percepts
+informing her of her current state.
+\ex{Trials}
+{
+    An example trial would be:
+    \begin{equation}
+        (1,1)_{-0.04} \rightarrow (1,2_{-0.04}) \rightarrow (1,3)_{-0.04} \rightarrow \cdots \rightarrow (3,2)_{-0.04} \rightarrow (4,2)_{-1}
+    \end{equation}
+}
+We can then take the average length of a path to the goal, and subtract from it the value of a move.
+In that case we should at infinity approximate the utilities we obtained earlier for every state.
+
+\subsection{Adaptive Dynamic Programming (ADP)}
+ADP is a process similar to dynamic programming, combined with learning the model environment. It works by counting
+the transitions from the state--action pairs to the next states.
+\ex{}
+{
+    In the presented trials, the action $\rightarrow $ was executed 3 times in the state $(1,3)$. Two of these times the successor
+    state was  $(2,3)$, so the agent should compute  $P((2,3) \mid (1,3),Right) = \frac{2}{3} $
+}
+After executing every single action the agent updates the state utilities by solving the simplified Bellman equation using
+one of the appropriate methods. The equation is simplified because we only know the distributions of the actions belonging to the policy
+and w cannot compute the best action in each state. Since we are computing $U^{\pi}$, we take just these actions.
+
+\subsubsection{Efficiency}
+The ADP algorithm updates the utility values as best as it is possible, and in this respect it is a standard against all other algorithms are
+compared to.
+
+\subsection{Temporal difference learning}
+Instead of solving the full equation system in each trial, it is possible to update the utilities using the currently observed reinforcements. Such 
+algorithm is called the temporal difference(TD) method:
+\begin{equation}
+    U^{\pi } \leftarrow U^{\pi }(s) + \alpha(R(s)+\gamma U^{\pi }(s')-U^{\pi }(s))
+\end{equation}
+with $ 0 < \alpha < 1$. This way we can introduce small corrections after each move, with the correction converging to 0, when the sate utility
+becomes equal to the discounted utility of a move.
+\nt{This method does not require having a model of the environment, nor does it compute one}
+\subsubsection{TD method convergence}
+It is advantageous that the $\alpha$ becomes smaller as we converge to some solution, as we expect to be close to a solution, and
+so expect not to have to make as many corrections.
+\nt
+{
+    People have found that in the optimal case, we should have:
+    \begin{equation}
+        \Sigma^{\infty}_{n=0}a(n) = \infty
+    \end{equation}
+    and:
+    \begin{equation}
+        \Sigma^{\infty}_{n=0}a(n)^2 < \infty
+    \end{equation}
+}
+
+
+\section{Active reinforcement learning}
+What should and agent do, which does not have a policy, which would like to find an optimal one.
+First, she should compute the complete transition model for all the actions. The EDP algorithm for a passive agent can be used for that.
+After that, the optimal policy satisfying the Bellman equation can be found
+\subsection{Exploration}
+If the agent does not try all her options, she cannot sufficiently explore the environment. So sometimes to explere she needs to perform
+actions which go against the optimal policy.
+This is the compromise between the exploitation of the possessed knowledge and exploration of the environment.
+Ergo, we need an exploration policy of some sort. A resonable exploration policy can be seen below:
+\begin{equation}
+    U^{+}(s) \leftarrow R(s) + \gamma \max_a f(\Sigma_{s'}P(s'\mid s,a)U^{+}(s'),N(a,s))
+\end{equation}
+where $N(a,s)$ is the number of previous choices of action a in state s, and  $f(u,n)$ is the exploration function,
+trading off the greed (large values of u) against curiosity(small values of n).
+Obviously the f function should be increasing with respect to u and decreasing with respect to n. A simple definition can be:
+ \begin{equation}
+     f(u,n) = \begin{cases}
+         R^{+} \text{ if } n<N_e\\
+         u \text{ otherwise}
+     \end{cases}
+\end{equation}
+
+\subsection{Active temporal difference learning}
+Method of temporal differences can be applied to active learning, with the same formula.
+\subsection{Q--learning}
+An alternative to temporal difference learning is Q--learning, which learns an action-value representtion in the form of the function
+$Q(a,s)$, which expresses the value of the action a in states, and is related to the utilities with the formula:
+\begin{equation}
+    U(s) = \max_a Q(a,s)
+\end{equation}

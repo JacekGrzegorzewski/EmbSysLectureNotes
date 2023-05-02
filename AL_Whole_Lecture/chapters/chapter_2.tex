@@ -1,0 +1,47 @@
+
+\chapter{Resolution method}
+
+\nt{Each sentence of propositional logic is equivalent to a sentence in CNF(DNF) form}
+
+\dfn{Some notation}
+{
+        $\{ \phi_1,\cdots , \phi_n \} \vDash  \psi$  means that for every valuation $ \pi $ satisfying $\pi(\phi_i) = \mathbb{1}$ we have $\pi(\psi) \mathbb{1}$ 
+\nt{$\{ \phi_1,\cdots , \phi_n \} \vDash  \psi \} \leftrightarrow \vDash (\phi_1 \wedge \cdots \wedge \phi_n ) \rightarrow \psi $}
+}
+\ex{Let us check if :
+        \begin{equation} \label{eq:1}
+\{p, p \rightarrow q\} \vDash p \rightarrow q 
+\end{equation}
+}
+{
+Take valuation $\pi(p) = \mathbb{1}$ and $\pi(q \rightarrow p) = \mathbb{1}$, notice that by the first valuation, the second one is always true.
+We want to check if $\pi( p \rightarrow q) = \mathbb{1}$. By the first valuation, we have that  $\pi(p \rightarrow q) = IF(\mathbb{1},\pi(q)) = \pi{q}$.
+Ergo, \ref{eq:1} is false.
+}
+
+The resolution method is an approach to solving the SAT problem when we are presented with a sentence in CNF form. To state the problem more precisely:\\
+We are given a sentence $\phi$ in CNF, we want to check if  $\exists \pi \: \pi(\phi) = \mathbb{1}$ 
+Fo do that, we first represent $\phi$ as a set of clauses.
+\dfn{Set of Clauses}
+{
+        A clause is a sequence of literals. A literal is a prepositional variable or its negation. A set of clauses is then a set concisting of string of literals, such as the following: 
+        \ex{}{$\phi = ( p \vee \neg q) \wedge ( \neg p \vee r) \wedge p \wedge (p \vee  r \vee \neg p )$}
+}
+\dfn{$\mathrm{Res}_p(C_1,C_2)$ -- Resolvent or $C_1$ and $C_2$ with respect to p}
+{
+        Let $C_1$ and $C_2$ be clauses s.t. $p \in C_1$ and $\neg p \in C_2$.
+       \begin{equation} \label{res:1}
+        \mathrm{Res}_p = (C_1\ \{p\})\cup(C_2 \ \{\neg p\})
+       \end{equation}
+}
+\clm{Satisfiability equivalende}{}{If $K = \{C_1,C_2\}$ is satisfiable, then $K \cup \mathrm{Res}_p(C_1,C_2)$ is also satisfiable}
+
+\begin{myproof}
+        By assumption there is a valuation $\pi$ s.t. $\pi(C_1) = \pi(C_2) = \mathbb{1}$, we will show that $\pi(\mathrm(Res)(C_1,C_2) = \mathbb{1}$. Let's say the resolvent is taken with respect to p. Then we have $\pi(p) \in \{\mathbb{1},\mathbb{0}\}$, and without loss of generality, we can say that $p \in C_1, \neg p \in C_2$.\\
+        If $\pi(p) = \mathbb{0}$, there is a literal $l \in C_1$ s.t. $\pi(l) = \mathbb{1}$. Since  $l \in C_1$, then $l \in R = \mathrm{Res}_p(C_1,C_2)$, meaning that $R(l) = \mathbb{1}$. Similarily if $\pi(p) = \mathbb{1}$.
+
+\end{myproof}
+\nt{Without proof, we state that a set of clauses is not satisfiable, if it can be resolved into the empty clause $\square$, and conversly, if it can be so reduvced, it a set of clauses is not satisfiable.}
+
+
+
