@@ -123,32 +123,42 @@ By solving this system, we can obtain two such points:
 
     
 }
+\subsection{Subdivisions}
 We can further divide equilibrium points into \textit{isolated} and \textit{non--isolated}.
 \dfn{Isolated equilibrium points}
 {
-    $x_e$ is an isolated equilibrium point of \ref{equ:5} if and only if(we can also write $\iff$): 
+    $x_e$ is an isolated equilibrium point of \ref{equ:5} if and only if(we can also write $\iff$) there exits a positive constant $r$ such that the set: 
    \[
-       \exists r > 0 \; K(x_e,r) \equiv \{\,x \in \mathbb{R}^{n} \mid \norm{x - x_e}_2 < r\,\}    
+       B(x_e,r) \equiv \{\,x \in \mathbb{R}^{n} \mid \norm{x - x_e}_2 < r\,\}    
    .\]  
-   And no equilibrium points are contained in the set $K$ except  $x_e$.
-   What the above equation means, is that there are no equilibrium points in the direct neighbourhood of $x_e$ as defined my the euclidean norm  $\norm{.}_2$. Intuitively, one can interpret this as saying, that there are no equilibrium points directly next to $x_e$.
+   contains no other equilibrium points other than $x_e$.\\
+   What the above definition means, is that there are no equilibrium points in the direct neighbourhood of $x_e$ as defined my the euclidean norm  $\norm{.}_2$. Intuitively, one can interpret this as saying, that there are no equilibrium points directly next to $x_e$. The set $B(x_e,r)$ is called an n--dimensional ball of radius r, centered at $x_e$. This set is a generalization of the concept of a neighbourhood to higher dimensions.
+   \nt{Dr. Arent in his notes, uses $K(x_e,r)$ as notation for the ball, but only here. In the next chapter, he uses  $B(x_e,r)$ instead, and since it's used more often there, I've decided to use this notation everywhere}
    \ex{Single pendulum}
    {
-       It is very easy to see, that the equilibrium points of the simple pendulum are both isolated.
+       It is very easy to see, that the equilibrium points of the simple pendulum are both isolated. For this not to be the case, there would be no ball which contained only one equilibrium point. We can take any $r < \pi$, and centering the ball at any of the equilibrium points we can see that the only point contained within them is their central point.
    }
 }
 \section{Definitions of stability}
 It may happen, that the system is not in an equilibrium point, but close to it.Depending on weather the system will then return to $x_e$ or not, we can further classify equilibrium points as either  \textit{stable} or  not. Furthermore, we can differentiate between many different kinds of stability.
+\nt
+{
+    !!!\\
+    It is very important to note, that while useful theoretically, these definitions are very cumbersome. This is due to the fact, that they require us to know the exact form of a function to determine it's stability. Since we're dealing with dynamical systems, this means that we have to be able to  \textit{solve} the differential equation
+    describing it. We very rarely can find an exact analytic solution to nonlinear differential equations, so these definitions are not very useful in practice. This fact will force us to develop some methods for determining stability directly from the dynamical equation of a system.
+    To reiterate WE NEED TO SOLVE THE DIFFERENTIAL EQUATION OF A SYSTEM TO USE THESE DEFINITIONS AT ALL, THIS IS HARD, IF NOT IMPOSSIBLE.
+}
 \dfn{Stable equilibrium point}
 {
     $x_e$ is a stable equilibrium point of  \ref{equ:5} if and only if \\
     \begin{equation}
         \label{dfn:stab_eq_pt}
-        \forall \epsilon > 0, t_0 \ge \exists \delta > 0 \: \norm{x_0-x_e} < \delta \rightarrow \norm{x(t,t_0,x_0) - x_e} < \epsilon \;\; \forall t \ge t_0   
+        \forall( \epsilon > 0, t_0 \ge 0)\;  \exists \delta > 0 \: \norm{x_0-x_e} < \delta \rightarrow \norm{x(t,t_0,x_0) - x_e} < \epsilon \;\; \forall t \ge t_0   
     \end{equation}
     Translated into English the above equation can be read as follows:\\
-    For all epsilons($\epsilon$) which are greater than zero, and all arbitrary values of time($t_0$), there exists a delta($\delta$), which is greater than zero. If the norm($\norm{.}$) of the difference between the equilibrium point and the initial state of the system is less than this delta, this implies that for all future states of this system its distance from the equilibrium point will be less than epsilon($\epsilon$).\\
-    \nt{Because $\epsilon \text{and} t_0$ appear with the for all quantifier, we think of them as independent variables of this condition, as opposed to $\delta$, which is dependant because it occurred with the exists quantifier. This means, that to prove that the above condition holds, we have to find delta which fulfils this conditions as a function of $t_0$ and $\epsilon$, i.e.  $\delta(\epsilon,t_0)$}
+    For all epsilons($\epsilon$) which are greater than zero, and all values of time($t_0$) > 0, there exists a delta($\delta$), which is greater than zero. If the norm($\norm{.}$) of the difference between the equilibrium point and the initial state of the system is less than this delta, this implies that for all future states of this system its distance from the equilibrium point will be less than epsilon($\epsilon$).\\
+    Intuitively, this can be understood as saying that if we're somewhat close to $x_e$, were going to get closer to it. If we're not close enough however, this may not be the case. For example, imagine you're placed in the solar system. If your initial condition puts you close to the earth, you're going to orbit around it. If however you're placed closer to the moon, you may orbit the moon instead. Since there is nothing to kick you out of this orbit, it is a stable equilibrium point, but weather you orbit a given body or not depends on your initial conditions.
+    \nt{Because $\epsilon \text{ and } t_0$ appear with the for all quantifier, we think of them as independent variables of this condition, as opposed to $\delta$, which is dependant because it occurred with the exists quantifier. This means, that to prove that the above condition holds, we have to find delta which fulfils this conditions as a function of $t_0$ and $\epsilon$, i.e.  $\delta(\epsilon,t_0)$}
 }
 
 \dfn{Uniformly stable equilibrium point}
@@ -158,7 +168,9 @@ It may happen, that the system is not in an equilibrium point, but close to it.D
         \label{dfn:ustab_eq_pt}
         \forall \epsilon > 0\: \exists \delta > 0\: \forall t_0 \ge  \; \norm{x_0-x_e} < \delta \rightarrow \norm{x(t,t_0,x_0) - x_e} < \epsilon \;\; \forall t \ge t_0   
     \end{equation}
-
+    The above equation states, that no matter the initial conditions, you are always going to be finitely close to a given equilibrium point.
+    To extend the previous example, now we're not in a solar system, but in a single body system. Then, no matter the initial conditions, you're always going to be closer than a set distance to it, since you interact gravitationally.
+    
     \nt
     {
     
@@ -185,6 +197,7 @@ It may happen, that the system is not in an equilibrium point, but close to it.D
     \end{enumerate}
 
    This means that an equilibrium point is asymptotically stable if it is stable, and the distance to the equilibrium point after some time T will be less than an arbitrary value. Also, this could be said to mean that the distance to the equilibrium point tends to 0 as time goes to infinity.
+   To give some intuition, again using the solar system example, now we're not orbiting, but falling down towards the surface. We're getting closer and closer to the equilibrium point, not just staying close enough within a given boundary.
 }
 
 
@@ -200,6 +213,7 @@ It may happen, that the system is not in an equilibrium point, but close to it.D
                 (\exists \delta > 0 ) \wedge (\forall \epsilon > 0 \exists T \ge 0 \forall t_0 \ge  0) \norm{ x_0 - x_e} < \delta \rightarrow  \norm{x(t,t_0,x_0) - x_e} < \epsilon, t \ge t_0+T
             \end{equation}
     \end{enumerate}
+    Intuition should be evident at this.
     \nt
     {To prove asymptotic stabilities, we have to find functions $T(\epsilon, t_0)\text{ and } \delta{t_0}$ for which these definitions hold true(in the case of uniform stability, the dependence on $t_0$ is dropped). 
     HERE BE PICTURES
@@ -215,9 +229,53 @@ It may happen, that the system is not in an equilibrium point, but close to it.D
         \label{dfn:estab_eq_pt}
         (\exists \alpha > 0 ) \wedge (\forall \epsilon > 0 \: \exists  \norm{x_0-x_e} < \delta) \rightarrow \norm{x(t,t_0,x_0) - x_e} < \epsilon e^{-\alpha(t-t_0)}
     \end{equation}
+    This notion is useful because it tells us something about the \textit{speed} of convergence to the point. Now, as time increases, we get exponentially
+    closer to the equilibrium point. So this is just fast asymptotic stability.
 }
 \subsection{Examples}
-Will probably not provide any, consult the handwritten notes of dr. Arent.
+
+\ex{}
+{
+    Let us consider the following equation:
+    \begin{equation}
+        \label{ex:kurwamac}
+        \dot{x} = -\frac{x^{2}}{1+t^{2}}
+    \end{equation}
+    The procedure for proving all previously mentioned kinds of stability using their definitions is the same. First, if we are not given a function directly, we have to solve the equation, and find its equilibrium points. Then we take one of those equilibrium points, and try to find conditions such that the following implication holds:
+    \begin{equation}
+        \label{imp}
+        \norm{x_0-x_e} < \delta \rightarrow \norm{x(t,t_0,x_0) - x_e} < \epsilon
+    \end{equation}
+    After we find those conditions, we can check if in our solution $\epsilon$ is a function of $\delta$ and $t_0$, or just $\delta$. From this we can determine if we have just regular, or uniform stability. After this we can check if our epsilon goes to zero as time goes to infinity. If it does, then we have asymptotic stability. If we can make $\epsilon$ an exponential function of time, then we have exponential stability as well.
+    \\
+    So first, we solve the equation:
+    \begin{equation}
+    \!\begin{aligned}
+        \odv{x}{t} & = -\frac{x^{2}}{1+t^{2}} &\mbox{First we separate the variables}& \\[1.25ex]
+        -\frac{dx}{x^{2}}&=\frac{dt}{1+t^{2}}&\mbox{Then integrate, remembering about the integration constant.}&\\[1.25ex]
+        \frac{1}{x}&=\arctan{t}+C&\mbox{Now we determine the constant as a function of the initial conditions}\\[1.25ex]
+            x_0&=\frac{1}{\arctan{t_0}+C}&\mbox{}\\[1.25ex]
+            C&=\frac{1}{x_0}+\arctan{t_0}&\mbox{Finally, we substitute this C into the general solution}\\[1.25ex]
+            x&=\frac{x_0}{1+x_0(\arctan{t}-\arctan{t_0})}&\mbox{}\\[1.25ex]
+        
+    \end{aligned}
+    \end{equation}
+    After this, we can try to find an equilibrium point to study its stability:
+    \begin{align*}
+       0&=\frac{-x_e^{2}}{1+t^{2}}&\mbox{We're solving for $x_e$}\\[1.25ex]
+       x_e&=0&\mbox{And find the only equilibrium point easily}\\[1.25ex]
+    \end{align*}
+    Having obtained an explicit form of $x(t,t_0,x_0)$ and an equilibrium point, we can try to apply our definitions:
+    \begin{align*}
+        \norm{x_0-x_e} &<\delta &\rightarrow&& \norm{x(t,t_0,x_0) - x_e} &< \epsilon&\mbox{First we substitute $x(t,t_0,x_0)$ and $x_e$}\\[1.25ex]
+    \norm{x_0} &< \delta &\rightarrow&& \norm[\bigg]{\frac{x_0}{1+x_0(\arctan{t}-\arctan{t_0})}}&<\epsilon&\mbox{Then use monotonicity of $\arctan{t}$ over $\mathbb{R}_+$}\\[1.25ex]
+\norm{x_0} &<\delta&\rightarrow && \norm[\bigg]{\frac{x_0}{1+x_0(\arctan{t}-\arctan{t_0})}}&< \norm[\bigg]{\frac{x_0}{1}} & \mbox{And the first part of the implication}\\[1.25ex]
+\norm{x_0} &<\delta&\rightarrow && \norm{x_0}&< \delta & \mbox{Done, we set $\epsilon = \delta$ and make our conclusions}\\[1.25ex]
+    \end{align*}
+We found $\epsilon$ as a function of just $\delta$, so we can conclude that the equilibrium point of  \ref{ex:kurwamac} is not only stable, but uniformly stable. Since at no point did the limit of the second part of the implication tended to zero with time going to infinity, we can also say that this equilibrium port is not asymptotically stable. Since it is not asymptotically stable, it can't be exponentially stable.\\
+To summarize, we're dealing with a uniformly stable equilibrium point.
+}
+Will probably not provide any more, consult the handwritten notes of dr. Arent.
 \clearpage
 
 \section{Lyapunov's indirect method}
@@ -225,11 +283,11 @@ Instead of working with these cumbersome definitions, we'll use what's called \t
 \thm{}
 {
     Expand $\bar{f}$ in \ref{equ:5} in a Taylor series at $x_e$: \\
-    $\bar{f}(x,t) = \bar{f}(x_e,t)+ \pdv{\bar{f}}{x}(x_e,t)(x-x_e) + \text{h.a.t.(Higher Order Terms)} $
+    $\bar{f}(x,t) = \bar{f}(x_e,t)+ \pdv{\bar{f}}{x}(x_e,t)(x-x_e) + \text{h.o.t.(Higher Order Terms)} $
     \nt{For simplicity's sake, I will further refer to $\bar{f}$ as just f, just be sure to remember that although these take on the same values for the same arguments, they are formally different functions}
     Let:
     \begin{equation}
-        A(t) := \pdv{f}{x}(x_e,t)
+        A(t) := \pdv{f}{x}(x_e,t)  \text{ -- $A(t)$ is the Jacobian of $\bar{f}$ evaluated at $x_e$ and t.}
         \label{thm:lyapA}
     \end{equation}
 If:
@@ -280,10 +338,14 @@ Using Lyapunov's indirect method we can analyse the stability of a nonlinear sys
  Where $A \in \mathbb{R}^{n\mul n}$ does not depend on t. The equilibrium point $x_e = 0$ of \ref{thm:lincX} is:
  \begin{itemize}
          \item asymptotically stable if and only f $Re(\lambda_i(A)) < 0 \forall i $ 
-         \item stable if and only if $Re(\lambda_i(A) < 0 \forall i \not \in \{j_1, j_2, ..., j_m\}, \text{where } m < n $ and $Re(\lambda_j(A)) = 0$ with  $\lambda_j(A), j \in \{ j_1, \cdots ,j_m\}$ being a semisimple eigenvalue of A.
+         \item stable if and only if $Re(\lambda_i(A) < 0 \forall i \not \in \{j_1, j_2, ..., j_m\}, \text{where } m < n $ and $Re(\lambda_j(A)) = 0$ with  $\lambda_j(A), j \in \{ j_1, \cdots ,j_m\}$ being a semisimple eigenvalue of A. 
          \item unstable if and only if A has an eigenvalue with a positive real part, out with a zero real part that is not semisimple.
          
  \end{itemize}
+ \nt
+ {
+     This second condition means, that in a stable system, we can only have eigenvalues with negative real parts, or semisimple zero real parts. If there's even one eigenvalue with a zero real part, and not semisimple, the system is unstable.
+ }
  \dfn{Semisimple eigenvalue}
  {
      $\lambda$ is a semisimple eigenvalue of A if and only if  $Re(\lambda) = 0$ and  $\dim (\ker (\lambda I - A))$ is equal to the multiplicity of  $\lambda$ - a root o the charateristic polynomial of A.

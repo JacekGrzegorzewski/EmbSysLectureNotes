@@ -51,7 +51,10 @@ indirect method has proven to be very useful and covers many cases we'll be inte
 \dfn{A decreasant function}
 {
     The function $V(t,x)\,:\,\mathbb{R}_+\times B(r,x_e) \longrightarrow  \mathbb{R} $ such that $V(t,x_e) = 0, \forall t \in  \mathbb{R}_+ $ is decresant if there exits a K class function $\phi $ such that:\\
-    $\abs{V(t,x)} \le \phi (\norm{x-x_e)})$
+    \begin{equation}
+        \label{dfn:decf}
+    \abs{V(t,x)} \le \phi (\norm{x-x_e)})
+    \end{equation}
 
     \ex{}
     {
@@ -119,6 +122,91 @@ Lyapunov's direct method allows us to determine many types of stability of an eq
 
             
     \end{itemize}
+    If:
+    \begin{item}
+    \item $\dot{V} \le 0 \; \forall x \in \mathbb{R}^{n} $
+    \item the one element set \{$x_e$\} is the only invariant set wit respect to the eqation  \ref{lyapi:thm:nt}, that is a subset of the set:\\
+        $\Omega_v = \{ x \in \mathbb{R}^{n} \mid \dot{V} = 0$\\
+      Then the equilibrium point of \ref{lyapi:thm:nt} is globaly asymptotically stable.
+    \end{item}
 }
+\nt
+{
+    Be aware, that find a Lyapunov function is more of an art than a science. Mostly you just guess the correct form, but with practice, this should come naturaly.
+}
+\section{Examples}
+As an example, I will provide solutions to a non stationary system from the excercise list.
+\ex{List 2 ex. 8.e}
+{
+    We are given a system:
+    \begin{equation}
+        \label{lyapi:ex:e}
+        \begin{cases}
+            \dot{x}_1 = -x_1-e^{-2t}x_2\\
+            \dot{x}_2 = x_1 - x_2
+        \end{cases}
+        ,\; V(\tilde{x},t) = \tilde{x}_1+(1-e^{-2t})\tilde{x}_2^{2}
+    \end{equation}
+    The guessing part was already done for us, so all we have to do is to check what kind of information can this Lyapunov function provide for us.
+    Since we've shown how to find equilibrium points, we'll just state that the only equilibrium point is $x_e = \begin{bmatrix}
+        0\\
+        0
+        \end{bmatrix}$ 
+    We need to calculate this Lyapunov's function derivative. There are 2 ways to do this, the direct way, and using the fact that we have te dynamical equation of a system.%% add a ref. 
+    \\
+    Beginnig with the direct method(noting that $\tilde{x} = x-x_e=x$):\\
+    \begin{equation}
+        \begin{aligned}
+            V(x,t)&=x_1^{2} + (1+e^{-2t})x_2^{2}&\mbox{We take the derivative w.r.t. time}\\[1.25ex]
+            \dot{V}&=2x_1\dot{x}_1 -2e^{-2t}x_2^{2} + (1+e^{-2t})2x_2\dot{x_2}&\mbox{Use equation \ref{lyapi:ex:e} to substitute $\dot{x}_i$}\\[1.25ex]
+            \dot{V}&=2x_1(-x_1-e^{2t}x_2)-2e^{-2t}x_2^{2} + (1+e^{-2t})2x_2(x_1-x_2)&\mbox{}\\[1.25ex]
+            \dot{V}&=-2x_1^{2} -2e^{-2t}x_1x_2-2e^{-2t}+2x_2x_1-2x_2^{2}+2e^{-2t}x_2x_1-2e^{-2t}x_2^{2}&\mbox{Subtracting like terms}\\[1.25ex]
+            \dot{V}&=-2(x_2^{2}+x_1^{2})-4e^{-2t}x_2^{2}+2x_1x_2&\mbox{Obtaining a sum of squares}\\[1.25ex]
+            \dot{V}&=-(x_1-x_2)^{2}-(2e^{-t}x_2)^{2}-x_1^{2}-x_2^{2}&\mbox{We obtain the final result}\\[1.25ex]
+        \end{aligned}
+    \end{equation}
+    And for clarity, using the second method:
+    \begin{equation}
+        \begin{aligned}
+            V(x,t)&=x_1^{2} + (1+e^{-2t})x_2^{2}&\mbox{We use equation X}\\[1.25ex]
+            \dot{V}&= \pdv{V}{t}+\nabla V f(x,t) &\mbox{Substitute for f equation \ref{lyapi:ex:e}}\\[1.25ex]
+            \dot{V}&= \pdv{V}{t} + \begin{bmatrix}
+                \pdv{V}{x_1} & \pdv{V}{x_2}
+            \end{bmatrix} \begin{bmatrix}
+                -x_1 -e^{-2t}x_2 \\
+                x_1-x_2
+            \end{bmatrix}&\mbox{Calculate partial drivatives}\\[1.25ex]
+            \dot{V}&=-2e^{-2t}x_2^{2}+\begin{bmatrix}
+                2x_1 & (1+e^{-2t})2x_2
+            \end{bmatrix} \begin{bmatrix}
+                -x_1 -e^{-2t}x_2   \\
+                x_1-x_2
+            \end{bmatrix}&\mbox{Multiply the vectors}\\[1.25ex]
+            \dot{V}&=-2e^{-2t}x_2^{2}-2x_1^{2} -2e^{-2t}x_1x_2 + 2x_1x_2+2e^{-2t}x_1x_2-2x_2^{2}-2e^{-2t}x_2^{2}&\mbox{Subtract like terms}\\[1.25ex]
+            \dot{V}&=-2x_1^{2}-2x_2^{2}+2x_1x_2 -4e^{-2t}x_2^{2}&\mbox{Find a sum of squares}\\[1.25ex]
+            \dot{V}&=-x_1^{2}-x_2^{2} - (x_1-x_2)^{2} -(2e^{-2t}x_2)^{2}&\mbox{We obtain the final result}\\[1.25ex]
+        \end{aligned}
+    \end{equation}
+    Seeing that both methods gave the same result, we can be sure that we've calculated corectly.\\
+    Now, we have to analyse the behaviour of $\dot{V}$. It is evident, that $\dot{V} \le 0$, but $\dot{V} \not < 0$ because we can take $x=\begin{bmatrix}
+        0  \\
+        0
+    \end{bmatrix}$.
+    Consulting the theorem describing Lyapunov's second method, we can see that if $\dot{V}\le 0$, then the equilibrim point is stable.
+    For this equilibrium point to be uniformly stable, we need to check if $\dot{V}$ is decresant. Substituting into \ref{dfn:decf}
+    we obtain:
+    \begin{equation}
+        \begin{aligned}
+        \abs{V(x,t)}&\le \phi(\abs{x-x_e})&\mbox{Substitute in our V}\\[1.25ex]
+        \abs{x_1^{2} + (1+e^{-2t})x_2^{2}}&\le\phi(\abs{x})&\mbox{We can then choose a suitable $\phi$}\\[1.25ex]   
+    \abs{x_1^{2}+(1+e^{-2t})x_2^{2}}&\le x_1^{2}+2x_2^{2}&\mbox{Finaly proving that it's decresant}\\[1.25ex]
+        \end{aligned}
+    \end{equation}
+    Thus proving that this equilibrium point is uniformly stable.
+    We've seen that $\dot{V}$ is not strictly less than 0, so we can't prove that
+    $x_e$ is uniformly asymptotically stable, and if it's not, then it also can't
+    be exponentialy stable.
 
+
+}
 
