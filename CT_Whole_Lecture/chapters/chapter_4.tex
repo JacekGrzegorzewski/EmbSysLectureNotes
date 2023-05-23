@@ -27,6 +27,9 @@ auxiliary input in the feedback loop.
             A(h)\dot{h} = u(t) - a\sqrt{2gh}
         \end{equation}
 
+
+
+
         Let us set $u(t) = a\sqrt(2gh)+A(h)v$, substituting into  \ref{FL:ex2} we obtain:
         \begin{equation}
             \label{FL:ex_3}
@@ -228,4 +231,329 @@ Where we assume that $w(x)$ is an invertible function. We can then invert the pr
     \end{equation}
 
 }
+
+
+\section{Internal Dynamics}
+\ex{}
+{
+    \begin{equation}
+        
+        \begin{aligned}
+           \begin{bmatrix}
+               \dot{x}_1 \\
+               \dot{x}_2 
+           \end{bmatrix} 
+        &= \begin{bmatrix}
+            x_2+u  \\
+            u
+
+        \end{bmatrix}
+        &\quad&
+           \begin{bmatrix}
+               \dot{x}_1 \\
+               \dot{x}_2 
+           \end{bmatrix} 
+        &=
+        \begin{bmatrix}
+            x_2+u  \\
+           -u
+       \end{bmatrix}\\[1.25ex]
+        y &= x_1 &\quad& y &=x_1\\[1.25ex]
+        
+        \end{aligned}
+    \end{equation}
+}
+
+
+\section{Mathematical tools}
+
+
+\dfn{Vector Field}
+{
+    \begin{equation}
+        \label{mt:vf}
+        f\,:\,\mathbb{R}^{n} \longrightarrow \mathbb{R}^{n} 
+    \end{equation}
+    If the above function is smooth, i.e. has continuous derivatives of any order, we consider it a vector field.
+
+    Gradients:
+    \begin{equation}
+        \begin{aligned}
+        \nabla h = \pdv{h}{x} &\quad& {\nabla h}_i = \pdv{h}{x_i}\\
+        \nabla f = \pdv{f}{x} &\quad& {\nabla f}_{ij} = \pdv{f_i}{x_j}\\
+        \end{aligned}
+    \end{equation}
+    Where:
+    \begin{itemize}
+            \item $ h\,:\,\mathbb{R}^{n} \longrightarrow \mathbb{R} $ -- is a smooth scalar function
+            \item $ f\,:\,\mathbb{R}^{n} \longrightarrow \mathbb{R}^{n} $ -- is a smooth vetor field
+            
+    \end{itemize}
+}
+\dfn{Lie derivative(directional derivative)}
+{
+    Take $f$ and  $h$ as above, then:
+     \begin{equation}
+        \label{mt:ld}
+        L_f h = \pdv{h}{x}f = \nabla h f
+    \end{equation}
+    \nt
+    {
+        Iterated directional derivatives:
+        $L_f^1 h = (\nabla h)f$\\
+        $L_f^{2}h = L_f( \pdv{h}{x}f) = \pdv{}{x}( \pdv{h}{x}f) f$\\
+        $\vdots$ \\
+        $L_f^{i}h = L_f(L_f^{i-1}h) = \nabla(L_f^{i-1}h)f$\\
+        $L_g L_f h = L_g(L_f h) = L_g ( \pdv{h}{x} f(x)) = \pdv{}{x}( \pdv{h}{x}(x)f(x))g(x)$
+    }
+    \nt
+    {
+        let:
+        \[
+        \dot{x} = f(x)\\
+        y = h(x)
+        .\] 
+        Then:
+    }
+
+
+}
+
+\dfn{Lie Bracket}
+{
+    Let $f$ and $g$ be tow vector fields on $\mathbb{R}^{n}$. The Lie bracket
+    of $f$ and $g$ is a third vector field defined by:
+    \begin{equation}
+        \label{mt:lb}
+        [f,g] = \pdv{g(x)}{x}f(x)- \pdv{f(x)}{x}g(x)\\
+        [f,g] = L_fg-L_gf
+    \end{equation}
+}
+
+
+
+\nt
+{
+    $a \dot{d}_fg=g$\\
+    $[f,g] = ad^{1}_fg$ \\
+    $[f,[f,g]] = ad_f^{2}g$ \\
+    $\vdots$\\
+    $ad_v^{i}g = [f, ad_f^{i-1}g]$
+
+}
+\ex{}
+{
+    Let:\\
+    \begin{itemize}
+            \item $\dot{x} = f(x) + g(x)$
+            \item $f(x) = 
+                \begin{bmatrix}
+                    -2x_1+ax_2\sin{x_1}  \\
+                    -x_2\cos{x_1}
+            \end{bmatrix}$ \\
+        \item $g(x) = 
+            \begin{bmatrix}
+            0  \\
+    \cos{2x_1}
+        \end{bmatrix}$
+    \end{itemize}
+    Then:
+    \begin{equation}
+        [f,g] = \pdv{g}{x}f(x) - \pdv{f}{x}g(x) =\newline
+        \begin{bmatrix}
+            0 & 0 \\
+            -2\sin(2x_1) & 0
+        \end{bmatrix}
+                \begin{bmatrix}
+                    -2x_1+ax_2\sin{x_1}  \\
+                    -x_2\cos{x_1}
+            \end{bmatrix} 
+            - \begin{bmatrix}
+                -2+\cos{x_1}  & a \\
+                x_2\cos{x_1} & -\cos{x_1}
+            \end{bmatrix}
+            \begin{bmatrix}
+            0  \\
+    \cos{2x_1}
+        \end{bmatrix} = \begin{bmatrix}
+        a \cos{2x_1}  \\
+        \cos{x_1}\cos{2x_1}-2\sin{2x_1}(-2x_1+ax_2+\sin{x_1})
+        \end{bmatrix}
+    \end{equation}
+}
+\mlenma{}
+{
+    Lie brackets have the following properties:
+    \begin{itemize}
+        \item Bilinearity $[\alpha_1 f_1 + \alpha_2 f_2,g] = \alpha_1[f_1,g] + \alpha_2[f_2,g]$
+        \item Skew Symmetry: $[f,g] = -[g,f]$
+        \item Jacobi identity:  $L_[f,g]h = L_f(L_g h)-L_G(L_f h)$
+    \end{itemize}
+}
+\begin{myproof}
+   Proof of the Jacobi identity, first we have:
+   \begin{equation}
+       L_{[f,g]}h = \nabla h[f,g] = \pdv{h}{x}[f,g]= \pdv{h}{x}( \pdv{g}{x}h - \pdv{f}{x}g)\\
+   \end{equation}
+   Then:
+   \begin{equation}%why no centering???
+       \!\begin{aligned}
+           L_f(L_g h) - L_g(L_f h) &= \pdv{}{x}( \pdv{h}{x}g ) f - \pdv{}{x}( \pdv{h}{x}f)g = \\[1.25ex]
+           g^{T} \pdv{h}{x}{x} + \pdv{h}{x} \pdv{g}{x}f - ( \pdv{h}{x} \pdv{f}{x} + f^{T} \pdv{h}{x}{x})g&=\pdv{h}{x}( \pdv{g}{x}f - \pdv{f}{x}g)\\
+       \end{aligned}
+   \end{equation}
+\end{myproof}
+
+\dfn{Completely integrable vector field}
+{
+    A linearly independent set of vector fields $\{f_1,\cdots ,f_m\}$ defined on $\mathbb{R}^{n}$ is said to be completely integrable 
+    if and only if there exist n-m scalar function $h_1(x), \cdots, h_{n-m}(x)$ satisfying the system of partial differential
+    equations:
+    \begin{equation}
+        \nabla h_i(x) f_j(x) = 0
+    \end{equation}
+    where $1 \le i \le n-m$,  $1\le j \lm m$,  $\nabla h_i$ are linearly independent
+}
+
+
+\dfn{Inductive sets of vector fields}
+{
+    A linearly independent set of vector fields $\{f_1,\cdots ,f_m\}$ is said to be inductive if and only if there are scalar functions $\alpha_{ijk}\,:\,\mathbb{R}^{n} \longrightarrow \mathbb{R} $ such that $[f_i,f_j](x)  = \Sigma^m_{k=1} \alpha_{ijk}(x)f_k(x) \; \forall i,j $
+}
+\section{??? -- 2023-05-11}
+
+
+\thm{Frobenious }
+{
+    Let $f_1,\cdots ,f_n$ be linearly independent vector field.
+    This set is completely integrable iff it is inductive.
+}
+
+
+
+\dfn{Differomorphism}
+{
+    Function $\phi \,:\,\mathbb{R}^{n} \longrightarrow \mathbb{R}^{n} $ defined in a region $\Omega$ is called a \textit{differomorphism} if it
+    is smooth and if its inverse $\phi^{-1}$ exists and is smooth as well.
+}
+
+\mlenma{}
+{
+    Let $\phi(x)$ be a smooth function defined in a region $\Omega$ of $\mathbb{R}^{n}$. If the Jacobian matrix $\nabla \phi $ is non--singular at
+    $x = x_0 \in \Omega$ then $\phi(x)$ defines a local differomorphism in a subregion of $\Omega$.
+}
+
+
+\nt
+{
+    Differomorphism and state transformation:\\
+    A differomorphism can be used to transform a nonlinear
+    system into another nonlinear system. 
+    NEED TO FIX THESE EQUATIONS!!!
+    \ex{}
+    {
+        \begin{equation}
+            \begin{aligned}
+                \dot{x} &= f(x) + g(x)u &,& y &=h(x)\\
+                z&= \phi(x)&\mbox{}\\[1.25ex]
+                \dot{z}&= \pdv{\phi}{x}\dot{x}&&= \pdv{\phi }{x}(f(x)+g(x)u)\\[1.25ex]
+                =\pdv{\phi }{x}f(\phi^{-1}(z)) + \pdv{\phi }{x}g(\phi^{-1}(z))&&\mbox{}\\[1.25ex]
+                \dot{z}&=\bar{f}(z) + \bar{g}(z)u&\mbox{}\\[1.25ex]
+                
+               
+                
+            \end{aligned}
+        \end{equation}
+    }
+}
+
+
+\ex{}
+{
+    We are given:
+    \begin{equation}
+        \begin{bmatrix}
+            z_1  \\
+            z_2
+        \end{bmatrix} = \phi(x) = \begin{bmatrix}
+            2x_1 +x_2^{2}  \\
+            \sin(x_2)
+        \end{bmatrix}
+    \end{equation}
+    To check if $\phi $ is a differomorphism, we need to calculate its Jacobian, and check wheather or not it is singular.
+    \begin{equation}
+        \nabla \phi (x) = \pdv{\phi}{x} = \begin{bmatrix}
+            2 & x_2 \\
+            0 & \cos{x_2}
+        \end{bmatrix}
+    \end{equation}
+    We can see that the rank of $\nabla \phi $ is equal to 2 for $x_2\neq \frac{\pi }{2} + k\pi $. Thusly, $\phi $ is a differomorphism for $\Omega = \{(x_1,x_2) \mid \norm{x_2} < \frac{\pi }{2}$.
+}
+
+\ex{}
+{
+    We are given:
+    \begin{equation}
+        f_1=\begin{bmatrix}
+            2x_3  \\
+            -1\\
+            0
+        \end{bmatrix},\;
+        f_2 = \begin{bmatrix}
+            -x_1  \\
+            -2x_2\\
+            x_3
+        \end{bmatrix}
+    \end{equation}
+    Is the set $\{f_1,f_2\}$ inductive? We can check by calculating its Lie bracket.
+    \begin{equation}
+        \begin{aligned}
+            [f_1,f_2]&= \pdv{f_2}{x}f - \pdv{f_1}{x}f_2&\mbox{}\\[1.25ex]
+            [f_1,f_2]&= \begin{bmatrix}
+                -1 & 0 & 0 \\
+                0 &-2 &0\\
+                0 &0&0
+            \end{bmatrix}\begin{bmatrix}
+                2x_3  \\
+                -1\\
+                0
+            \end{bmatrix}
+            - \begin{bmatrix}
+                0 & 0&2 \\
+                0 &0 &0\\
+                0 &0 &0
+
+            \end{bmatrix}\begin{bmatrix}
+                -x_1   \\
+                -2x_2\\
+                x_3
+            \end{bmatrix}
+                     &\mbox{}\\[1.25ex]
+                [f_1,f_2]&=\begin{bmatrix}
+                    -2x_3  \\
+                    2\\
+                    0
+                \end{bmatrix} - \begin{bmatrix}
+                    2x_3  \\
+                    0\\
+                    0
+                \end{bmatrix}&\mbox{}\\[1.25ex]
+                    [f_1,f_2]&=\begin{bmatrix}
+                        -4x_3  \\
+                        2\\
+                        0
+                    \end{bmatrix}&\mbox{}\\[1.25ex]
+                        [f_1,f_2]&-2f_1&\mbox{}\\[1.25ex]
+           
+                     
+            
+        \end{aligned}
+    \end{equation}
+
+}
+
+
+
+
+
 

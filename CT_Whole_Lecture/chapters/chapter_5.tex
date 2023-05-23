@@ -1,0 +1,143 @@
+
+\chapter{Input -- State Linearization of SISO systems 2023-05-11}
+
+\dfn{A single input nonlinear system}
+{
+    Let $f, g$ be smooth vector fields on $\mathbb{R}^{n}$, then:
+     \begin{equation}
+        \Sigma:\; \dot{x} = f(x) + g(x)u
+    \end{equation}
+    is said to be input--output linearisable if there exists a region $\Omega \subset \mathbb{R}^{n}$,
+    a differomorphism $T\,:\,\Omega \longrightarrow \mathbb{R}^{n} $ and a nonlinear feedback
+    control law:
+    \begin{equation}
+        u(x) = \alpha(x) + \beta(x)v
+    \end{equation}
+    such that the new state variables $z = T(x)$  and the new input $v$ satisfy
+    a linear time invariant relation:
+     \begin{equation}
+        \dot{z} = Az + bv
+    \end{equation}
+    where:
+    \[
+    A = \begin{bmatrix}
+        \mathbb{0} & I_{n-1}  \\
+        0 & \mathbb{0}^{T}
+    \end{bmatrix},\; b = \begin{bmatrix}
+        \mathbb{0}  \\
+        1
+    \end{bmatrix}
+    .\] 
+
+    \nt
+    {
+        We call:
+        \begin{itemize}
+                \item z -- a linearising state
+                \item (A,b) -- a linear companion form
+                
+        \end{itemize}
+    }
+
+}
+
+\thm{}
+{
+    The nonlinear system:
+    \begin{equation}
+        \dot{x} = f(x) + g(x)u
+    \end{equation}
+    with f(x),g(x) being smooth vector fields is input--state linearisable iff there exists a region $\Omega$ such that the following
+    conditions hold:
+    \begin{itemize}
+        \item The vector fields $\{g, ad_fg,\cdots ,ad^{n-1}_fg\}$ are linearly independent
+        \item The set $\{g, ad_fg,\cdots ,ad^{n-2}_fg\}$ is inductive in $\Omega$
+    \end{itemize}
+
+    \ex{}
+    {
+        Let:
+        \begin{equation}
+            \dot{x} = Ax+bu, \; b\in \mathbb{R}^{n\times1}
+        \end{equation}
+        Then:
+        \begin{equation}
+            \begin{cases}
+                f(x) = Ax\\
+                g(x) = b
+            \end{cases}
+        \end{equation}
+        We calculate the Lie brackets:
+        \begin{equation}
+            \begin{aligned}
+                ad_fg&=[f,g]&\mbox{}\\[1.25ex]
+                [f,g]&= \pdv{g}{x}f - \pdv{d}{x}g&\mbox{}\\[1.25ex]
+                [f,g]&= \pdv{}{x}b(Ax) - Ab&\mbox{}\\[1.25ex]
+                [f,g]&=-Ab&\mbox{}\\[1.25ex]
+            \end{aligned}
+            \begin{aligned}
+                ad_f^{2}g&=[f,[f,g]]&\mbox{}\\[1.25ex]
+                [f,[f,g]]&=[Ax. -Ab]&\mbox{}\\[1.25ex]
+                [f,[f,g]]&= \pdv{}{Ab}b(Ax) - \pdv{}{x}(Ax)(-Ab)&\mbox{}\\[1.25ex]
+                [f,[f,g]]&=A^{2}b&\mbox{}\\[1.25ex]
+            \end{aligned}
+
+        \end{equation}
+        By continuing we find the following pattern:
+        \begin{equation}
+            ad_f^{n}g=(-A)^{n}b
+        \end{equation}
+        so the condition:
+        \[
+            [g,ad_fg,\cdots ,ad_f^{n-1}g] = [b, -Ab, \cdots \plusminus A^{n-1}b]
+        .\] 
+        So in this case it is equal to controllability of a linear system.
+        Intuitively then, these conditions generalize the concept of controllability to non linear systems.
+    }
+
+}
+
+\begin{myproof}
+    Proof of the previous theorem, beginning with the necessity condition.
+    To prove necessity we will assume that a system in input-output linearisable, and try to conclude the conditions stated in the theorem.\\
+    There exists $u(x) = \alpha(x)+\beta(x)v$ and there exists  $T\: : \: z = T(x)$ such that:
+    \[
+    \begin{bmatrix}
+        \dot{z}_1 \\
+        \vdots\\
+        \dot{z}_n
+    \end{bmatrix} = \begin{bmatrix}
+    \mathbb{0} & I_{n-1} \\
+    0 & \mathbb{0}^{T}
+    \end{bmatrix}\begin{bmatrix}
+        z_1  \\
+        \vdots\\
+        z_n
+    \end{bmatrix}
+    + \begin{bmatrix}
+        \mathbb{0}  \\
+        1
+    \end{bmatrix} v
+    .\] 
+    Then we can write:
+    \[
+    \begin{cases}
+        z_1 = T_1(x)\\
+        z_2 = T_2(x)\\
+        \vdots \\
+        z_n = T_n(x)
+    \end{cases}
+    .\] 
+    From which we get:
+    \[
+        \begin{cases}
+        \dot{z}_1 = \odv{}{t}T_1(x) = \pdv{}{x}T_1\dot{x} = \pdv{}{x}T_1(f(x)+g(x)u) = z_2=T_2(x)  \\
+        \dot{z}_2 = \odv{}{t}T_2(x) = \pdv{}{x}T_2\dot{x} = \pdv{}{x}T_2(f(x)+g(x)u) = z_3=T_3(x) \\
+        \vdots \\
+        \dot{z}_{n-1} = \odv{}{t}T_{n-1}(x) = \pdv{}{x}T_{n-1}\dot{x} = \pdv{}{x}T_{n-1}(f(x)+g(x)u) = z_{n}=T_{n}(x) \\
+        \dot{z}_n = v
+        
+            
+        \end{cases}
+    .\] 
+\end{myproof}

@@ -1,0 +1,42 @@
+
+\chapter{Errors in data}
+All inductive learning processes are sensitive to errors in data. In a real production environment, such errors
+are unavoidable when processing thousands of samples. Therefore, sensitivity to such errors should always be considered.
+There are 2 kinds of errors of interest here.
+First are random errors(noise) which have expected value equal to 0. Due to this fact, they don't affect the training process
+drastically.
+Other kind are systematic, which can have a drastic effect on the outcome of learning.
+\section{missing and erroneous data}
+Many datasets have some missing data, for example when monitoring some industrial process, one sensor can be broken.
+There are multiple approaches to deal with these kinds of problems.
+We can eliminate the affected samples entirely, which has obvious drawbacks.\\
+...\\
+\\
+\section{Stopping condition}
+...
+\section{Problems with numerical data}
+The main problem is that we don't know how to properly discretize numerical data. It may happen for example,
+that certain discretizations "flatten" come critical value ranges to the point that they don't provide any
+useful information.
+\subsection{Binary decision trees}
+...
+aaaaaaa
+\chapter{Supervised learning}
+\section{Training, validation, and testing sets}
+Each supervised learning algorithm produces some classifier on some set of data called the training set.
+The accuracy of this classifier is tested on a different set called the testing set. 
+\nt
+{
+    The training set and the testing set are necessarily different.  Otherwise, our classifier will be tested
+    on situations which it already encountered.
+}
+Because these two sets may have very different properties affecting the outcome of classification. We sometimes also introduce a set
+called validating set, which is a subset of the training set, but is used during testing. This can be used to fine tune the classifier.
+
+\subsection{Crossvalidation}
+If we're working with limited datasets, we can split it intelligently to make full use of the dataset.
+This splitting can be done as follows: First we split the dataset into k subsets, then we choose one of them as the testing set.
+By choosing a different testing set, we can obtain k pairs of testing and training sets. The overall error will be the average of all
+the produced classifiers. This is a very robust method, we usually choose k=10.
+
+

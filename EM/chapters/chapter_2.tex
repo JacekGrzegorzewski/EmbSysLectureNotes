@@ -1,0 +1,74 @@
+\section{ModBus 2023-05-16}
+Three version available:
+\begin{itemize}
+        \item MODBUS RTU -- short binary frames
+        \item MODBUS ASCII --
+        \item MODBUS TCP -- Can go over ethernet, but is not very efficient and needs more complex hardware
+\end{itemize}
+The differences between those are in their frames.
+
+\chapter{Wireless communication}
+
+With wireless communication we are limited by regulations on the frequencies, which are strictly regulated in Europe, which means that there 
+are only a few frequencies which we can use without a special license.
+Due to a lack of time, we're only going to cover 2 interfaces.
+\section{Bluetooth}
+Initially it was supposed to be a wireless alternative to UART, which is one of the reason for its success.
+Voice transmission capability was added later. It was designed to work only over short rages.
+Main propperties:
+\begin{itemize}
+        \item It is a package--based protocol(an innovation at the time)
+        \item IT is a master--slave type protocol
+        \item One master can communicate with 7 slaves,
+        \item Packet exchange is clocked at 312.5$\mu$ s intervals, with the master providing the clock itself.
+        \item In the simple case, the master transmits in even slots, and receives in odd slots.
+        
+\end{itemize}
+Traditional bluetooth was connection oriented. The devices connected through bluetooth formed what's called a piconet.
+A couple of pionets can be connected together in a scatternet. Each device can be configured at 3 different output 
+power classes for 3 different transmission ranges.
+\subsection{BLE}
+To fit different applications, bluetooth was split into different species. Those are:
+\begin{itemize}
+        \item BR / v2.1 + EDR
+        \item Low Energy
+        \item 15.4+ZigBee
+        \item NFC (RFID)
+        
+\end{itemize}
+Low energy is of special internet from perspective of embedded systems, not only because of its low power, but also because of its simplicity.
+Because of these properties, there are many MCUs on the market today which provide Low Power bluetooth functionality.
+
+\subsubsection{Profiles}
+On the application layer bluetooth Basic Rate(BR) implements different standardized profiles. The most common profile is Serial Port Profile(SPP), which is
+due to origins of bluetooth. If 2 devices agree on using BR bluetooth, they will not communicate unless they agree on the profiles.
+\nt
+{
+    In BLE(Low energy) there is only one profile: Generic Access Profile. This more or less means that we can only communicate with ourselves.
+}
+
+\subsubsection{Features}
+\begin{itemize}
+        \item Mostly new PHY
+        \item New advertising mechanism
+        \item Asynchronous connection-less MAC(low latency, e.g. 3ms from start to finish)
+        \item New Generic attribute Profile
+        \item Around 150 meters of range
+        \item Output Power around 10mW
+        \item Adaptive Frequency Hopping
+        \item 128bit AES CCM for higher security
+        \item Sleep current of only $1\mu A$
+        
+\end{itemize}
+\nt{
+One can usually buy a bluetooth module(e.g. BLE SoC CC2541), if one wants to use blootooth in a projet.
+There are very convenient, and usually very cheap.
+}
+\subsection{Zigbee vs Bluetooth}
+A major disadvantage of bluetooth is scatternet. Zigbee solves this problem
+Another major difference is that it is defined 2 lower frequency ranges(868MHz, and 915Mhz), which allows for great
+range increases(meaning reliable 100m connection).
+
+
+
+

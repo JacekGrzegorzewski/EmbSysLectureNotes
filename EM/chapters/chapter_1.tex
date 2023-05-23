@@ -1,0 +1,90 @@
+
+\chapter{Interfaces 2023-05-09}
+
+
+\section{CAN}
+\begin{itemize}
+        \item Differential wiring 
+        \item Not very fast
+        \item Very strong CRC
+        \item Acknowledge after every received frame
+        \item 11 bit addressing and arbitration, sometimes 26. Lower ID's get priority when they appear simultaneously on the line.
+        \item  Acceptance Filters for sorting which messages we want to receive. Can be configured either for single addresses, or for ranges.
+        \item THIS FILTERING MEANS WE CAN SOMETIMES SEND NO DATA IN A FRAME.
+        \item Very reliable
+        \item Bit-stuffing every 5 consecutive zeros. Used for synchronization 
+        
+\end{itemize}
+
+\subsection{Network topology}
+Usually microcontroller needs to have a CAN controller, it's very difficult to write one by yourself.
+This by itself is not enough, one also needs a transceiver. This transceiver sends the messages to the
+CAN BUS, which is usually a differential line.
+Each can controller has a set of mailboxes. 
+
+\nt
+{
+    FIFO vs MAILBOX\\
+    MAILBOX has priorities assigned to messages, FIFO does not.
+    MAILBOX then is not a pipe. Priorities are assigned according to the address of a message.
+}
+
+\clearpage
+\section{USB}
+\begin{itemize}
+        \item A serial, 2--wire, differential interface.
+        \item supposedly universal
+        \item Works up to 5 meters
+        \item Single Master
+        \item Asynchronous transfer controlled by the master
+        \item Half duplex, point to point transmission
+        \item Variable, but mostly fast speeds. For most microcontrollers only FS mode ($\frac{12Mb}{s}$) is supported. Nowadays sometimes also HS mode($\frac{480Mb}{s}$)
+\end{itemize}
+
+\subsection{Topology}
+\begin{itemize}
+        \item "Tiered star" topology, which in human terms means a tree.
+        \item 2 types of peripherals, Hubs and Fnctions. Up to 127 of those
+        \item  Master / Slave
+        \item Variable transmission speeds
+        \item Bus is self powered. Provides 4.35 V at either 100mA or 500mA. It's very noisy.
+
+\end{itemize}
+
+\subsection{Protocol}
+\begin{itemize}
+        \item Host based token polling
+        \item Very robust. Handshakes, low physical error rate, optional CRC.
+        \item Bandwidth and latency prenegotiated. THIS MEANS WE CAN SEND TIME SENSITIVE DATA
+        \item Unique address is assigned after connecting to the network. Addresses are not inherent to devices.
+\end{itemize}
+\subsection{Transfer}
+\begin{itemize}
+        \item Several endpoints
+        \item Several types of transfers
+        \item Transfer is scheduled by the host
+        \item Isochronous transfer, which means each frame is sent at specific time instances.
+        
+\end{itemize}
+
+Device detection works as follows. The host pulls the line down, and a new device pulls it up after its connected to the network. Once this is detected its
+assigned an address by the host. The host also configures the device.
+\nt
+{
+    USB has a lot of connectors to choose from. The cable is somewhat standard however. There are 2 power conductors, and the twisted, unshielded differential pair.
+    The shielding is done over all 4 cables together with a foil and braiding.\\
+    In newer USB 3.0 cables, the matter is more complicated. The connectors however are symmetrical.
+}
+
+\subsection{practice}
+FT232R USB URAT IC -- a single chip transceiver.
+\nt
+{
+    It's better to use a single than split power supply. This is because if its split, we can potentially connect an unpowered device to the network. This can 
+    result in improper configuration, which is difficult to debug. 
+}
+OTG USB -- On The Go USB. This is a feature which allows to dynamically change from a host to a slave and vice versa.
+
+
+\section{Ethernet}
+Ethernet is a protocol for connecting computers in a local area network. Invented in California in Xerox.

@@ -177,7 +177,7 @@ HERE BE PICTURE
 \thm{}
 {
     Assume that $\mathbb{A}$ is NFA. Then there exist $\mathbb{B}$ DFA s.t.
-    $L(\mathbb{A)} = L(\mathbb{B})$
+    $L(\mathbb{A}) = L(\mathbb{B})$
 }
 
 \begin{myproof}
@@ -189,3 +189,97 @@ HERE BE PICTURE
 
     HERE BE PICTURE
 \end{myproof}
+
+
+\thm{}
+{
+    Let $\mathbb{A}, \mathbb{B}$ be NFA. Then there is $\mathbb{A}\oplus \mathbb{B}$ NFA such that $L(\mathbb{A})\cup L(\mathbb{B}) = L(\mathbb{A}\oplus \mathbb{B})$.
+\nt
+{
+    The resulting automaton is nondeterministic, even if $\mathbb{A}, \mathbb{B}$ are deterministic.
+}
+\qs{}
+{
+    Try to find "nice" construction in the case $\mathbb{A}, \mathbb{B}$ DFA
+}
+}
+
+\begin{myproof}
+    Let:
+    $\mathbb{A} = (S_A,S_{OA},\Sigma,\delta_A,F_A)$ \\
+    $\mathbb{B} = (S_B,S_{OB},\Sigma,\delta_B,F_B)$ \\
+    we can assume that $S_A \cap S_B = \empty$\\
+    $\mathbb{A}\oplus \mathbb{B} = (S_A\cup S_B,S_{OA}\cup S_{OB},\cdots ,F_A \cup , F_B)$\\
+   $ 
+        \delta_A \cup \delta_B(s,a) = \begin{cases}
+            \delta_A(s,a) \text{ if } s\in S_A\\
+            \delta_B(s,a) \text{ if } s\in S_B
+        \end{cases}
+    $ 
+
+\end{myproof}
+
+\thm{}
+{
+    If $\mathbb{A}, \mathbb{B}$ are NFA then there is $\mathbb{A} \otimes \mathbb{B}$ NFA such that:\\
+$L(\mathbb{A} \otimes \mathbb{B}) = L(\mathbb{A}) \cap L(\mathbb{B})$\\
+
+    \begin{myproof}
+        $\mathbb{A} \otimes \mathbb{B} = (S_A \times S_B,\cdots ,F_A \times F_B )$\\
+$ \delta((s,t),a) = \delta_A(s,a)\times \delta_B(t,a)$
+    \end{myproof}
+    And a nicer proof:
+    \begin{myproof}
+        Let us prove that:\\
+         $L(\mathbb{A}) \cup L(\mathbb{B}) \subset L(\mathbb{A}\otimes \mathbb{B})$\\
+         Let $w \in \Sigma^{*},\; w \in L(\mathbb{A})\in L(\mathbb{B})$ \\
+         $w = (a_0,a_1,\cdots ,a_n)$\\
+         There is a $\mathbb{A} - \text{run}(s_0,s_1,\cdots ,s_{n+1}) \in S_A^{*}$\\
+         $s_0 \in S_{OA}, (\forall i ) s_{i+1}\in\delta_a(s_i,a_i), s_{n+!} \in F_A$\\
+         There is a $\mathbb{B} - \text{run}(t_0,t_1,\cdots ,t_{n+1}) \in S_B^{*}$\\
+         $t_0 \in S_{OB}, (\forall i ) t_{i+1}\in\delta_a(t_i,a_i), t_{n+!} \in F_B$
+    \end{myproof}
+    \nt
+    {
+        Notice that $((s_0,t_0),\cdots ,(s_{n+1},t_{n+1}))\in(S_A \times S_B)^{*}$ is a $(\mathbb{A} \otimes \mathbb{B})$ -- run and\\
+        $(s_0,t_0) \in S_{OA} \times S_{OB}$ and $(\forall i)((s_{i+1},t_{i+1}) \in \delta((s_i,t_i),a_i)) $ and $(s_{n+1},t_{n+1}) \in F_A \times F_B$
+    }
+}
+
+\nt
+{
+    If $\mathbb{A}, \mathbb{B}$ are DFA, then $\mathbb{A}\otimes \mathbb{B}$ is also DFA
+}
+
+\thm{}
+{
+    Assume $ \mathbb{A}$ is DFA. Then there is DFA $\mathbb{A}^{c}$ such that:\\
+    $L(\mathbb{A}^{c}) = \Sigma^{*}\backslash L(\mathbb{A})$\\
+    \begin{myproof}
+        $\mathbb{A}^{c} = (S_A,S_{OA},\cdots , S_A\backslash F_A$
+    \end{myproof}
+
+    \nt
+    {
+        It doesn't work in non deterministic case
+        \qs{}
+        {Prove the above}
+    }
+    \nt
+    {
+        In the nondeterministic case, we first use construction from precious lecture:\\
+        $\mathbb{A} \text{ NFA } \leadsto \mathbb{A}^{d} \text{ DFA } L(\mathbb{A}) = L(\mathbb{A}^{d}) \leadsto \mathbb{A}^{dc}$
+    }
+}
+
+\dfn
+{
+    Another Construcion
+}
+{
+    $\mathbb{A}^{\cap}\mathbb{B}:\; L(\mathbb{A}^{\cap}\mathbb{B}) = L(\mathbb{A})^{\cap}L(\mathbb{B})=$\\
+    $= \{w^{\cap}v\; : \; w \in L(\mathbb{A}), v \in L(\mathbb{B})\}$\\
+    Also:\\
+    $A^{*}\; : \; L(\mathbb{A^{*}}) = L(\mathbb{A})^{*} =$\\
+    $\{ v_0^{\cap}v_1^{\cap}\cdots^{\cap}v_n \; : \; n\in \mathbb{N}\cup \{-1\},\: v_i \in L(\mathbb{A}) \}$
+}

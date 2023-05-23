@@ -1,0 +1,51 @@
+
+\chapter{Teaching neural networks}
+\section{Backpropagation algorithm}
+\dfn{Backpropagation}
+{
+    Backpropagation is the most common method of training a neural network. It goes backwards through the network adjusting the weights as it does so.
+    It's more or less just a variant of the newton's method, so a fancy gradient descent.
+    We start with random weights and biases, the algorithm does a forward pass through the network, and then back correcting errors.
+
+    \begin{neuralnetwork}
+        
+        \inputlayer[count = 4, bias = false, title=Input\\layer 1, text = x]
+        \hiddenlayer[count = 2, bias = false, title=Hidden\\layer 2, text = a] \linklayers
+
+    \end{neuralnetwork}
+
+    \ex{}
+    {
+
+        \begin{equation}
+            \begin{cases}
+            z^{(2)} = W^{(1)}x + b^{(1)}\\
+            a^{(2)} = f(z^{(2)})
+            \end{cases}
+        \end{equation}
+        \begin{equation}
+            \begin{cases}
+            z^{(2)} = W^{(1)}x + b^{(1)}\\
+            a^{(2)} = f(z^{(2)})
+            \end{cases}
+        \end{equation}
+
+        \begin{equation}
+            \begin{cases}
+            z^{(3)} = W^{(2)}x + b^{(2)}\\
+            a^{(3)} = f(z^{(3)})
+            \end{cases}
+        \end{equation}
+
+        \begin{equation}
+            b^{(1)} = \begin{bmatrix}
+                b_1^{(1)}   \\
+                b_2^{(1)}
+            \end{bmatrix}
+
+        \end{equation}
+                
+    }
+}
+
+

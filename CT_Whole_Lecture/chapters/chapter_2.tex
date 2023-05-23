@@ -344,11 +344,26 @@ Using Lyapunov's indirect method we can analyse the stability of a nonlinear sys
  \end{itemize}
  \nt
  {
-     This second condition means, that in a stable system, we can only have eigenvalues with negative real parts, or semisimple zero real parts. If there's even one eigenvalue with a zero real part, and not semisimple, the system is unstable.
+     This second condition means, that in a stable system, we can only have eigenvalues with negative real parts, or semisimple zero real parts. If there's even one eigenvalue with a zero real part, and not semisimple, the system is unstable. 
  }
  \dfn{Semisimple eigenvalue}
  {
      $\lambda$ is a semisimple eigenvalue of A if and only if  $Re(\lambda) = 0$ and  $\dim (\ker (\lambda I - A))$ is equal to the multiplicity of  $\lambda$ - a root o the charateristic polynomial of A.
+     It's not trivial to find a kernel directly, so instead we often use the following identity:
+     \[
+         \mathrm{dim}(\mathrm{ker}(L)) =  \mathrm{dim}(V) - \mathrm{Rank}(L)
+     .\] 
+     Which relates the dimensions of various components the linear map $L\,:\,V \longrightarrow W $ to each other.
+ A linear map of finite dimension can always be described by a matrix, so we can describe map $L$ as:
+  \[
+ w=Lv
+ .\] 
+ Where the lower case letters denote elements of respective vector spaces.
+ So to find the dimension of the kernel we take the dimension of the vector $v$, and subtract from it the rank of matrix L. The rank of a matrix is defined as the number of its linearly independent columns. To find it, perform Gaussian elimination to the Reduced Row Echelon Form, and count the number of nonzero rows. Alternatively, find the largest nonzero sub matrix with a nonzero determinant. In our case, we have $v = x$, and  $L = \lambda_i I - A$.\\
+\begin{enumerate}
+    \item We find eigenvalues of A with a 0 real part
+    \item For each such eigenvalue we compute the rank of the matrix $A-\lambda I$, if its difference with the dimension of $x$ is not equal to its multiplicity, we have a non--semisimple eigenvalue, and the system is unstable. Otherwise, if all such eigenvalues are semisimple, and all others have a negative real part, the system is stable.
+\end{enumerate}
  }
 
  \ex{}

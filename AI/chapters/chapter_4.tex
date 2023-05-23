@@ -1,0 +1,79 @@
+
+\chapter{Machine learning 2023-05-10}
+An interesting observation can be made, that what we usually consider Artificial Intelligence shows no capacity for learning.
+This is in stark contrast to our notion of intelligence in people. In most cases then, the capacity to learn has to be added
+separately.
+\\
+Why even add it to an Artificial intelligence? If a system can reason perfectly about a system, then
+it shouldn't need to learn at all. One can't however imagine all the possible situation an agent has to 
+deal with, in those cases, the ability to learn can prove very useful.\\
+Another answer to this problem is that the system may be dynamic, and an agent has to be able to make small
+adjustments to its decision making process intelligently to keep up.\\
+Finally, there may be systems for which it is difficult to write an AI explicitly. For example face recognition.
+
+\section{Induction learning}
+In its simplest form, it can be states as learning an unknown function $f(x)$ from a series of pairs  $<x,f(x)>$.
+\qs{Induction learning}
+{
+    From the series of training examples find a hypothesis $h \in \mathcal{H}$($\mathcal{H}$ is the \textit{hypothesis space}) such,
+    that $h\approx f$, ie the hypothesis $h$ approximates the function f according to some criterion. 
+    In the simplest case the criterion may be minimizing the number of elements of the training set, for which $h(x) \neq f(x)$
+} 
+In practice the goal of learning is generalization. We want not only to classify the elements, but also to capture the principles of their
+classification.
+\nt
+{
+    The choice of hypotheses is more of an art than a science. A useful principle to keep in mind while making it is The Occam's razor.
+    This principle states that from all the choices, choose the simplest one.
+}
+
+\section{Decision trees -- introduction}
+Decision trees make decision in parts, like the WD40 and Ducttape principle.
+We can always create a decision tree from the data as long as there weren't different
+decision described by the same arguments.\\
+The principle on which one build useful decision tree states, that the minimal tree one
+can generate is the best. Numerically this is impossibly difficult, one would need to generate
+all trees and choose the best one. Instead, we use a heuristic procedure.
+
+\ex{}
+{
+    Russel and  Norvig textbook restaurant example, copy and paste.
+    First we look at all attributes, and choose the one which can give us a final decision the quickest.
+    For example, choosing patron number first, we have 3 choices, if there are no patrons, we don't wait,
+    if there are some, we always wait, if the restaurant's full, sometimes we wait, sometimes we don't.
+    So in the first 2 cases we make a final decision immediately, and the tree stops. It's not always as clear,
+    as there can be multiple attributes which give similar choices. Because of that, we need to formalize the process
+}
+The key concept in this formalization is information borrowed from information theory(Coding, error detection, etc.)
+The quantity used to measure \textit{information gain} is the \textit{entropy}, the unit of which is the bit.
+\dfn{Entropy}
+{
+    The entropy of a random variable $V$ with the value set $v_k$ is defined as:
+    \begin{equation}
+        H(V) = \Sigma_k P(V_k) \log_2 \frac{1}{P(v_k)} = -\Sigma_k P(v_k)\log_2P(v_k)
+    \end{equation}
+    \nt
+    {
+        According to this definition, the entropy of a binary variable is 2, ternary is 3 and so on.
+    }
+    In this definition we assume also that $\infty \cdot = 0$, this is because the entropy of 0 probability would be $-\infty$. This means that
+    we have no information gain when we are certain of the outcome.
+}
+\ex{Uneven coin flip}
+{
+    If we have a weighted coin, such that it comes up heads in 99\% of cases, the outcome of a flip of this coin would have entropy:\\
+    \begin{eqation}
+        H = -(0.99\log_2 0.99 + 0.01\log_2 0.01) \approx 0.08
+    \end{eqation}
+    \nt
+    {
+        A useful formula to remember is the change of base formula:
+        \[
+        \log_N X = \frac{\log_M X}{\log_M N}
+        .\] 
+    }
+}
+\subsection{Building decision trees}
+
+
+
