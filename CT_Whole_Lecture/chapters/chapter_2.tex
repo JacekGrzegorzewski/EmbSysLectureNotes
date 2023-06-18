@@ -28,6 +28,7 @@ node distance = 2cm,
 \draw [->] (S) -- node[name = y]{y} (output);
 \draw [->] (output) |- (tmp_1) -| (C);
 
+
 \end{tikzpicture}
 \caption{A general control system}
 \label{csys}
@@ -257,21 +258,20 @@ It may happen, that the system is not in an equilibrium point, but close to it.D
             x_0&=\frac{1}{\arctan{t_0}+C}&\mbox{}\\[1.25ex]
             C&=\frac{1}{x_0}+\arctan{t_0}&\mbox{Finally, we substitute this C into the general solution}\\[1.25ex]
             x&=\frac{x_0}{1+x_0(\arctan{t}-\arctan{t_0})}&\mbox{}\\[1.25ex]
-        
     \end{aligned}
     \end{equation}
     After this, we can try to find an equilibrium point to study its stability:
-    \begin{align*}
-       0&=\frac{-x_e^{2}}{1+t^{2}}&\mbox{We're solving for $x_e$}\\[1.25ex]
-       x_e&=0&\mbox{And find the only equilibrium point easily}\\[1.25ex]
-    \end{align*}
-    Having obtained an explicit form of $x(t,t_0,x_0)$ and an equilibrium point, we can try to apply our definitions:
-    \begin{align*}
-        \norm{x_0-x_e} &<\delta &\rightarrow&& \norm{x(t,t_0,x_0) - x_e} &< \epsilon&\mbox{First we substitute $x(t,t_0,x_0)$ and $x_e$}\\[1.25ex]
-    \norm{x_0} &< \delta &\rightarrow&& \norm[\bigg]{\frac{x_0}{1+x_0(\arctan{t}-\arctan{t_0})}}&<\epsilon&\mbox{Then use monotonicity of $\arctan{t}$ over $\mathbb{R}_+$}\\[1.25ex]
-\norm{x_0} &<\delta&\rightarrow && \norm[\bigg]{\frac{x_0}{1+x_0(\arctan{t}-\arctan{t_0})}}&< \norm[\bigg]{\frac{x_0}{1}} & \mbox{And the first part of the implication}\\[1.25ex]
-\norm{x_0} &<\delta&\rightarrow && \norm{x_0}&< \delta & \mbox{Done, we set $\epsilon = \delta$ and make our conclusions}\\[1.25ex]
-    \end{align*}
+     \begin{align*}
+        0&=\frac{-x_e^{2}}{1+t^{2}}&\mbox{We're solving for $x_e$}\\[1.25ex]
+        x_e&=0&\mbox{And find the only equilibrium point easily}\\[1.25ex]
+     \end{align*}
+     Having obtained an explicit form of $x(t,t_0,x_0)$ and an equilibrium point, we can try to apply our definitions:
+     \begin{align*}
+         \norm{x_0-x_e} &<\delta &\rightarrow&& \norm{x(t,t_0,x_0) - x_e} &< \epsilon&\mbox{First we substitute $x(t,t_0,x_0)$ and $x_e$}\\[1.25ex]
+     \norm{x_0} &< \delta &\rightarrow&& \norm[\bigg]{\frac{x_0}{1+x_0(\arctan{t}-\arctan{t_0})}}&<\epsilon&\mbox{Then use monotonicity of $\arctan{t}$ over $\mathbb{R}_+$}\\[1.25ex]
+ \norm{x_0} &<\delta&\rightarrow && \norm[\bigg]{\frac{x_0}{1+x_0(\arctan{t}-\arctan{t_0})}}&< \norm[\bigg]{\frac{x_0}{1}} & \mbox{And the first part of the implication}\\[1.25ex]
+ \norm{x_0} &<\delta&\rightarrow && \norm{x_0}&< \delta & \mbox{Done, we set $\epsilon = \delta$ and make our conclusions}\\[1.25ex]
+     \end{align*}
 We found $\epsilon$ as a function of just $\delta$, so we can conclude that the equilibrium point of  \ref{ex:kurwamac} is not only stable, but uniformly stable. Since at no point did the limit of the second part of the implication tended to zero with time going to infinity, we can also say that this equilibrium port is not asymptotically stable. Since it is not asymptotically stable, it can't be exponentially stable.\\
 To summarize, we're dealing with a uniformly stable equilibrium point.
 }
@@ -335,7 +335,7 @@ Using Lyapunov's indirect method we can analyse the stability of a nonlinear sys
      \label{thm:lincX}
      \dot{x} = Ax, \: x(t_0) = x_0
  \end{equation}
- Where $A \in \mathbb{R}^{n\mul n}$ does not depend on t. The equilibrium point $x_e = 0$ of \ref{thm:lincX} is:
+ Where $A \in \mathbb{R}^{n\times n}$ does not depend on t. The equilibrium point $x_e = 0$ of \ref{thm:lincX} is:
  \begin{itemize}
          \item asymptotically stable if and only f $Re(\lambda_i(A)) < 0 \forall i $ 
          \item stable if and only if $Re(\lambda_i(A) < 0 \forall i \not \in \{j_1, j_2, ..., j_m\}, \text{where } m < n $ and $Re(\lambda_j(A)) = 0$ with  $\lambda_j(A), j \in \{ j_1, \cdots ,j_m\}$ being a semisimple eigenvalue of A. 

@@ -1,0 +1,24 @@
+
+1. Input state output model
+2. Equilibrium points
+3. Stability definitions
+4. Lyapunovs's Indirect method
+    -Linear system stability
+    -Linearization around a point
+    -Semisimple eigenvalues
+5. Lyapunov's direct method
+    -decresant function
+    -gradient  of a function
+    -example
+6. Feedback Linearization
+    -Companion form
+    -Lie bracket
+    -integrablity and inductivity
+    -differomorphism
+    -check if pair of vector fields is inductive
+    -input --state 
+    -inpit --output
+    -internal dynamics
+6.1 Pole placement
+    -controlability matrix of a linear system
+    -conditions on controllability

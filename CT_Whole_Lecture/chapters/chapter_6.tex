@@ -1,0 +1,269 @@
+\chapter{Optimal Control}
+\section{Stability concepts}
+Control:
+\begin{itemize}
+        \item Stabilization of an equilibtium point based on indirect lyapunov method(inverted double pendulum on a cart)
+        \item Stabilization and tracking based on input and state transformation(feedback linearization) (single link flexible joint manipulator control)
+        \item Optimal control
+        
+\end{itemize}
+\section{Introduction}
+\ex{}
+{
+    A country recieves a certain amount of money in aid. This support can be used in two ways: \textit{consumption} and \textit{investment}
+    \[
+    \begin{cases}
+        u(t) \text{ -- an increment growth at the time instant t}\\
+        1-u(t) \text{-- the consumption growth}\\
+        x(t) \text{-- a country level of development at the time instant t}
+    \end{cases}
+    .\] 
+    There is a relationship between x and u:
+    \begin{equation}
+        \dot{x}(t) = u(t),\; u(t) \in [0,1],\; x(0)=x_0,\: x(T)=x_T
+    \end{equation}
+    The time interval $[0,T]$ is called the planning period, and  $x_T$ is the desired level of development at t=T
+    We would like to make investment that guarantee achieving the desiered level of development of our country
+    but at the same time we would like to spend on consumption as much money as possible.
+
+    \begin{equation}
+        I(u(\cdot)) = \int_0^TU(1-u(t))dt
+    \end{equation}
+    where $U\,:\,\mathbb{R} \longrightarrow \mathbb{R} $, $U\in C^{2}$ (convex) is a consumption development function.
+
+    \nt
+    {
+        We are interested in $u^{*: [0,1] \longrightarrow \mathbb{R}}$ s.t.
+        $I(u^{*}(\cdot))$ is maximised.
+        Also, we want to satisfy the following constraint:
+        \begin{equation}
+            \dot{x} = u(t),\; u(t) \in[0,1], x(0) = x_0, x(T) = x_T
+        \end{equation}
+
+        We now have a well defined problem
+    }
+
+
+}
+
+\ex{}
+{
+    Economy, two sectors:
+    \begin{enumerate}
+            \item Investment goods
+            \item Consumption goods
+    \end{enumerate}
+    Also, $x_i(t)$ is the production in the i-th sector at the time instant t,
+    and  $u(t)$ is the investment growth in goods in the sector 1.
+    The relation between  $x_1$ and $x_2$ can be descrived as follows:
+    \begin{equation}
+        \begin{cases}
+            \dot{x}_1(t) = au(t)x_1(t)\\
+            \dot(x)_2 = b(1-u(t))x_1(t)
+
+        \end{cases}
+    \end{equation}
+    Where:\\
+    \[
+    0 \le u(t) \le 1\\
+    t \in[0,T] -- \text{ a planning period}
+    .\] 
+    Our goal is to maximze the total production of consumption goods.
+    To do so we introduce the following cost criterion:
+    \begin{equation}
+        I(u(\cdot)) = \int_0^{T}x_2(t)dt
+    \end{equation}
+    where:
+    \[
+        x_1(0) = x_{10} > 0\\
+        x_2(0) = x_{20} >0
+    .\] 
+    But $x_1(T)$ and $x_2(T)$ are not specified(they are free).\\
+    We are looking for $u^{*}(\cdot) = \argmax{I(u(\cdot))}$
+    Subjet to the previously stated constraints. The difference between this and the previous examples is that here the boundaries are free.
+    So this is not a Cauchy problem.
+}
+
+
+\ex
+{Linear Quadratic Controller}
+{
+   We have 
+   \[
+       \dot{x}=Ax+Bu
+   .\] 
+   And want to optimize the following functional:
+   \begin{equation}
+       I(u(\cdot)) = \int_0^{T}\begin{bmatrix}
+           x^{T} & u^{T}
+       \end{bmatrix}
+       \begin{bmatrix}
+           G & N \\
+           N^{T} & R
+       \end{bmatrix}
+       \begin{bmatrix}
+           x \\
+           u
+       \end{bmatrix}
+       dt
+   \end{equation}
+   where $G = G^{T} \ge 0$ and $R = R^{T} > 0$ $x(0) = x_0$, $x(T) = x_T$ and we admit  $T = \infty$
+}
+
+
+\ex
+{Minimal Time Control}
+{
+    A company would like to achieve production $x(t)$ at a certain level $\bar{x}$ in the shortest possible time.
+    But the technology needed for the production has to be improved:
+    \begin{equation}
+        \begin{cases}
+        K(t) \text{ -- total capital invested at time t}\\
+        y(t) \text{ -- a stream of import at the time instant t}\\
+        y(t) = \dot{K}(t)\\
+        x(t) = \alpha K(t)\\
+        \dot{y}(t) = u(t) \text{ -- a control variable}\\
+        u_0 \le u(t) \le u_1
+        \end{cases}
+    \end{equation}
+    The criterion then is:
+    \begin{equation}
+        I(u(\cdot)) = \int_0^{t_k}1dt=t_k
+    \end{equation}
+
+}
+
+
+\dfn{Optimal Control Problem}
+{
+    We have:
+    \begin{equation}
+        \dot{x} = f(x,u),\; u\,:\,[0,T] \longrightarrow U \in \mathbb{R}^{n} \text{ -- a piecewise continuous function} 
+    \end{equation}
+    And a cost criterion:
+    \begin{equation}
+        I(u(\cdot),x_0) \text{ -- for every $u(\cdot)$ and  $x_0$ I has to be well defined on $\mathbb{R}$}
+    \end{equation}
+    We say that $u^{*}(\cdot)$ is optimal if $I(u^{*}(\cdot),x_0) \le I(u(\cdot),x_0)$
+    We can take into account a boundary condition: $x(T,x_0,u(\cdot))=x_T$.
+    The optimal control problem can be formulated as follows:\\
+    The cost criterion J, a boundary condition and a set of admissible control signals $u(\cdot)$ are given.
+    Find -- if it is possible -- the signal  $u^{*}(t)$ that minimizes the cost criterion J subject
+    to the boundary conditions.
+}
+
+\thm{Maximum Pontryagin's Principle}
+{
+    Let $J(u(\cdot)) = \int^{t_f}_0 f_0(x,u)dt$ be a cost criterion that we would like to minimize.\\
+    Define:
+    \[
+    H(x,\lambda,u) = \lambda^{T}f(x,u)-f_0(x,u)
+
+    .\]
+    If $u^{*}$ is the optimal input signal then there exist $x^{*}$ and $\lambda^{*}$ which are the solutions of:
+    \begin{equation}
+        \begin{cases}
+            \dot{x} = \pdv{H}{\lambda}(x,\lambda,u)\\
+            \dot{\lambda} = - \pdv{H}{X}(x,\lambda,u)
+        \end{cases}
+    \end{equation}
+    Such that:
+    \begin{equation}
+        H(x^{*}(t),\lambda^{*}(t),u^{*}(t)) = \max_u{H(x^{*}(t),\lambda^{*}(t),u)} = 0
+    \end{equation}
+}
+
+\ex{Minimum input energy control}
+{
+    Let:
+    \begin{equation}
+        \begin{cases}
+            \dot{x} = Ax +Bu,\;\; (\dot{x}=f(x,u),\; f(x,u)=Ax+Bu)\\
+            x(0) = x_0\\
+            x(t_f) = x_{t_f}\\
+            I(u(\cdot)) = \frac{1}{2}\int^{t_f}_0 u^{T}(t)u(t)dt ,\;\; (f_0(x,u) = \frac{1}{2}u^{T}(t)u(t))
+        \end{cases}
+    \end{equation}
+    We would like to find $u^{*}$ that minimises $I(u(\cdot))$ and moves own control system from  $x_0$ to $x_f$ within the time interval $[0,t_f]$.\\
+    To solve the problem we are going to use the Maximum Pontryagin Principle.
+
+    \begin{enumerate}
+        \item $X(x,\lambda,u) = \lambda^{T}(Ax+Bu) - \frac{1}{2}u^{T}u$\\
+        \item $\dot{x} = \pdv{H}{\lambda}(x,\lambda,u) = Ax+Bu $\\
+            $\dot{\lambda} = - \pdv{H}{x}(x,\lambda,u) = -A^{T}\lambda$
+        \item $H(x^{*},\lambda^{*},u^{*}) = \max_u{\lambda^{*^{T}}(Ax^{*}+\lambda^{*^{T}}u)-\frac{1}{2}u^{T}u} $\\
+            $ \pdv{H}{u}(x^{*},\lambda^{*},u^{*}) = 0 = B^{T}\lambda - u$ \\
+            $u^{*} = B^{T}\lambda^{*}$
+
+        \item $\dot{\lambda}^{*} = - A^{T}\lambda \rightarrow \lambda^{*}(t) = e^{-A^{T}t}\lambda(0)$ \\
+            $u^{*} = B^{T}e^{-A^{T}t}\lambda(0)$
+    \end{enumerate}
+ 
+    Given the above we know, that $x(t)$ has the following form:
+    \begin{equation}
+        \begin{cases}
+        x(t) = e^{At}x(0) + \int_0^{t}e^{A(t-\tau}u(\tau)d\tau\\
+        x(t_f) = e^{At_f}x(0) +(\int_0^{t_f}e^{At_f-\tau}BB^{T}e^{-A^{T}\tau}d\tau)\lambda(0)\\
+        w(t_f) = \int_0^{t_f}e^{At_f-\tau}BB^{T}e^{-A^{T}\tau}d\tau)\
+        \end{cases}
+
+           
+    \end{equation}
+    We can use the above to find $\lambda(0)$:
+     \begin{equation}
+        
+        \begin{aligned}
+            x(t_f) &= e^{At_f}x(0) +e^{At_f}w(t_f)\lambda(0)\\
+            e^{-At_f}x(t_f) &= x(0) + w(t_f)\lambda(0)\\
+            \lambda(0)&= w^{-1}(t_f)(e^{-At_f}x(t_f)-x(0))
+            
+        \end{aligned}
+    \end{equation}
+    From which we finaly get:
+    \begin{equation}
+        u^{*}(t) = B^{T}e^{-A^{T}t}w^{-1}(t_f)(e^{-At_f}x(t_f)-x(0))
+    \end{equation}
+    \nt
+    {
+        \begin{itemize}
+            \item u is a direct function of time,
+            \item u is not a function of x. It is not a feedback control it is OPEN LOOP CONTROL!!!!
+        \end{itemize}
+        The maximum Pontryagin's Principle does not guarantee that the resulted optimal control signal has the  form of state feedback.\\
+        \begin{equation}
+            \begin{aligned}
+                u(t)&=g(x(t))&\mbox{I like it!}\\[1.25ex]
+                u(t)&=g(x(t),t)&\mbox{I like t but less}\\[1.25ex]
+                u(t)&=g(t)&\mbox{I have to live with it(open--loop control)}\\[1.25ex]
+                
+            \end{aligned}
+        \end{equation}
+    }
+
+
+}
+
+\ex{Time optimal control}
+{
+    Let:
+    \begin{equation}
+        \begin{cases}
+        \dot{x} = f(x,u),\; u = \begin{bmatrix}
+            u_1  \\
+            \vdots\\
+            u_n
+        \end{bmatrix},\:i=1,\cdots ,m\; \abs{u_i} \le K_i, \text{$K_i$ is known for all i}\\
+        x(0) = x_0\\
+        x(t_f) = x_{t_f}
+            
+        \end{cases}
+    \end{equation}
+    where $t_f$ is unknown.\
+    We would like to move our system from  $x_0$ to $x_{t_f}$ within the shortest possible time $t_f$ subject to constraints on u.\\
+    Formally, we would like to minimize the following criterion:
+    \begin{equation}
+        I(u(\cdot)) = \int^{t_f}_01dt = t_f
+    \end{equation}
+}
+
+

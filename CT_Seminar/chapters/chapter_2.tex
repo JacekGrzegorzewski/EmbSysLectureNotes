@@ -1,0 +1,245 @@
+\chapter{Feedback linearization}
+    Instead of trying to find a linear approximation of the system at a point, if we know the equation describing it we can try to find such a nonlinear
+    feedback control law, that would transform the system into a linear one, where we can use well known control schemes. This is very different from
+    linearising at a point. Linearising at a point is a linear approximation only, while feedback linearization makes no approximations, so it is exact
+    in whatever region the linearising transformation is possible to perform.
+    This is a very powerful control method that comes in a couple of flavors, first however, an example.
+    \ex{Serial robotic manipulator}
+    {
+        The dynamics of a robotic manipulator can be written as:
+        \begin{equation}
+            \label{rob}
+            M(q)\ddot{q}+C(q,\dot{q})\dot{q}+D(q)=\tau
+        \end{equation}
+        Where M is an invertible inertia matrix, C is the Coriolis force matrix, and D is the vector of potential forces. $\tau$ is the vector of
+        torques at each joint. The task is to track a trajectory $q_d(t)$ in the joint space. Because we want to track a trajectory, we can't use
+        linearization at a point, instead, we'll assume we can measure the state of the robot perfectly(this is not unreasonable, all we need are precise
+        encoders and a well calculated physical parameters of the model), and use this knowledge to find an input which will transform the system into a linear one.
+        Let us then choose:
+         \begin{equation}
+             \tau = M(q)v + C(q,\dot{q})\dot{q}+D(q)
+        \end{equation}
+        If we substitute it into \ref{rob}, we will obtain:
+        \begin{equation}
+            \begin{aligned}
+                M(q)\ddot{q}&=M(q)v&\mbox{Which we can divide on the left by the inverse of M}\\[1.25ex]
+                \ddot{q}&=v&\mbox{A linear system is obtained}\\[1.25ex]
+                
+            \end{aligned}
+        \end{equation}
+        Here we can choose $v = \ddot{q}_d - a \dot{e} - be $, where $e = q(t)-q_d(t)$, and  $a,b \in \mathbb{R}$ such that the characteristic polynomial has no 
+        eigenvalues in the positive complex plane. Ultimately, the dynamics of the system will be described by a linear equation, where we can use well known
+        linear control methods:
+        \begin{equation}
+            \ddot{e} + a \dot{e} + b e = 0
+        \end{equation}
+
+    }
+    \nt{
+    All of the mathematical definitions needed for the analysis will be provided as they appear, most of them should be familiar, as they appear in the main lecutre notes.
+}
+\section{Input--State linearization of SISO sytems}
+The simpler kind of feedback linearization occurs, when there is no output function to control, and the only thing we're interested in is the state. The problem can be stated as follows:
+\dfn{Input--State linearization}
+{
+
+    We are given a system in the following form:
+    \begin{equation}
+        \label{linsys}
+        \dot{x} = f(x) + g(x)u
+    \end{equation}
+    Where f and g are vector functions, and u is a real valued function of time. The above system is said to be linearisable in a region $\Omega$, if there exists a function  $\phi \,:\,\Omega \longrightarrow \mathbb{R}^{n} $(A differomorphism) and a nonlinear state based feedback:
+    \begin{equation}
+        \label{contlaw}
+        u = \alpha(x) + \beta(x)v
+    \end{equation}
+    (Where v is an auxiliary input) such that the new state variables $z = \phi (x)$ and the new input v can be put in the cannonical form:
+    \begin{equation}
+        \dot{z} = Az + bv
+    \end{equation}
+    \nt
+    {
+        A linear system is in canonical form if:
+        \begin{equation}
+            A = \begin{bmatrix}
+                \mathbb{0} & I_{n-1} \\
+                0 & \mathbb{0}^{T}
+            \end{bmatrix},\; b = \begin{bmatrix}
+                \mathbb{0} \\
+                1
+            \end{bmatrix}
+        \end{equation}
+    }
+    The new state $z$ is called the linearising state, and  $u$ is called the linearising control law.
+    What this definition tells us, is that to find z we only need to find $z_1$, since all the other values can be found as derivatives of the preceding states, more on that later.
+}
+This definition is very convenient, but there may be systems where this is not possible. So before we start wasting our time trying to find the form of $z_1$ we have to check if the system can be linearised.
+\thm{Linearisability conditions}
+{
+    The system \ref{linsys} is input--state linearisable there exists a region $\Omega$ where the following conditions hold:
+     \begin{itemize}
+     \item The matrix composed of vector fields $[g, ad_fg,\cdots ,ad_f^{n-1}g]$ has full rank in $\Omega$(non zero determinant)
+     \item  The set $\{g, ad_fg,\cdots ,ad_f^{n-2}g\}$ is involutive in $\Omega$(closed under taking Lie brackets)
+    \end{itemize}
+    \nt
+    {
+        $ad_fg$ is read another notation for the lie bracket $[g,f]$, it is convenient to use when we have to iterate a Lie bracket. \\
+        For example, instead of writing  $[g,[g,[g,f]]]$ we can write  $ad_f^{3}g$. The lie bracket itself is defined as:
+        \begin{equation}
+            [f,g] = \nabla g f - \nabla f g
+        \end{equation}
+
+    }
+    The first condition is analogous to controllability for a linear system. More specifically, it checks if the set of partial differential equations describing
+    the system is integrable, e.g. if it was produced by differentiating a high dimensional surface. For those how know what it means, this condition checks if the
+    system is holonomic.\\
+    The other condition states, that if we take the lie bracket of any 2 vectors in that set, we'll get a linear combination of vectors in it. So we can't extend
+    this set by taking lie brackets, ergo, it is closed under that operation. There is no analogy with linear systems here, it's more or less black magic.
+}
+So now we are ready to give a step--by--step procedure for input--state linearising a given system:
+\nt
+{
+    The method for finding $z_1$ was made evident in a proof that the above conditions are sufficient and necessary for linearization. In order not to bother you with theory, it will just be stated without any proof or explanation.
+}
+\dfn{Input--State linearisation procedure}
+{
+    To produce an Input--State linearisation the following steps must be executed
+    \begin{enumerate}
+        \item Calculate successive Lie brackets to find the vector field $\{g,ad_fg,\cdots ,ad_f^{n-1}g\}$.
+        \item Check both linearisability conditions, if they are not fulfilled stop, as there is nothing more to be done.
+        \item Find first state $z_1$ from the following set of partial differential equations:
+            \begin{equation}
+                \label{zfnd}
+                \begin{cases}
+                    \nabla z_1 ad_f^{i}g = 0, i\in\{0,\cdots ,n-2\} \\
+                    \nabla z_1 ad_f^{n-1}g \neq 0
+                \end{cases}
+            \end{equation}
+            \nt
+            {
+                For convenience it is often useful to express this last equation as:
+                \begin{equation}
+                    \nabla z_1 ad_f^{n-1}g = 1
+                \end{equation}
+                This does not affect the linearization.
+            }
+        \item Calculate the whole state transformation $z = [z_1,L_fz_1,\cdots ,L_f^{n-1}z_1]^{T}$ (alternatively $z = [z_1,\dot{z_1},\cdots ,z_1^{(n-1)}]$, where the original state equations have to be substituted at each step to remove the derivatives of x).
+        \item Find $\alpha, \beta$ to give the final control law:
+             \begin{equation}
+                \begin{cases}
+                    \alpha(x) = - \frac{L_f^{n}z_1}{L_gL_f^{n-1}z_1}\\
+                    \beta(x) = \frac{1}{L_gL_f^{n-1}z_1}
+                \end{cases}
+            \end{equation}
+    \end{enumerate}
+    }
+        
+    \ex{Excercise 5.2}
+    {
+        The task is to design a tracking controller in x. We can assume that we can measure the system state perfectly up to whatever derivative interests us.
+        We will proceed as above and implement tracking in the linearised form by applying the differomorphism to the desiered trajectory.
+        First we have to construct the required vector fields, since one is just a subset of the other, this only needs to be done onece:
+        \begin{equation}
+            [g,[f,g]] = \begin{bmatrix}
+                0 & -\cos{x_2} \\
+                1 & x_1^{4}\sin{x_2}
+            \end{bmatrix}
+        \end{equation}\\
+        Since there is only 1 vector not counting the last column, involute city is satisfied trivially.
+        Integrability however is satisfied only if $ - \frac{\pi}{2} \le x_2 \le \frac{\pi }{2}$. Let's assume then that
+        this is the case. We will now use  \ref{zfnd} to find $z_1$:
+        \begin{equation}
+            \begin{cases}
+            \nabla z_1 g = 0 \rightarrow  \pdv{z_1}{x_2} = 0\\
+            \nabla z_1 ad_fg = 1 \rightarrow  \pdv{z_1}{x_1} = 1 \rightarrow  z_1 = x_1
+            \end{cases}
+        \end{equation}
+        Since we want to put our system into the canonical form, we can easily find $z_2$ by differentiating $z_1$ with respect to time. Once we do so, we will obtain:
+        \begin{equation}
+            \label{dif}
+            \begin{cases}
+                z_1 = x_1\\
+                z_2 = \sin{x_2}
+            \end{cases}
+        \end{equation}
+        And indeed, thusly defined transformation is a differomorphism as long as $- \frac{\pi }{2} \le x_2 \le \frac{\pi }{2}$. We will later use this to transform a trajectory in x to a trajectory in z.
+        This however represents the state transformation, the dynamics are now represented as follows:
+        \begin{equation}
+
+            \begin{cases}
+                \dot{z}_1 = z_2\\
+                \dot{z}_2 = x_1^{4}\cos{x_2}^{2} + \cos{x_2}u
+            \end{cases}
+        \end{equation}
+        We will complete the linearization procedure by finding $\alpha$ and  $\beta$:
+         \begin{equation}
+             \begin{aligned}
+                 \alpha=&-\frac{L_f^{n}z_1}{L_gL_f^{n-1}z_1}&\mbox{The definition as was provided before}\\[1.25ex]
+                 \alpha=&-\frac{L_fz_2}{L_gz_2}&\mbox{We apply the recurrence of canonical form}\\[1.25ex]
+                 \alpha=&-\frac{\nabla z_2 f}{\nabla z_2 g}&\mbox{Use the definition of the Lie derivative}\\[1.25ex]
+                 \alpha=&-\frac{\begin{bmatrix}
+                         0 & -\cos{x_2}
+                 \end{bmatrix} \begin{bmatrix}
+                 \sin{x_2} \\ x_1^{4}\cos{x_2}
+                 \end{bmatrix}}{\begin{bmatrix}
+                         0 & -\cos{x_2}
+                 \end{bmatrix}\begin{bmatrix}
+                      0 \\ 1
+                 \end{bmatrix}}&\mbox{We multiply the gradients with the dynamics functions}\\[1.25ex]
+                         \alpha=&-x_1^{4}\cos{x_2}&\mbox{And obtain $\alpha$}\\[1.25ex]
+                 
+                 
+                 
+             \end{aligned}
+        \end{equation}
+        a similar procedure will yield $\beta = \frac{1}{\cos{x_2}}$. Ultimately giving a formula for u:
+        \begin{equation}
+            \begin{aligned}
+                u &= \alpha(x) + \beta(x)u\\
+                u &= -x_1^{4}\cos{x_2} + \frac{v}{\cos{x_2}}
+            \end{aligned}
+        \end{equation}
+        The above formula we can substitute into the equation for $\dot{z}_2$ to give:
+        \begin{equation}
+            \begin{aligned}
+                \dot{z}_2&=x_1^{4}\cos{x_2}^{2} + \cos{x_2}u&\mbox{The original equation}\\[1.25ex]
+                \dot{z}_2&=x_1^{4}\cos{x_2}^{2} + \cos{x_2}( -x_1^{4}\cos{x_2} + \frac{v}{\cos{x_2}} )&\mbox{Substitute u and simplify}\\[1.25ex]
+                \dot{z}_2&=v&\mbox{$\dot{z}_2$ is now described only using the auxiliary input v }\\[1.25ex]
+            \end{aligned}
+        \end{equation}
+        A linear equation in its canonical form:
+        \begin{equation}
+            \dot{z} = \begin{bmatrix}
+                0 & 1    \\
+                0 & 0
+            \end{bmatrix}\begin{bmatrix}
+                z_1  \\ z_2
+            \end{bmatrix} + \begin{bmatrix}
+                0   \\ 1
+            \end{bmatrix} v
+        \end{equation}
+        We can now proceed to design a tracking controller. In contrast to the robotic manipulator its more difficult due to the introduction of a differomorphism between the real state variables and the linearised state variables. In this case, it is only possible to design a tracking controller if the desired trajectory can be expressed in terms of $z_1$. For the moment however, let us design a tracking controller in the z space, because the system is canonical this is trivial:
+        \begin{equation}
+            v = \ddot{z}_{1d} -a\dot{e} -be
+        \end{equation}
+        Where $e = z_1 - z_{1d}$, this transforms the system into:
+        \begin{equation}
+             \ddot{e} + a\dot{e} +be = 0
+        \end{equation}
+        If $z_{1d}$ is a constant, then this would be a stabilising controller, if it is a function, then its a tracking controller. From this we can conclude, that stabilization is a special case of trajectory tracking.\\
+        We are given however a trajectory in the original space $\begin{bmatrix}
+            x_{1d} \\ x_{2d}
+        \end{bmatrix}$, so we'll have to use our differomorphism \ref{dif} to map that trajectory into the linearised space:
+        \begin{equation}
+          \begin{cases}
+              z_{1d} = x_{1d}\\
+              \dot{z}_{1d} = z_{2d} = \sin{x_{2d}}\\
+              \ddot{z}_{1d} = \cos{x_{2d}}\dot{x}_{2d}
+          \end{cases} 
+        \end{equation}
+        \nt{I'M NOT SURE ABOUT THIS, FOR SOME REASON WE WERE GIVEN SECOND DERIVATIVES OF $x_d$ IN THE EXERCISE WHICH DO NOT APPEAR IN THIS SOLUTION}
+        Which completes the tracking controller.
+}
+
+
+

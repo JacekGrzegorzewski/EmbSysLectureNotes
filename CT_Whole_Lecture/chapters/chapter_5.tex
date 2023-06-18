@@ -145,3 +145,184 @@
         \end{cases}
     .\] 
 \end{myproof}
+
+
+\section{Reminder 2023-05-29}
+Given:
+\[
+    \begin{cases}
+        \dot{x} = f(x) + g(x)u\\
+        y = h(x)
+    \end{cases}
+.\] 
+If $L_gL_f^{r-1}h(x) \neq 0$ then $u = \frac{1}{L_gL_f^{r-1}h(x)}(-L_f^{r}h(x) + v)$ which yields $y^{(r) = v}$.
+
+\dfn{Relative degree}
+{
+    The SISO system is sad to have the relative degree r in a region of $\Omega$ iff  $\forall x \in \Omega L_gL_f^{i}h(x) = 0\; \forall i 0 \le i \le r-1,\; L_gL_f^{r-1}h(x) \neq 0  $ 
+
+}
+\dfn{Normal form}
+{
+    The normal form of the system can be written as:
+    \begin{equation}
+        \begin{aligned}
+            \begin{bmatrix}
+                \dot{\xi_1}   \\
+                \vdots\\
+                \dot{\xi}_{r-1}\\
+                \dot{\xi}_r
+            \end{bmatrix} &= \begin{bmatrix}
+                \xi_2 & \cdots  \\
+                \vdots & \\
+                \xi_r \\
+                a(\xi,\eta) - b(\xi,\eta)u
+            \end{bmatrix} \\
+            \dot{\eta} &= \omega(\xi,\eta)\\
+            y &= \xi_1
+        \end{aligned}
+    \end{equation}
+    where $\xi = [h_1, L_f h,\cdots, L_f^{r-1}]$, and $\eta = [\eta_1,\cdots ,\eta_{r-1}]$
+}
+\nt{MISSING DEFINITONS}
+
+With this transformation the nonlinear system is transformed to the normal form with:
+\begin{equation}
+    \begin{cases}
+a(\xi,\eta) = L_f^{r}h(x) = L_f^{r}h(\phi^{-1}(\xi,\eta))\\
+b(\xi,\eta) = L_gL_f^{r-1} h(x) = L_gL_f^{r-1}h(\phi^{-1}(\xi,\eta))
+    \end{cases}
+\end{equation}
+
+
+\mlenma{}
+{
+Since $L_g\xi_i = 0, i = 1,2,\cdots ,r-1$ we can conclude that the scalar functions $\eta_j,\; j=1,2,\cdots ,n-r$ need to be chosen such that:
+\begin{equation}
+    L_g\eta(x) = 0 \text{ and rank}[[ \pdv{\xi_1}{x}]^{T},\cdots, [ \pdv{\xi_r}{x}]^{T}[ \pdv{\eta_1}{x}]^{T}, \cdots [ \pdv{\eta_{n-r}}{x}]^{T}] = n \forall x \in \Omega 
+\end{equation}
+
+}
+
+\ex{}
+{
+    Let:
+    \begin{equation}
+        \begin{aligned}
+        \begin{bmatrix}
+            \dot{x}_1  \\
+            \dot{x}_2 \\
+            \dot{x}_3
+            \end{bmatrix} &= \begin{bmatrix}
+            -x_1 \\
+            x_1x_2\\
+            x_2
+        \end{bmatrix}
+        + \begin{bmatrix}
+            e^{x_2}\\
+            1\\
+            0
+        \end{bmatrix} u\\
+        y &= x_3\\
+    \end{aligned}
+    \end{equation}
+    The determination of the relative degree:
+    \begin{equation}
+        \begin{aligned}
+            \dot{y} &= \dot{x}_3 &= x_2\\
+            \ddot{y} &= \dot{x}_2 &= x_1x_2+u
+        \end{aligned}
+    \end{equation}
+Thus the system has relative degree 2.
+\begin{equation}
+    \begin{aligned}
+        \xi_1 &= y &= x_3\\
+        \xi_2 &= L_f h(x) &= \pdv{h}{x}f\\
+        \xi_2 &= \pdv{x_3}{x}f
+    \end{aligned}
+\end{equation}
+}
+We have $z = \Phi(x) = \begin{bmatrix}
+    \xi_1 & \xi_2 & \eta 
+\end{bmatrix}^{T}$
+then:
+\begin{equation}
+    \pdv{z}{x} = \begin{bmatrix}
+        0 & 0 & 1 \\
+        0 & 1 & 0 \\
+        1 &-e^{x_2} &0
+    \end{bmatrix}
+\end{equation}
+with its rank being 3 for any x, since it's not rank deficient , we can find an inverse transformation:
+\begin{equation}
+    \begin{cases}
+        x_1 = -1 +\eta + e^{\xi_2}\\
+        x_2=\xi_2\
+        x_3=\xi_1
+    \end{cases}
+\end{equation}
+With this set of coordinates(state transformation) the syste dynamics is put into a normal form:
+\begin{equation}
+    \begin{cases}
+        \dot{\xi}_1 - \xi_2\\
+        \dot{\xi_2} = (-1+\eta+e^{\xi_2})\xi_2+u\\
+        \dot{\eta} = (1-\eta + e^{\xi_2)(1-\xi_2e^{\xi_2})\\
+            y = \xi_1
+    \end{cases}
+\end{equation}
+Let $u = -(-1+\eta+e^{\xi_2})\xi_2 + v$ which gives us:
+\begin{equation}
+    \begin{cases}
+        \dot{\xi}_1 = \xi_2\\
+        \dot{\xi}_2 = v\\
+        \dot{\eta} = (1-\eta + e^{\xi_2)(1-\xi_2e^{\xi_2})\\
+            y = \xi_1
+    \end{cases}
+\end{equation}
+
+\dfn{The zero--dynamics}
+{
+    The zero--dynamics of the non--linear system:
+    \[
+    \begin{cases}
+        \dot{x}=f(x)+g(x)u\\
+        y = h(x)
+    \end{cases}
+    .\] 
+    is the dynamics of the system subject to the constraint that the output is identically zero.\\
+    $y = 0 \rightarrow \dot{y},\ddot{y},\cdots =0$\\
+    $x_0 \in M^{*} = \{ x \mid h(x) = L_fh(x) = \cdots =L_f^{r-1}h(x) = 0 \}$\\
+    $y^{(r)}(t) = 0 \rightarrow u^{*} = \frac{L_f^{r}h(x)}{L_gL_f^{r-1}h(x)}$ 
+    When we express the system in the normal form then:
+    \begin{equation}
+        \begin{cases}
+            \dot{\xi} = 0\\
+            \dot{\eta} = w(0,\eta),\; u^{*} = -\frac{a(0,\eta(t)}{b(0,\eta(t)}
+        \end{cases}
+    \end{equation}
+}
+
+\ex{Continued}
+{
+    $\dot{\eta} = (1-\eta - e^{\xi_2})(1+\xi_2e^{\xi_2})$ \\
+    Its zero dynamics are defned by letting $\xi_1=0, \xi_2=0$.\\
+    $\dot{\eta}= -\eta\;\; (\eta(t) = \e^{-t}\eta(0)$
+}
+\dfn{}
+{
+    The nonlinear system $\dot{x} = f(x)+b(x)u,\; y = h(x)$ is said to be asymptotically minimum phase if  its zero dynamics is
+    asymptotically stable
+}
+
+\thm{Stabilization and tracking}
+{
+    Assume that the system:
+    \[
+    \dot{x} = f(x) + g(x)u\\
+    y = h(x)
+    .\] 
+has relative degree r and its zero dynamics is asymptotically stable. Let $\mu(s) = s^{r + \alpha_{r-1}s^{r-1}+\cdots +\alpha_0}}$ be a hurwitz polynomial. Then thestate feedback law:\\
+$
+u(x) = \frac{1}{L_gL_F^{r-1}h(x)}[-L_f^{r}h(x) - \alpha_{r-1}L_f^{r-1}h(x)\cdots -\alpha_0h(x)]
+$
+Leads to aa locally asymptotically stable closed loop system
