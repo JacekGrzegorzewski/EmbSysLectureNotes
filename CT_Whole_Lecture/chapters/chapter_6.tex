@@ -266,4 +266,101 @@ Control:
     \end{equation}
 }
 
+\ex{Time optimal control 2??? 2023-06-19}
+{
+    Let:
+    \begin{equation}
+        \dot{x} = f(x,u) = \begin{bmatrix}
+            x_2 \\ u
+        \end{bmatrix}
+    \end{equation}
+    with $\norm{u} < K, \; K\in \mathbb{R}_+$ is known, and $x(0) =x_0,  x(t_f)  = 0$, but  $t_f$ is unknown.
+    We are given a criterion:
+    \begin{equation}
+        I(u(\cdot)) = \int^{t_f}_01dt = t_f
+    \end{equation}
 
+    Which we will optimize using Pontryagin's Maximum principle.
+    Let:
+    \begin{equation}
+        H(x,\lambda,u) = \lambda^{T}f(x,u) - f_0(x,u) = \begin{bmatrix}
+            \lambda_1 & \lambda_2
+        \end{bmatrix} \begin{bmatrix}
+            x_0  \\ u
+        \end{bmatrix} -1 
+    \end{equation}
+    \begin{equation}
+        \begin{bmatrix}
+            \dot{x}_1 \\ \dot{x}_2
+        \end{bmatrix} = \pdv{H}{\lambda} = \begin{bmatrix}
+        x_2  \\ \lambda
+        \end{bmatrix}, \; \begin{bmatrix}
+        \dot{\lambda}_1 \\ \dot{\lambda}_2
+        \end{bmatrix} = - \pdv{H}{x} = \begin{bmatrix}
+          0\\  -\lambda_1 
+        \end{bmatrix}
+    \end{equation}
+    \begin{equation}
+        H(x^{*}(t),\lambda^{*}(t),u^{*}(t)) = \max_{u \in U} H(x^{*}(t),\lambda^{*}(t),u(t)) = 0
+    \end{equation}
+
+
+    All the above implies that:
+    \begin{equation}
+        \begin{cases}
+            \lambda_1(t) = \lambda_{10}\\
+            \lambda_2 = -\lambda_{10}t - \lambda_{20}
+        \end{cases}
+    \end{equation}
+    And:
+    \begin{equation}
+        \begin{cases}
+            \text{"+": } x_2(t) = Kt +x_{20},\; x_1(t) = \frac{1}{2}Kt^{2}+x_{20}t + x_{10}\\
+            \text{"-": } x_2(t) = -Kt +x_{20},\; x_1(t) = -\frac{1}{2}Kt^{2}+x_{20}t + x_{10}
+        \end{cases}
+    \end{equation}
+    From which we get:
+    \begin{equation}
+        \begin{cases}
+            \odv{x_1}{t} = x_2\\
+            \odv{x_2}{t} = \pm K
+        \end{cases}
+    \end{equation}
+    Which implies that $x_2 \odv{x_2}{x_1} = \pm K$, which in turn means that : $ \frac{1}{2 x_2^{2} = \pm K x_1+C}$
+}
+
+\section{Pontryagin's Maximu principle}
+\subsection{summary 1}
+Given an input / output system:
+\begin{equation}
+    \dot{x} = f(x,u),\; x(0) = x_0
+\end{equation}
+And the cost criterion $I(u(\cdot))$, find an admissible control signal $u^{*}(\cdot)$ that minimizes I(in the case under consideration, the terminal state $x_T$ is not fixed).
+Examples of commonly used cost criteria(performance indices):
+\begin{itemize}
+        \item $I(u(\cdot)) = S(x(T,x_0,u))$, where S is a smooth function o nthe set of possible end--points (The Meyer problem)
+        \item $I(u(\cdot)) = \int_0^{T}f_0(t,x(t,x_0,u),u(t))dt$, where $f_0$ is a piecewise continuous or continuous differenitable function of its arguments(The Lagrange problem)
+        \item The sum of both of the above criteria is called the Bolza problem
+        
+\end{itemize}
+
+\subsection{summary 2}
+Consider the optimal control problem (with the free terminal state). Suppose that $u^{*}(\cdot)$ is a solution of this problem.
+Let $H(x,\lambda,u) = \lambda^{T}f(x,u) - f_0(x,u) $ then there exists a pair $(x^{*}(t),\lambda^{*}(t))$ defined on $[0,T]$ such that:
+\begin{equation}
+    \begin{cases}
+        \dot{x}^{*} = \pdv{H}{\lambda}(x^{*},\lambda^{*},u^{*})\\
+        \dot{\lambda} = - \pdv{H}{\lambda}(x^{*},\lambda^{*},u^{*})
+    \end{cases}
+\end{equation}
+With:
+\[
+\begin{cases}
+    x^{*}(0) = x_0\\
+    \dot{\lambda}(T) = - \pdv{S}{x}(x^{*}(T,x_0,u^{*}))\\
+    H(x^{*}(t),\lambda^{*}(t),u^{*}(t)) = \max_{u \in U} H(x^{*}(t),\lambda^{*}(t),u(t)),\; \forall t \in [0,T] 
+\end{cases}
+.\] 
+
+
+When the state $T$ is fixed, then we just remove the Meyer condition.
