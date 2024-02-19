@@ -1,0 +1,81 @@
+\chapter{Regression}
+
+%
+%\begin{figure}
+%    \center
+%\begin{tikzpicture}[block/.style = {draw, fill=white, rectangle, minimum height=3em, minimum width=3em},
+%sum/.style= {draw, fill=white, circle, node distance=1cm},
+%input/.style = {coordinate},
+%tmp/.style = {coordinate},
+%output/.style= {coordinate},
+%pinstyle/.style = {pin edge={to-,thin,black}},
+%auto,
+%node distance = 2cm,
+%>=latex'
+%]
+%
+%\node [tmp](center)
+%    \node [input, left=of center] (uk)
+%        {
+%        };
+%    \node [block, right=of center](mu) {$\mu(\cdot)$};
+%    \node [sum, right=of mu](sum) {X};
+%    \node [input, above=of sum](zk){zk};
+%    \node [output, right= of sum](out){$y_k$};
+%    \draw [->] (uk) --  (mu);
+%    \draw [->] (mu) --  (sum);
+%    \draw [->] (zk) --  (sum);
+%    \draw [->] (sum) --  (out);
+%
+%\end{tikzpicture}
+%\caption{dupa biskupa}
+%\label{krwa}
+%\end{figure}
+%
+\dfn{dupsko}{
+    \begin{equation}
+        \begin{aligned}
+            R(u)&=E\{g_k \mid u_k = u\}&\mbox{}\\[1.25ex]
+            \{g_k \mid uk=u\}&=E\{\mu(u_k)+ z_k\| u_k = u\}&\mbox{}\\[1.25ex]
+        \end{aligned}
+    \end{equation}
+}
+
+
+\section{Non parametric estimation of regression function}
+Assume that:
+\[
+f(u) > 0
+.\], where $f(u)$ is the probability density function (p.d.f.). then:
+\begin{equation}
+        R(u) = \frac{R(u)f(u)}{f(u)} = \frac{g(u)}{f(u)} \text{, where } g(u) = R(u)f(u)
+\end{equation}
+This gives then an estimate of $R$ as a function of 2 kernels:
+ \begin{equation}
+     \hat{R}(u) = \frac{\hat{g}(u)}{\hat{f}(u)} = \frac{ \frac{1}{N_k}\Sigma^{N}_{k=1}u_kK( \frac{y_k-u}{h})  }{   \frac{1}{N_k}\Sigma^{N}_{k=1}K( \frac{u_k-u}{h})   }
+\end{equation}
+From which we can set:
+\begin{equation}
+    \hat{\mu}(u) = \hat{R}(u) = \frac{\Sigma y_k K(\cdot)}{\Sigma K(\cdot)}
+\end{equation}
+The above is called a kernel regression estimate, and is essentially just a weighted average
+
+
+
+\subsection{estimator}
+
+
+\begin{equation}
+    \hat{R}(u) = \frac{\hat{g}(u)}{\hat{f}(u)} = \frac{\Sigma^{S}_{i=1}\hat{b}_i \phi_i(u)}{ \Sigma^{S}_{i=1}\hat{a}_i \phi_i(u)  }
+\end{equation}
+
+
+Where:
+\begin{equation}
+    \begin{cases}
+        \hat{a}_i = \frac{1}{N}\Sigma^{N}_{k=1}\phi_i(u_k)\\
+        \hat{b}_i = \frac{1}{N}\Sigma^{N}_{k=1}y_k \phi_i(u_k)
+    \end{cases}
+\end{equation}
+
+

@@ -1,0 +1,63 @@
+
+\chapter{final lecture 2023-06-07}
+\section{NFA(DFA) corresponds with Regular Languages(RL)}
+\dfn{}
+{
+    Fix $\Sigma$.  $\omega$--language  $\L \subset \Sigma^{\omega}$ is $\omega$--regular.
+    If  $L = \Cup^{n}_i L_i K_i^{\omega}$, where $n \in N$ and  $L_i, K_i$ are regular languages for  $i = 1,2,\cdots ,n$
+
+    Moreover:
+    \[
+        L_iK_i^{\omega}{\sigma^{\cap}\tau_0^{\cap}\cdots : \tau_1,\cdots \in K_i}
+    .\] 
+}
+\thm{$\omega$--languages accepted by NBA are exactly  $\omega$--regular languages.}
+{
+    \begin{myproof}
+        I: We want to prove that $\omega$--regular language L is accepted by some NBA  $\mathbb{A}$.\\
+            Task: Find $\mathbb{A}$ s.t. $L_\omega(\mathbb{A}) = L$\\
+            \begin{enumerate}
+                \item Union is easy\\
+                \item Consider $L_iK_i^{\omega}$ \\
+                    We know that there are $\mathbb{B}, \mathbb{C}$ NFA s.t. $L(\mathbb{B}) = L_i, L(\mathbb{C})=K_i$
+            \end{enumerate}
+       II: Assume $\mathbb{A}$ is NBA, $\mathbb{A} = (S,S_0,\Sigma,\delta,F)$ \\
+       $L_\omega(\mathbb{A}) = \bigcup_{s\in S_0}\bigcup_{f\in F} L((S,\{s\},\Sigma,\delta,\{f\}))L((S,\{f\},\Sigma,\delta,\{f\}))^{\omega}$
+    \end{myproof}
+}
+
+\section{Connection between logic and automata}
+More specifically, between LTL logic and NBA.
+\begin{myproof}
+    Let: $ \phi \in \mathcal{L}_{LTL}(\mathcal{P})$, wlog $\mathcal{P}$ is finite, $\mathcal{P} = \text{var}(\phi)$ = a set of prepositional variables which appear in $\phi $.\\
+    We want to find(describe):
+    \begin{equation}
+        \mod(\phi ) = \{ \pi \in P(\mathcal{P})^{\omega} \;:\; \pi,0 \vDash \phi\}
+    \end{equation}
+    Now, set $\Sigma = P(\mathcal{P})$ (a finite) alphabet, and now  $\mod{\phi } \subset \Sigma^{\omega}$
+\end{myproof}
+\thm{}
+{
+    Let $\phi \in \mathcal{L}_{LTL}(\mathcal{P})$, $\mathcal{P} = var(\phi )$. Set $\Sigma = P(\mathcal{P})$\\
+    Then there exists $\mathbb{A}_\phi$ NBA s.t.\\
+     \[
+         L_\omega(\mathbb{A}_\phi) = \mod{\phi}
+    .\] 
+}
+\qs{}
+{How to construct a "small" $\mathbb{A}_\phi$}
+
+\ex{$\phi = \Diamond p \wedge \Diamond q$}
+{
+    First, $\Sigma = P(\{p,q\}) = \{\emptyset,\{p\},\{q\},\{p,q\}\}$\\
+    \begin{equation}
+        \begin{aligned}
+            $\mod{\phi } &= \{ \pi \in \Sigma^{\omega}\;:\; \pi, 0 \vDash \Diamond p \wedge \Diamond q \}&\mbbox{}\\[1.25ex]$ 
+            \mod{\phi }&= \{\pi\in\Sigma^{\omega} : (\exists k,l )(\pi(k)\ni p \wedge \pi(l) \ni q)\}&\mbox{}\\[1.25ex]
+            
+            
+        \end{aligned}
+    \end{equation}
+}
+
+%Promela and spin, a programming language for LTL logic

@@ -1,0 +1,287 @@
+% $ biblatex auxiliary file $
+% $ biblatex bbl format version 3.2 $
+% Do not modify the above lines!
+%
+% This is an auxiliary file used by the 'biblatex' package.
+% This file may safely be deleted. It will be recreated by
+% biber as required.
+%
+\begingroup
+\makeatletter
+\@ifundefined{ver@biblatex.sty}
+  {\@latex@error
+     {Missing 'biblatex' package}
+     {The bibliography requires the 'biblatex' package.}
+      \aftergroup\endinput}
+  {}
+\endgroup
+
+
+\refsection{0}
+  \datalist[entry]{ynt/global//global/global}
+    \entry{Heged_s_2013}{article}{}
+      \name{author}{3}{}{%
+        {{hash=54bf118c6f56ff945122cbfe4e4d0d79}{%
+           family={Hegedüs},
+           familyi={H\bibinitperiod},
+           given={Gábor},
+           giveni={G\bibinitperiod}}}%
+        {{hash=59112645796062ca0ca4347bf8cef32f}{%
+           family={Schicho},
+           familyi={S\bibinitperiod},
+           given={Josef},
+           giveni={J\bibinitperiod}}}%
+        {{hash=46394f37fc4e65671a3134d570914cda}{%
+           family={Schröcker},
+           familyi={S\bibinitperiod},
+           given={Hans-Peter},
+           giveni={H\bibinithyphendelim P\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {Elsevier {BV}}%
+      }
+      \strng{namehash}{8afb2cad761a1906e02a1367ab2738b5}
+      \strng{fullhash}{8afb2cad761a1906e02a1367ab2738b5}
+      \strng{bibnamehash}{8afb2cad761a1906e02a1367ab2738b5}
+      \strng{authorbibnamehash}{8afb2cad761a1906e02a1367ab2738b5}
+      \strng{authornamehash}{8afb2cad761a1906e02a1367ab2738b5}
+      \strng{authorfullhash}{8afb2cad761a1906e02a1367ab2738b5}
+      \field{labelalpha}{HSS13}
+      \field{sortinit}{2}
+      \field{sortinithash}{8b555b3791beccb63322c22f3320aa9a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Mechanism and Machine Theory}
+      \field{month}{11}
+      \field{title}{Factorization of rational curves in the study quadric}
+      \field{volume}{69}
+      \field{year}{2013}
+      \field{pages}{142\bibrangedash 152}
+      \range{pages}{11}
+      \verb{doi}
+      \verb 10.1016/j.mechmachtheory.2013.05.010
+      \endverb
+      \verb{urlraw}
+      \verb https://doi.org/10.1016%2Fj.mechmachtheory.2013.05.010
+      \endverb
+      \verb{url}
+      \verb https://doi.org/10.1016%2Fj.mechmachtheory.2013.05.010
+      \endverb
+    \endentry
+    \entry{li2015factorization}{misc}{}
+      \name{author}{4}{}{%
+        {{hash=faab58640569b4bfed6ca7352ec8eb7e}{%
+           family={Li},
+           familyi={L\bibinitperiod},
+           given={Zijia},
+           giveni={Z\bibinitperiod}}}%
+        {{hash=248f59ae2b12ecaf548dda52bfc270e3}{%
+           family={Rad},
+           familyi={R\bibinitperiod},
+           given={Tudor-Dan},
+           giveni={T\bibinithyphendelim D\bibinitperiod}}}%
+        {{hash=59112645796062ca0ca4347bf8cef32f}{%
+           family={Schicho},
+           familyi={S\bibinitperiod},
+           given={Josef},
+           giveni={J\bibinitperiod}}}%
+        {{hash=46394f37fc4e65671a3134d570914cda}{%
+           family={Schröcker},
+           familyi={S\bibinitperiod},
+           given={Hans-Peter},
+           giveni={H\bibinithyphendelim P\bibinitperiod}}}%
+      }
+      \strng{namehash}{76ec50f6546ca1eabda7e1dc39b26d51}
+      \strng{fullhash}{993d8ae00fc82ef5d95b521d2aee5027}
+      \strng{bibnamehash}{76ec50f6546ca1eabda7e1dc39b26d51}
+      \strng{authorbibnamehash}{76ec50f6546ca1eabda7e1dc39b26d51}
+      \strng{authornamehash}{76ec50f6546ca1eabda7e1dc39b26d51}
+      \strng{authorfullhash}{993d8ae00fc82ef5d95b521d2aee5027}
+      \field{labelalpha}{Li+15}
+      \field{sortinit}{2}
+      \field{sortinithash}{8b555b3791beccb63322c22f3320aa9a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{eprintclass}{cs.RO}
+      \field{eprinttype}{arXiv}
+      \field{title}{Factorization of Rational Motions: A Survey with Examples and Applications}
+      \field{year}{2015}
+      \verb{eprint}
+      \verb 1501.06862
+      \endverb
+    \endentry
+    \entry{lercher2021multiplication}{misc}{}
+      \name{author}{2}{}{%
+        {{hash=8adabda61815fdd6224cddbfb2851c6b}{%
+           family={Lercher},
+           familyi={L\bibinitperiod},
+           given={Johanna},
+           giveni={J\bibinitperiod}}}%
+        {{hash=46394f37fc4e65671a3134d570914cda}{%
+           family={Schröcker},
+           familyi={S\bibinitperiod},
+           given={Hans-Peter},
+           giveni={H\bibinithyphendelim P\bibinitperiod}}}%
+      }
+      \strng{namehash}{2e622e7fe8786576d3716d6611a8e548}
+      \strng{fullhash}{2e622e7fe8786576d3716d6611a8e548}
+      \strng{bibnamehash}{2e622e7fe8786576d3716d6611a8e548}
+      \strng{authorbibnamehash}{2e622e7fe8786576d3716d6611a8e548}
+      \strng{authornamehash}{2e622e7fe8786576d3716d6611a8e548}
+      \strng{authorfullhash}{2e622e7fe8786576d3716d6611a8e548}
+      \field{labelalpha}{LS21}
+      \field{sortinit}{2}
+      \field{sortinithash}{8b555b3791beccb63322c22f3320aa9a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{eprintclass}{math.RA}
+      \field{eprinttype}{arXiv}
+      \field{title}{A Multiplication Technique for the Factorization of Bivariate Quaternionic Polynomials}
+      \field{year}{2021}
+      \verb{eprint}
+      \verb 2105.08500
+      \endverb
+    \endentry
+    \entry{Siegele_2021}{article}{}
+      \name{author}{3}{}{%
+        {{hash=3e17f8ca5e23847b333ba0eb90a419e4}{%
+           family={Siegele},
+           familyi={S\bibinitperiod},
+           given={Johannes},
+           giveni={J\bibinitperiod}}}%
+        {{hash=322dbdedcd57745c9c24c50f1d3ff682}{%
+           family={Pfurner},
+           familyi={P\bibinitperiod},
+           given={Martin},
+           giveni={M\bibinitperiod}}}%
+        {{hash=46394f37fc4e65671a3134d570914cda}{%
+           family={Schröcker},
+           familyi={S\bibinitperiod},
+           given={Hans-Peter},
+           giveni={H\bibinithyphendelim P\bibinitperiod}}}%
+      }
+      \list{publisher}{2}{%
+        {Springer Science}%
+        {Business Media {LLC}}%
+      }
+      \strng{namehash}{a90574a273cebbe40fb4475269cf1864}
+      \strng{fullhash}{a90574a273cebbe40fb4475269cf1864}
+      \strng{bibnamehash}{a90574a273cebbe40fb4475269cf1864}
+      \strng{authorbibnamehash}{a90574a273cebbe40fb4475269cf1864}
+      \strng{authornamehash}{a90574a273cebbe40fb4475269cf1864}
+      \strng{authorfullhash}{a90574a273cebbe40fb4475269cf1864}
+      \field{labelalpha}{SPS21}
+      \field{sortinit}{2}
+      \field{sortinithash}{8b555b3791beccb63322c22f3320aa9a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Advances in Applied Clifford Algebras}
+      \field{month}{3}
+      \field{number}{2}
+      \field{title}{Factorization of Dual Quaternion Polynomials Without Study's Condition}
+      \field{volume}{31}
+      \field{year}{2021}
+      \verb{doi}
+      \verb 10.1007/s00006-021-01123-w
+      \endverb
+      \verb{urlraw}
+      \verb https://doi.org/10.1007%2Fs00006-021-01123-w
+      \endverb
+      \verb{url}
+      \verb https://doi.org/10.1007%2Fs00006-021-01123-w
+      \endverb
+    \endentry
+    \entry{Lercher_2022}{article}{}
+      \name{author}{4}{}{%
+        {{hash=8adabda61815fdd6224cddbfb2851c6b}{%
+           family={Lercher},
+           familyi={L\bibinitperiod},
+           given={Johanna},
+           giveni={J\bibinitperiod}}}%
+        {{hash=54d1e85f401ea6609822f6c17fdf03a9}{%
+           family={Scharler},
+           familyi={S\bibinitperiod},
+           given={Daniel},
+           giveni={D\bibinitperiod}}}%
+        {{hash=46394f37fc4e65671a3134d570914cda}{%
+           family={Schröcker},
+           familyi={S\bibinitperiod},
+           given={Hans-Peter},
+           giveni={H\bibinithyphendelim P\bibinitperiod}}}%
+        {{hash=3e17f8ca5e23847b333ba0eb90a419e4}{%
+           family={Siegele},
+           familyi={S\bibinitperiod},
+           given={Johannes},
+           giveni={J\bibinitperiod}}}%
+      }
+      \list{publisher}{2}{%
+        {Springer Science}%
+        {Business Media {LLC}}%
+      }
+      \strng{namehash}{eabaa3f27914c6e0ffcf1051ce3d971e}
+      \strng{fullhash}{ae79f09e8aac97a3fe933d6e83e4242c}
+      \strng{bibnamehash}{eabaa3f27914c6e0ffcf1051ce3d971e}
+      \strng{authorbibnamehash}{eabaa3f27914c6e0ffcf1051ce3d971e}
+      \strng{authornamehash}{eabaa3f27914c6e0ffcf1051ce3d971e}
+      \strng{authorfullhash}{ae79f09e8aac97a3fe933d6e83e4242c}
+      \field{labelalpha}{Ler+22}
+      \field{sortinit}{2}
+      \field{sortinithash}{8b555b3791beccb63322c22f3320aa9a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Beiträge zur Algebra und Geometrie / Contributions to Algebra and Geometry}
+      \field{month}{2}
+      \field{number}{1}
+      \field{title}{Factorization of quaternionic polynomials of bi-degree (n,1)}
+      \field{volume}{64}
+      \field{year}{2022}
+      \field{pages}{209\bibrangedash 232}
+      \range{pages}{24}
+      \verb{doi}
+      \verb 10.1007/s13366-022-00629-z
+      \endverb
+      \verb{urlraw}
+      \verb https://doi.org/10.1007%2Fs13366-022-00629-z
+      \endverb
+      \verb{url}
+      \verb https://doi.org/10.1007%2Fs13366-022-00629-z
+      \endverb
+    \endentry
+    \entry{gosselin}{book}{}
+      \name{author}{1}{}{%
+        {{hash=f593a18783eedc69adbda8863d140f98}{%
+           family={Xianwen\bibnamedelima Kong},
+           familyi={X\bibinitperiod\bibinitdelim K\bibinitperiod},
+           given={Clément\bibnamedelima Gosselin},
+           giveni={C\bibinitperiod\bibinitdelim G\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {Springer Berlin, Heidelberg}%
+      }
+      \strng{namehash}{f593a18783eedc69adbda8863d140f98}
+      \strng{fullhash}{f593a18783eedc69adbda8863d140f98}
+      \strng{bibnamehash}{f593a18783eedc69adbda8863d140f98}
+      \strng{authorbibnamehash}{f593a18783eedc69adbda8863d140f98}
+      \strng{authornamehash}{f593a18783eedc69adbda8863d140f98}
+      \strng{authorfullhash}{f593a18783eedc69adbda8863d140f98}
+      \field{labelalpha}{Xia}
+      \field{sortinit}{9}
+      \field{sortinithash}{0a5ebc79d83c96b6579069544c73c7d4}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{series}{Springer Tracts in Advanced Robotics}
+      \field{title}{Type Synthesis of Parallel Mechanisms}
+      \verb{doi}
+      \verb https://doi.org/10.1007/978-3-540-71990-8
+      \endverb
+      \verb{urlraw}
+      \verb https://link.springer.com/book/10.1007/978-3-540-71990-8
+      \endverb
+      \verb{url}
+      \verb https://link.springer.com/book/10.1007/978-3-540-71990-8
+      \endverb
+    \endentry
+  \enddatalist
+\endrefsection
+\endinput
+

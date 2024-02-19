@@ -1,0 +1,31 @@
+\chapter{Introduction}
+The goal of this project was to create a stochastic dependency parser, which would use the information obtained by statistically analysing well known languages for the analysis of new ones. Since this parser is supposed to work for any language and use only syntactic information, no well known embeddings could be used, as most of the ones used professionally also include language
+specific semantic information, and those that don't appear to work on frequency analysis. After thorough analysis the problem was split into 3 parts:
+\begin{enumerate}
+    \item Obtaining initial classification probabilities for each word,
+    \item Exploiting the Markov property of paths through the leaves of a tree to its root,
+    \item Using a combination of these paths to construct trees with a probability assigned to each tree.
+\end{enumerate}
+The second part was completed in its entirety, but due to failures in the first part not much was done with regards to the third. \\
+This report will first cover the nature of the used dataset, then the second part with the Markov property, then the first part, and finally the third part will be mentioned in the rapport's conclusion.
+
+\chapter{Universal Dependencies}
+To quote from its website:\\
+\textit{Universal Dependencies (UD) is a framework for consistent annotation of grammar (parts of speech, morphological features, and syntactic dependencies) across different human languages. UD is an open community effort with over 300 contributors producing nearly 200 treebanks in over 100 languages. }\\
+UD is one of the most well developed formalisms for describing grammar of human languages. It differs from other tree like grammar description methods in that it the syntax trees it produces are not binary, but arbitrary. 
+This gives UD great descriptive power, but at a cost of making its descriptions much more difficult to analyse. 
+What's more, there is still a lot of disagreement on how these parsings should be created. 
+This can result in the same sentence being parsed differently in different treebanks -- this can sometimes happen due to ambiguity in natural languages, but what is described is strictly an issue with a lack of standardization.
+With regards to that last issue, we're hoping that it can be mitigated by using many different datasets to even out the differences in notation.\\
+We will now describe how UD organises its data.
+\section{Treebanks}
+Each language is divided into datasets called treebanks, there can be an arbitrary ammount of such treebanks for a given language. Treebanks can be specific - e.g. wikipedia articles, news, grammatical examples, etc. - but they all have to be described using the CoNLL--U format.
+\subsection{CoNLL--U format}
+The CoNLL--U format is used to describe parse trees' structure in a textual format. It is a very well organised data format, and each treebank provides a training and testing file. In CoNLL--U each sentence is described by assigning sequentially an index to each word, as well as its POS tag, DEP relation, parent word's ID, and so on. 
+%% example
+Because of how well organised it is, preprocessing of the data was trivial,
+all that had to be done, was to read each word's ID, the word itself, POS tag, DEP relation, and it's parent word ID.
+Because UD provides a framework for adding more language specific information to each category, these were removed so as to extract only the most universal information.
+
+
+

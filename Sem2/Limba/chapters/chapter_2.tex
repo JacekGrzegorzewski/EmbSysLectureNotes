@@ -1,0 +1,39 @@
+\chapter{Rigid Body Motion}
+In order to talk about manipulator synthesis, one first has to provide a
+description of Euclidean displacements. This can be done by considering the Special Euclidean Group in 3 dimensions. A group can be represented in many different ways, and as such by carefully chosing this representation one can approach the group from a different angle.
+\section{Group theoretic background}
+The Special Euclidean Group(SE(3)) is composed of 2 main subgroups. One
+representing rotations, and the other translations in 3D space. These 2 subgroups interact with each other in a not exactly pleasant way.
+\subsection{SO(3)}
+The special orthogonal group is the subgroup representing rotations around the origin in 3D space.
+\subsection{T(3)}
+The translational group consists of all translations in three dimensions.
+\subsection{SE(3)}
+SE(3) can be described as a semi-direct product of T(3) and SO(3):
+\begin{equation}
+    SE(3) = SO(3)\ltimes T(3)
+\end{equation}
+With this construction, elements of SE(3) are given by a tuple  $(r,t)$, and a product of 2 of its elements is given as follows:
+ \begin{equation}
+     \label{semidirect}
+     (r_2,t_2)(r_1,t_1) = (r_2r_1,r_2t_1\bar{r}_2+t_2)
+\end{equation}
+
+\section{SE(3) Representation}
+The way roboticists usually interact with SE(3) is through uniform
+transformation matrices. The goal of constructing these matrices was to create a compact representation of the group, which would use only one operation.
+What will be demonstrated, is how one can arrive at these constructions starting from regular rotation matrices and vectors, and how a similar proes leads to biquaternions from quaternions. 
+\subsection{Rotation Matrices and Quaternions}
+
+\subsection{Uniform Matrices and Biquaternions}
+\subsection{Comparison}
+
+
+
+
+
+
+
+
+
+

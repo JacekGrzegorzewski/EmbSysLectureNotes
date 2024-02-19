@@ -1,0 +1,158 @@
+
+\chapter{Something}
+
+\qs{Time based vs event based models}
+{
+    In a time based model, the system is represented using a differential state space equation, and an output
+    which can be a function of the state, input, and time. For given intial conditions, inputs known ahead
+    of time, the system is wholly deterministic. The system can be subject to a set of constraints on the state, input, and output.
+    These constraints, which include boundary conditions, make solving thee state equations analytcally very difficult, if not impossible
+    analytically.\\
+    To control this kind of a system, we need to determine what kind of input $u(\cdot)$ produces the desiered output  $r(t)$.
+    In open loop controll, the input does not depend on the state, while in closed loop contorl it does.
+\\
+\\
+
+    In an event based system instead of the state equations, we have a discrete system. In this discrete system, there are discrete states,
+    observable events, and controllable events. An event changes the state of the system, and from this new state new events can occur.
+    This is called the Discrete Event System(DES)\\
+}
+
+\qs{FAS}
+{
+
+
+    Flexibly automated systems(FAS) consistos of:
+    \begin{itemize}
+            \item Executors - probramable, locally controled objects
+            \item Supervisory layer - coordinates executors and ensures the desiered behaviour of the hwole system. \\
+                Can be centralised or distributed
+            
+    \end{itemize}
+    Some examples of FAS inclue:
+    \begin{itemize}
+            \item Flexible manufacturing system
+            \item Flexible assembly system
+            \item Automated guided vehile transport
+            \item e.t.c
+            
+    \end{itemize}
+}
+
+\qs{Superviosry control of FAS}
+{
+    Based on the current state, the supervisor determines wheather a system can advance to another state
+}
+
+
+\qs{Petri nets}
+{
+    A petri net consists of a 5-tuple of sets $N = \left( P,T,F,W,M_0 \right)$, where:
+    \begin{itemize}
+            \item P is a set of places
+            \item T is a set of transitions
+            \item F is a set of flow relations, depicted by directed edges
+            \item W is a cost function of each edge
+            \item $M_0$ is the inital state of the net
+    \end{itemize}
+    At each step in the P/T net's evolution, all transitons which have their inputs fullfilled fire. If no additional rules are applied, the net
+    may be non-deterministic.
+    Algebraically, the transition between each state can be represented using the equation:
+    %%%
+    \begin{equation}
+        M \xrightarrow{\sigma} M' = M+XY_\sigma
+    \end{equation}
+Where
+    \begin{itemize}
+            \item  M - the current state vector
+            \item $M'$ - the new state vector
+            \item $\sigma$ Sequence of transitions
+            \item  $X$ - incidence matrix
+            \item  $Y_\sigam$ - characteristic vector of  $\sigma$, it counts the occurences of each transiton in the sequence
+            
+    \end{itemize}
+
+   \\
+   Reachability set is defined as the set of all states reachable from the initial state of the net.\\
+   Based on this set, a reachability graph $GR = (V,D,v_0)$ can be constructed.
+\\
+Liveness referrs to the propperty of a P/T net, where no matter where you end up from a given initial state $M_0$, it is possible to fire all transitions. Liveness ultimately means that froma given state all other states are reachable.
+A live PN is completely dead-lock free!!!!
+\\
+A P/T net is reversible if for every state there exists a reachable state, from where the original state is directly reachable.
+}
+
+
+
+\qs{(Resource Allocation Systems)RAS}
+{
+A resource allocation system is given by a 5-tuple $\phi =(R,C,P,D)$
+Where:
+ \begin{itemize}
+        \item R - set of resource types
+        \item C - resource capcaity function
+        \item P - set of process types
+        \item D - resource requirement function
+\end{itemize}
+
+RAS can be divided into the following subclasses:
+\begin{itemize}
+        \item Linear RAS - structure is purely sequential, only 1 realization
+        \item Disjuntive RAS - structure is an acyclic directed graph, models routing flexibility, many realizations
+        \item Coordinating RAS - Consists of various threads running in parallel, 1 realizatio
+        \item Complex RAS - can be anything
+\end{itemize}
+
+Also, RAS can be divided according to D:
+\begin{itemize}
+        \item Single-Unit RAS - each operation requieres 1 resource of 1 type
+        \item Single-Type RAS -each operation requires more then 1 resource of a single type
+        \item Conjunctuve RAS - resource requirements must not exceed capacity
+        
+\end{itemize}
+ADD PETRI NET DESCRIPTION
+
+}
+
+
+\qs{Deterministic finite state automata(DFSA)}
+{
+
+    A DFSA is a 6-tuple $G=(E,S,f,\Gamma,s_0,S_M)$, where:
+    \begin{itemize}
+            \item E - finite set of events
+            \item S - finite set of states
+            \item f - partial transition function
+            \item \Gamma - active event function
+            \item $s_0$ - initial state of H
+            \item $S_M$ - set of marked states(End points)
+    \end{itemize}
+ An occurence of an event uniquely determins the next state of a system.
+
+ A deadlock  is a state which is not marked, and can perform no transitions. A livelock is a loop of unmarked states which can't be exited.
+ \\
+Unary Operations:
+ \begin{itemize}
+         \item Accessible part($Ac(G)$) - the subset of the original DFSA such that all states which can't be reached from the initial positions are removed.
+         \item Coaccessible part($CoAc(G)$) - removes all states throug which there is no path to a marked state.
+         \item Trim - $Ac(CoAc(G)) = CoAc(Ac(G))$, exactly what is written
+         \item Complement (only defined for trims) - marks the complement of the language  $L$
+ \end{itemize}
+
+Composition operations:
+\begin{itemize}
+        \item Product of 2 automata
+        \item Parallel compostion of 2 automata(A transmission system can be though of as a parallel compostion of a sender, receiver and a channel)
+\end{itemize}
+}
+
+\qs{Modeling of FAS as RAS}
+{
+
+}
+
+\qs{Deadlocks in computer systems}
+{
+
+}
+

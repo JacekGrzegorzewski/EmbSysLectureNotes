@@ -1,0 +1,45 @@
+\chapter{Estimation}
+\section{Non parametric estimation of distribution function}
+We have a sequence of random numbers $X_1,X_2,\cdots ,X_N$, and would like to determine their distribution function without assuming anything about it.
+\nt{This is new, like the last 30 years new. Previously most attempts at such estimation were parametric.}
+
+First we can define an estimator of the distribution we seek as:
+\begin{equation}
+    \hat{F}(x) = \frac{	\#\{x_i\::\:x_n\le x\}}{N}
+\end{equation}
+By introducing the indication function defined as follows:
+\begin{equation}
+    I(x_i) = \begin{cases}
+        1\; \text{ as } x_i \le x\\
+        0\; \text{ as } x_i > x
+    \end{cases}
+\end{equation}
+
+We can write the estimator in more commonly used form:
+\begin{equation}
+    \hat{F}(x) = \frac{1}{N}\Sigma^{N}_{i=0}I(x_i)
+\end{equation}
+Its expected value:
+\begin{equation}
+    \begin{aligned}
+        E\hat{F}(x)&=\frac{1}{N}\Sigma^{N}_{i=1}EI(X_I)&\mbox{}\\[1.25ex]
+        \frac{1}{N}\Sigma^{N}_{i=1}EI(X_I)&\frac{1}{N}\Sigma_{i=1}^{N}(F(x))&\mbox{This is because $EI(x_i) = F$}\\[1.25ex]
+        E\hat{F}(x)&=F(x)&\mbox{The expected value of the estimator is the true distribution}\\[1.25ex]
+    \end{aligned}
+\end{equation}
+Gives the true distribution. This still bears an error which depends on the variance. In fact, the mean squared error is equal to the variance, because, as we've shown in the above derivation, there is no bias.
+This variance is by definition equal to:
+\begin{equation}
+    \begin{aligned}
+    \text{Var}\hat{F}(x) &= E(\hat{F}(x) - E\hat{F}(x))^{2}&\mbox{}\\[1.25ex]
+    \text{Var}\hat{F}(x) &= \frac{1}{N^{2}}\text{Var}\Sigma^{N}_{i=1}I(x_i)&\mbox{}\\[1.25ex]
+    \text{Var}\hat{F}(x) &=\frac{1}{N^{2}}\Sigma^{N}_{i=1}\text{Var}I(x_i)   &\mbox{}\\[1.25ex]
+    \text{Var}I(x_i)&(1-F(x))^{2}F(x) + (0-F(x))^{2}(1-F(x))&\mbox{}\\[1.25ex]
+    \text{Var}I(x_i)&F=(x)(1-F(x))&\mbox{Some derivations were skipped}\\[1.25ex]
+    \frac{1}{N^{2}}\Sigma^{N}_{i=1}\text{Var}I(x_i)&=\frac{F(x)(1-F(x))}{N} &\mbox{}\\[1.25ex]
+    \end{aligned}
+\end{equation}
+
+
+
+

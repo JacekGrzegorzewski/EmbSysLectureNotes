@@ -1,0 +1,127 @@
+\chapter{Inverse filters???}
+
+\ex{}
+{
+    Given $y_k = \frac{1}{2}y_{k-1}+u_k$, derive $u_k$.
+     \begin{equation}
+         u_k = y_k - \frac{1}{2}y_{k-1}
+    \end{equation}
+    The response of the inverse filter is FIR, despite the original block
+    being IIR.
+    If we apply the $\mathcal{Z}$ transform to the original equation, we get the transmitance:
+    \begin{equation}
+        K(z) = \frac{Y(Z)}{U(Z)} = \frac{z}{z-\frac{1}{2}}
+    \end{equation}
+Which is stable because its poles are contained in the complex plane unit circle. The transmitance of the inverse filter is $\frac{1}{K(z)}$, which is:
+\begin{equation}
+    G(z) = \frac{1}{K(z)} = \frac{z-\frac{1}{2}}{z}
+\end{equation}
+Which is again in the complex plane unit circle.
+}
+
+The above example suggests a condition for inertibility, which is that the inverse system is stable, which again must mean that all the zeros of the original system are in the unit circle.
+
+\ex{No.2}
+{
+    Let $y_k = u_k+ \frac{1}{2}u_{k-1}$, which gives the transmitance:
+    \begin{equation}
+        K(z) = \frac{1+\frac{1}{2}z^{-1}}{z}
+    \end{equation}
+    And its inverse:
+    \begin{equation}
+        K^{-1}(z) = \frac{z}{z+\frac{1}{2}}
+    \end{equation}
+    Which gives the inverse filter as:
+    \begin{equation}
+        x_k = y_k-\frac{1}{2}k_{k-1}+\frac{1}{4}y_{k-2} - \frac{1}{8}y_{k-3} + \dots
+    \end{equation}
+}
+
+\ex{No.3}
+{
+    Let  $y_k = u_k + u_{k-1}$, from which we want to extract  $u_k$ to get the inverse filter:
+     \begin{equation}
+         u_k = y_k - u_k = y_k-(y_{k-1}-u{k-1}) = \dots = \Sigma_{i=0}^{\infty} (-1)^{i}y_{k-i}
+    \end{equation}
+    WHICH DOES NOT TEND TO 0!!!
+    If we analyse this equation in the z domain, we get:
+    \begin{equation}
+        K^{-1}(z) = \frac{z}{1+z}
+    \end{equation}
+    Which has an unstable pole
+}
+
+
+\section{Someone, Gauss whitening}
+
+\ex{}
+{
+    Let $v_k = \frac{1}{2}v_{k-1} + u_k$, and $y_k = \v_k + \varepsilon_k$.
+    Which gives:
+    \begin{equation}
+        y_k = \frac{1}{2}y_{k-1} + u_k + \varepsilon_k -\frac{1}{2}\varepsilon_{k-1}
+    \end{equation}
+    The above is known as an ARMAX process. The noise is $u_k$ controlled, and the noise is correlated. If we tried to perform a least squares regression, we would observe that in our regresor we won't have just the current input, but also the previous output. This means that the noise is transferred with the input, and the least squares will converge with a bias.
+
+
+}
+
+To fix this issue of bias, we can use a whitening procedure:
+\ex{Whitening}
+{
+    Given:
+    \[
+    Z_n = \begin{bmatrix}
+        z_1 \\
+        z_2\\
+        \vdots\\
+        z_k\\
+        \vdots\\
+        z_N
+    \end{bmatrix}
+    .\] 
+    We can calculate its covariance as:
+    \[
+    Cov(Z_n) = EZ_NZ_N^{T} = \begin{bmatrix}
+        \sigma_z^{2} & \dots & \\
+        \vdots & \sigma_z^{2} &\\
+         & & \ddots
+    \end{bmatrix}
+    .\] 
+    If the noise is white, we have no off-diagonal entries, if the process is coloured, then we do have off-diagonal entries.
+To clean up this coloured matrix, we can take the square root of this covariance matrix. The inverse of this square root will clean the signal.\\
+Given $Y_N = \phi_N \theta + Z_N$, where the noise  $Z_N$ is correlated with  $Y_N$. We can take  $M = Cov(Z_N)$, which gives  $M = PP^{T}$, which gives P which we can apply to the original equation to give:
+\begin{equation}
+    P^{-1}Y_N =  P^{-1}\phi_N\theta + P^{-1}Z_N
+\end{equation}
+Which after substituting:
+\begin{equation}
+    \begin{cases}
+        \bar{Y}_N = P^{-1}Y_N\\
+        \bar{\phi}_N = P^{-1}\phi_N\\
+        \bar{Z}_N = P^{-1}Z_N
+    \end{cases}
+\end{equation}
+Which gives:
+\begin{equation}
+    \bar{Y}_N = \bar{\phi}_N\theta + \bar{Z}_N
+\end{equation}
+With Z being white and having variance equal to 1:
+\begin{equation}
+    E\bar{Z}_N\bar{Z}^{T}_N = P^{-1}(EZ_NZ^{T}_N)P^{-1^{T}} = I
+\end{equation}
+}
+
+
+\nt
+{
+Bibliography:\\
+Nahorski, Mańczak - Komputerowa Identyfikacja Obiektów Dynamicznych, WNT. 1983\\
+Soderstrom, Stoice - System Identification
+The power of inverse systems in system identification - et.al
+
+
+Read about:\\
+Cummulant optimization:\\
+Signal Processing Magazine - Cadzow - "Cumulant extrema ..."
+}

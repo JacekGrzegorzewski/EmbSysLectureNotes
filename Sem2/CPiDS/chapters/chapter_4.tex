@@ -1,0 +1,256 @@
+
+\chapter{Robotic simulation}
+
+\dfn{Simulation}
+{
+    \begin{itemize}
+            \item A simulation imitates the operation of real system or processes with the use of models
+            \item the model represents behaviours and characteristics of the selected process or systems
+            \item The simulation presents how the model evolves under different conditions over time
+    \end{itemize}
+    Why are systems simulated:
+    \begin{itemize}
+            \item Less financial risk
+            \item Repeated testing in the same conditions
+            \item To generate synthetic data
+            \item Examine long-term impacts
+    \end{itemize}
+}
+
+\section{Introduction}
+\begin{itemize}
+        \item Robotics Simulation: The process of mimicking the behaviour of a robot in a virtual environment.
+        \item Purpose: To model, analyze, and test robot systems
+        
+\end{itemize}
+\section{Applications}
+\begin{itemize}
+        \item Algorithm development: Testing control algorithms in a safe and controlled environment
+        \item Prototyping: Designing and iterating robot models before physical construction
+        \item Training: Training machine learning models for perception and decision-making
+        \item Verification and Validation: Validating the performance of robotic systems
+\end{itemize}
+
+\section{Components}
+\begin{itemize}
+    \item Robot model: Mathematical representation of the robot.
+    \item Sensor models: Rmulation of sensors like cameras, lidars, IMUs, etc.
+    \item Algorithms: Perception, planning, control algorithms
+    \item Environment: Virtual representation of the robot's surroundings 
+    \item Physics engine: Simulation software that calculates the interactions between objects in the virtual world.
+\end{itemize}
+
+\subsection{Physics engines}
+\begin{itemize}
+        \item Simulates physical phenomena in a virtual environment
+        \item Used for realistic simulations in gaming, engineering, and animation
+        \item Components:
+            \begin{itemize}
+                    \item Rigid body dynamics
+                    \item collision detection
+                    \item Integration methods
+                    
+            \end{itemize}
+        \item Popular engines:
+            \begin{itemize}
+                    \item Bullet physics
+                    \item Nvidia PhysX
+                    \item ODE(Open Dynamics Engine)
+
+                    
+            \end{itemize}
+
+        \item Challages: Overcoming computational complexity and accuracy issues
+        \item Future Developments: Trends include improved real-time simulations and AI integration.
+\end{itemize}
+
+
+\subsection{Popular simulation tools}
+\begin{itemize}
+        \item Gazebo: An open-source simulation tool widely used in the robotics community
+        \item Nvidia Isaac Sim: A simulation environment focused on the physics simulation and acceleration based on GPU computation
+            \oitem O3DE(Open 3D engine): General purpouse robotics simulator
+        \item V-REP(CoppeliaSim): Versatile robot eexperimentation platform with extensive features
+        \item Webots: A development environment used for modeling, simulaiton, a control of mobile robots
+        \item CARLA: Mostly for vehicles
+        \item Unity
+        
+\end{itemize}
+
+\section{Gazebo}
+\begin{itemize}
+        \item Introduction:
+            \begin{itemize}
+                    \item Gazebo is a nopen-source robotics simulation software
+                    \item Developed by the open Source robotics foundation
+                    
+            \end{itemize}
+        \item Features:
+            \begin{itemize}
+                    \item Dynamics simulation: works with multiple high-performance physics engines.
+                    \item 3D visualization for modeling and testing robot designs.
+                    \item Extensive library of sensors (camers, lidars, RGB-D sensors, IMU,GPS, etc.), actuators models, and environments
+                    \item TCP/IP integration
+                    
+            \end{itemize}
+        
+\end{itemize}
+
+\section{URDF}
+\dfn{URDF}
+{
+    URDF (Unified Robot Description Fromat) is a standard XML format for describing a robot's structure , kinematics and dynamics.
+    Its purpouse is modeling and visualization of robots, aiding in simulation and control
+}
+
+Features:
+\begin{itemize}
+        \item Standardization: Provides a standardzed format for robot descriptions.
+        \item Interoperability: Enables interoperability among different ROS packages and tools.
+        \item Simulation: Facilitates accurate simulation of obot behaviours
+        
+\end{itemize}
+
+\subsection{Components}
+\begin{itemize}
+        \item Link: rigid bodies comprising the kinematic chains
+        \item Joint: Defines the connection between two links and their relative motion
+        \item Material: Specifies visual and collision properties
+        \item Transmission: Describes how joint efforts result in link movements
+        
+\end{itemize}
+
+
+
+
+
+\section{ODE}
+
+\dfn{ODE}
+{
+    An Ordinary Differential Equation(ODE) is an equation that involves one or more derivatives of an unknown function with respect to one independent variable.
+}
+
+\ex{}
+{
+    A general form of a firts-order ODE is:
+    \begin{equation}
+        \frac{dy}{dx} = f(x,y)
+    \end{equation}
+}
+
+VERY IMPORTANTTT!!!@!!111!!11!
+
+
+\ex{UUV}
+{
+
+    \begin{equation}
+        M\dot{v} + C(v)v + D(v)v + g(\eta) = \tau
+    \end{equation}
+    Where:
+    \begin{itemize}
+        \item M: inertia matrix\\
+        \item $C(v)$ : Coriolis and centripetal terms
+        \item $D(v)$ : damping matrix\\
+        \item g(\eta) :vector of grabvitationalf o.....
+            jebavc kurwa mac jebana
+    \end{itemize}
+
+}
+\subsection{ODE solving with SciPy}
+Features:
+\begin{itemize}
+    \item Open-Source library for mathematics, science and engineering
+    \item ... gowno
+\end{itemize}
+
+
+\section{Optimization}
+
+\begin{itemize}
+        \item Types:
+            \begin{itemize}
+                    \item Unconstrained
+                    \item Constrained
+                    \item Global
+                    \item Local
+
+                    
+            \end{itemize}
+        \item Algorithms:
+            \begin{itemize}
+                    \item Gradient Descent
+                    \item Genetic Algorithms
+                    \item Simulated annealing
+                    \item Particle Swarm
+                    
+            \end{itemize}
+        \item Applications:
+            \begin{itemize}
+                    \item ML
+                    \item Operations Research
+                    \item Engineering
+                    \item Finance
+
+                    
+            \end{itemize}
+        \item Challenges: Non-Convexity, High-dimensionality
+       
+        
+\end{itemize}
+
+
+Popular optimization tools:
+\begin{itemize}
+        \item Ceres Solver
+        \item g2o
+        \item CasADI
+        \item $\cdots $
+\end{itemize}
+
+
+\subsection{Ceres Solver}
+
+\begin{itemize}
+        \item Introduction:
+            \begin{itemize}
+                    \item Ceres Solcer is an open-source C++ library for modeling and solving large, coplex optimization problems
+                    \item Developed by google and named after the dwarf planet Ceres???? What
+                    
+            \end{itemize}
+        \item Features:...
+
+\end{itemize}
+who cares....
+
+
+
+\section{Linear algebra}
+
+\dfn{}
+{
+    \begin{itemize}
+            \item C++ template library for linear algebra
+            \item Designed for high-performance matrix and vector calculation
+            
+    \end{itemize}
+}
+Key features:
+\begin{itemize}
+        \item Expressiveness: Intuitive syntax for linear algebra operations
+        \item Performance: Emphasis on efficient and fast computations
+        \item ...
+        
+\end{itemize}
+
+...
+
+
+
+
+
+
+
+
+

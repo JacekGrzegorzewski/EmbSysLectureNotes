@@ -1,0 +1,164 @@
+
+\chapter{Communication protocols in distributed systems}
+The contents of the lecture are as follows:
+\begin{itemize}
+    \item Basics of data communication
+    \item OSI modle
+    \item embedded networking
+    \item Communication paradigms
+    \item Data representation
+\end{itemize}
+
+\section{Data communication}
+\dfn{Data communication}
+{
+    Data communication is the exchange of data between two devices via some kind of transmission media.
+    The 2 most important elements of a communications system are:
+    \begin{itemize}
+        \item Transmission medium -- the physical path through which the signal travbels
+        \item Protocol -- the way of encoding the information through the medium
+    \end{itemize}
+}
+To measure the effectiveness of data communication we have to consider 3 different quantities:
+\begin{itemize}
+    \item Delivery -- data should be delivered to the correct destination
+    \item Accuracy -- the data should be transmitted without error
+    \item Timing -- the data should be transmitted in an appropriate time frame
+\end{itemize}
+There are 3 main modes of communication:
+\begin{itemize}
+    \item Simplex -- unidirectional
+    \item Half-duplex -- each not can transmit and receive but not at the same time
+    \item Full-duplex -- both nodes can receive and transmit simultaneously
+\end{itemize}
+
+\section{OSI}
+\dfn{OSI}
+{
+    OSI model characterises and standardises how different software and hardware components in a network interact with each other. It contains 7 layers of communication, ranging from the physical layer at 1, all the way to the application layer at 7. Going from the lowest to the highest those are:
+    \begin{enumerate}
+        \item Physical -- cables and such
+        \item Data Link -- data fraes and such
+        \item Network -- adressing, routing, network management
+        \item Transport -- transmission between points of a network
+        \item Session -- ....
+        \item Presentation
+        \item Application
+    \end{enumerate}
+}
+
+\ex{Wiered interfaces}
+{
+    Some examples of wired communication interfaces include:
+    \begin{itemize}
+        \item RS 232
+        \item RS 485
+        \item $I^{2}C$ 
+        \item SPI
+        \item CAN
+        \item Ethernet
+        \item USB
+        
+    \end{itemize}
+}
+
+\subsection{Ethernet}
+Who cares
+
+\section{Indirect communication -- publish -subscribe model}
+\begin{itemize}
+        \item A publisher publishes structured events to an event service and a subscriber expresses interest in particular events through subscription to a topic
+        \item Notifications are sent asynchronously
+        \item Message based communication 
+\end{itemize}
+
+\subsection{MQTT}
+MQTT is a lightweight publish / subscribe messaging protocol designed for M2M telemetry in low bandwidth environments. Designed at IBM in 1999, it remains one of the most important protocols for IoT deployments. There are multiple clients in various programming languages, but the most important thing is the Broker(Server). The most popular broker is Mosquitto Broker, and it uses the standard TCP/IP port 1883.
+
+\subsection{kurwamac ZeroMQ}
+ZeroMQ is a high performance asynchronous messaging library used in distributed systems. It is fully open source, low over-head and fully brokerless. Also zero latency supposedly.
+
+\nt{From the application point of view, MQTT is simpler to use, while ZeroMQ is a lot faster}
+
+\section{Data Distribution Service (DDS)}
+DDS is a middleware protocol and API standard for data-centric connectivity. It provides discovery, serialization, transportation, as well as implements the publish-subscribe pattern. For message definition, it uses the interface description language. \\
+The dynamic discovery of publishers and subscribers makes DDS very extensible, as it allows for run-time completion of communication end points, enabling a proverbial "plug-and-play" design.
+QoS(Quality of service) something, I don't understand what this does or how it works, but it's important. It allows for sending just the most important elements of a dataframe when needed -- for example due to strain on the system, a full frame can;t be sent -- pure witchcraft.
+
+\section{Inter-Process Communication (IPC)}
+\dfn{Process}
+{
+    A process is a program in execution, and each process has its own adress space, which comprises the memory locations that the process is allowed to access.
+}
+\dfn{Communication -- on host vs multiple}
+{
+    Processes on the same machine can communicate through shared memory, pipes, sockets and signals. While those on different machines on the same network can only communicate through network sockets.
+}
+
+
+\dfn{Sockets}
+{
+    What is a socket? 
+    \begin{itemize}
+\item   A socket is a communication end-point to which an application can write or read data.
+\item A socket is an abstraction used to send and receive messages from the transport layer of the network
+\item Each socket is associated with a particular type of transport protol.
+    There are UDP sockets and TCP sockets
+\item It gives low-level support for internet communication
+    \end{itemize}
+    \nt{It's like the particle-wave duality, black magick and bad memmories}
+
+}
+\subsection{UDP Sockets}
+Who cares
+\subsection{TCP sockets}
+Whocares!!!!
+\nt
+{
+    The main difference between TCP and UDP sockets is that UDP does not send any ACKs, so its less reliable and messages can be received out of order, but due to this its faster. Also UDP has to send messages of specified lenght, while TCP can do whatever.
+}
+
+\section{Data representation}
+\dfn{Data representation}
+{
+    The problem of data representation exists because processes can run on systems of different architecture or on a different operating system, which means that we have to find some more universal format for sending messages across them which does not depend on architecture.
+   Some of those issues are:
+   \begin{itemize}
+           
+       \item Heterogeneity -- Processes can use different operating systems, different programing languages, or even different architectures
+       \item Structures -- structures may be padded or packed differently depending on the platform(issues of alignment, padding, etc.)
+       \item Data representation -- A different machine may use different character codes, different float standards, different endiannes, etc.
+   \end{itemize}
+}
+A solution to the problem of data representation is its serialization, and subsequent de serialization. It works by first transforming a data structure into a format that can be stored or transmitted, and then sending it as a stream of bytes to later be reconstructed at the destination.
+
+\dfn{Serialization / Deserialization}
+{
+    AAAAAAAAAAAAAAAAAAAAA
+    \\
+    There are 2 approaches to serialization: Explicit and implicit typing.
+    Explicit typing has the following traits:
+    \begin{itemize}
+            \item Self-describing data -- mainly by using tags
+            \item Additional information is added to the message -- large overhead, very undesirable 
+    \end{itemize}
+    Implicit typing :
+    \begin{itemize}
+            \item At both ends of the channel, the devices have to know how to code and decode the message
+            \item protocol dependant
+    \end{itemize}
+}
+
+\dfn{Protocol Buffers (protobuf)}
+{
+    NO MORE\\
+    \begin{itemize}
+            \item Protocol buffers are language-neutral, platform-neutral extensible mechanisms for serializing structured data.
+            \item Its open-source
+            \item Designed to be smaller and faster than SML
+            \item Data structure schemas described in a proto file
+            \item Messages compilers for multiple languages(e.g. protoc for C / C++)
+            
+    \end{itemize}
+}
+

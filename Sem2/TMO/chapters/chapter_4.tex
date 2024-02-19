@@ -1,0 +1,228 @@
+
+\chapter{Non-linear programming}
+
+\section{Gradient methods}
+\begin{itemize}
+        \item We want to find a local unconstrained minimum $x^{*}$ of a given function $f\,:\,\mathbb{R}^{n} \longrightarrow \mathbb{R} $ by
+            consturcting a sequence of approximations of $x^{*}$, $x_0$,$x_1$,$\dots $, converging to $x^{*}$
+        \item for any n, $x_n = F(x_{n-1})$, where the form of the function F should depend on  $f, \nabla f$, and possibly  $\nabla^{2}f$.
+        \item Desired properties:
+            \begin{itemize}
+                    \item Each iteration decreases the value of f
+                    \item Decrease in the value of f big enough not to allow convergence before $x^{*}$ is reached
+                    
+            \end{itemize}
+\end{itemize}
+
+Gradient methods are constructed as follows:
+\dfn{Gradient method}
+{
+    For a given starting point $x_0$ next iterations are given by the formula:
+    \begin{equation}
+        x_{k+1} = x_k - \alpha_k D_k \nabla f(x_k)
+    \end{equation}
+    Where:
+    \begin{itemize}
+            \item $D_k$ is an  $n\times n$ descent direction matrix(a rotation matrix which allowed us to chose the direction of descent)
+            \item  $\alpha_k \in (0,+\infty)$ is the step size(it allowed us to chose how far we move along a chosen direction)
+            
+    \end{itemize}
+}
+\thm{}
+{
+    Suppose $D$ is symmetric positive definite. Then for any  $x\in \mathbb{R}^{n}$ such that $\nabla f(x) \neq 0$, then:
+     \begin{equation}
+        f(x-\alpha F \nabla f(x)) < f(x)
+    \end{equation}
+    for $\alpha$ small enough.
+}
+        
+
+\cor{}
+{
+    By choosing each $D_k$ positive definite we guarantee that in each iteration we decrease the value of f.\\
+    How do we check that a matrix is positive definite?
+    \begin{enumerate}
+        \item Sylvester's criterion: A positive definite iff al its leading principal minors are positive(kind of like the Hurwitz condition)
+        \item Eigenvalue condition: A positive definite iff all its eigenvalues are positive definite
+    \end{enumerate}
+}
+
+\subsection{Choosing the direction matrix}
+The simplest positive definite matrix is the \textbf{identity matrix} $I_n$. The method where  $D_k = I_n$ for any k is called the \textbf{steepest descent method}.
+\\
+The problem with this method is that it tends to zig-zag, which slows the convergence down a lot. \\
+An alternative is provided by the \textbf{Newton-Ralphson method}:
+ \begin{equation}
+    D_k = \left( \nabla^{2} f(x_k) \right)^{-1}
+\end{equation}
+This method works by choosing the direction where the quadratic approximation's minimum lies.
+\nt{$D_k$ defined in such a way need not be positive definite!!!\\
+To alleviate this issue, we should replace it by $I_n$ or some convex combination of the two whenever this  $D_k$ is not positive definite.
+}
+
+\subsection{Choosing the step size}
+There are several ways of choosing the step size $\alpha_k$.
+\begin{enumerate}
+    \item Optimal step size(minimization rule):
+        we choose $\alpha_k$ minimizing the function:
+         \[
+             F_k(\alpha) = f(x_k - \alpha D_k \nabla f(x_k))\text{ over } (0,+\infty)
+        .\] 
+    \item Limited optimization rule:
+        We choose $\alpha_k$ minimizing the function:
+         \[
+             F_k(\alpha) = f(x_k - \alpha D_k \nabla f(x_k)) \text{ over } (0,s]
+        .\] 
+\end{enumerate}
+
+
+Usually we are not able to apply these rules using analytical tools, thus, we have to sue numerical line search algorithms(these are optimization algorithms in 1 dimension)
+
+\subsubsection{Line search algorithms}
+
+Suppose the function $f\,:\,\mathbb{R} \longrightarrow \mathbb{R}  $ is unimodal on the interval $[a,b]$ with a minimum at the point  $x^{*}$ that we want to find, and the points $x_a, x_b$ are such that  $X_L = a < x_a < x_b < b = x_U$. Then there are 3 possibilities:
+ \begin{itemize}
+     \item $f(x_a) < f(x_b)$
+     \item $f(x_a) > f(x_b)$
+     \item $f(x_a) = f(x_b)$
+\end{itemize}
+In each case we can shrink the original search interval in the following way:
+
+ \begin{itemize}
+     \item $f(x_a) < f(x_b) \rightarrow  x^{*} \in [x_L,x_b]$ 
+     \item $f(x_a) > f(x_b) \rightarrow  x^{*} \in [x_a,x_U]$
+     \item $f(x_a) = f(x_b) \rightarrow x^{*} \in [x_a,x_b]$
+\end{itemize}
+
+Usually the way to choose the values for $x_a$ and  $x_b$ is by using the so called \textbf{golden-section search method}:
+
+\section{Algorithms}
+\begin{algorithm}[H]
+\KwIn{a, b, f, \varepsilon > 0}
+\KwOut{This is some output}
+\SetAlgoLined
+\SetNoFillComment
+\vspace{3mm}
+$x_a \leftarrow a$\;
+$x_u \leftarrow b$\;
+$K \leftarrow \frac{\sqrt{5} - 1}{2}$\;
+\While{$x_U - x_L > \varepsilon$} {
+    $x_a \leftarrow x_U - K(x_U-x_L)$,  $x_b \leftarrow x_L + K(x_U - X_L)$,
+     $f_a = f(x_a),\; f_b = f(x_b)$,
+     \uIf{...}
+}
+\Return Return something here\;
+\caption{what}
+\end{algorithm}
+
+Another way to do it is using quadratic interpolation.
+...
+...
+..
+\\
+This quadratic method is usually faster than the golden-section search.
+
+
+\subsubsection{More step sizes}
+
+\begin{enumerate}
+    \item $\dots$
+    \item $\dots$
+    \item Armijo rule(inexact line search)\\
+        We take the constants $s > 0$ (the end of the search interval),\\
+         $\beta \in (0,1)$ (the rate of reducing the search interval) and\\
+          $\sigma \in (0,1)$(slope reduction factor) and make the loop:\\
+\begin{algorithm}[H]
+\KwIn{a, b, f, \varepsilon > 0}
+\KwOut{This is some output}
+\SetAlgoLined
+\SetNoFillComment
+\vspace{3mm}
+$\alpha \leftarrow s$\\
+\While{$  f(x_k - \alpha D_k \nabla f(x_k)) \ge f(x_k) - \sigma \alpha \nabla f(x_k)^{T}D_k\nabla f(x_k)    $} {
+    $\alpha = \beta \alpha$
+}
+\Return $\alpha$\\
+\caption{what}
+\end{algorithm}
+
+
+
+
+\end{enumerate}
+
+\thm{}
+{
+    Suppose the sequence $(x_k)$ is generated by the steepest descent method applied to a continuously differentiable function f or by Newton's method applied to a twice continuously differentiable function such that the eigenvalues of  $\nabla^{2} f(x)$ are bounded above by some M and below by some $m > 0$ for any  $x \in \mathbb{R}^{n}$.\\
+    Suppose moreover, that the stepsize $\alpha_k$ is chosen using Armijo rule, minimization rule of limited minimization rule. Then the limit of any convergent subsequence of  $(x_k)$ is a stationary point of f.
+
+    \nt{ From the properties  gradient methods, we know that whenever $(x_k)$ is not divergent,  $f(x_k)$ has a limit. The method may oscillate between several points giving the same value though. In case when all the local minima of a function are strict, $(x_k)$ will converge to one of them or diverge.}
+}
+
+
+\thm{}
+{
+    Suppose $(x_k)$ and f satisfy the assumptions of the previous theorem, and that f is convex. Then:
+    \begin{enumerate}
+        \item If the stepsize $\alpha_k$ is chosen using Armijo rule, minimization rule of limited minimization rule, then the sequence  $(x_k)$ converges to its minimizer from any starting point as long as it exits and it is unique. If it is not unique, it may oscillate between them.
+        \item Of the stepsize is chosen in such a way that it decreases to 0, its sum is divergent, and the sum of its squares is convergent, then the convergence of the method is guaranteed.
+    \end{enumerate}
+}
+
+
+Advantages of the Newton method:
+\begin{itemize}
+    \item The convergence of Newton's method is quadratic, while that of steepest descent is linear.
+\end{itemize}
+Advantages of the steepest descent:
+\begin{itemize}
+        \item Much weaker conditions nevessary for it to be convergent at all.
+        \item Newton's method requires computation of $\left( \nabla^{2}f(x)\right)^{2}$. We may not habe the values of second-order derivatives. Even if we do, computation of the inverse of a matrix may be both very time consuming and inaccurate if their size is large.
+        
+\end{itemize}
+
+The above necessitates the use of a different class of methods.
+\subsection{Alternatives}
+\subsubsection{Quasi-Newton methods}
+\begin{itemize}
+        \item We construct successive $D_k$ matrices in a recursive manner;
+        \item $D_{k+1}$ depending only on  $D_k$,  $x_{k-1}-x_k$ and  $\nabla f(x_{k+1}) - \nabla f(x_k)$, no matrix inversion equiered
+        \item The construction should result in  $D_k$ close to  $\left( \nabla^{2}f(x_k)\right)^{-1}$ when $x_{k+1}-x_k$ is small and positive definite at every step
+        
+\end{itemize}
+
+\subsubsection{Conjugate direction methods}
+\begin{itemize}
+    \item Instead of one $d_k$ depending only on  $x_k$, we construct  $d_k$s in sequences --  $d_k$ depending on  $\nabla f(x_k)$ and a given number of precious directions  $d_{k-1}, \dots, d_{k-m}$
+    \item Each step in the sequence requiring simple computations
+    \item A given fixed number of successive steps should mimic the behaviour of one step of Newton's method.
+
+        
+\end{itemize}
+
+
+
+\section{Constrained optimization}
+
+\dfn{Convex Set}
+{
+    A set  $C\in \mathbb{R}$ is called convex if for any $x,y \in C$ and  $\lambda \in (0,1)$,  $\lambda x +(1-\lambda)y \in C$.
+    Which states that the line segment connecting x and y lies entirely in the set.
+
+    \nt
+    {
+        Today's lecture(20.12	11:32:15-CET) will concentrate on methods of search for a minimum of a given differentiable function f over a convex set C.
+    }
+}
+
+
+\section{Frank-Wolfe method}
+
+The idea:
+\begin{itemize}
+        \item We start from any $x_0 \in C$
+        \item At each step of the method, we choose a direction where the objective function has a chance to decrease the most without leaving C/
+        \item Step size is chosen as in gradient methods
+        
+\end{itemize}

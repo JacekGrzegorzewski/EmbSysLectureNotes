@@ -1,0 +1,135 @@
+\chapter{Ultrasonic range finders}
+
+\section{Outline}
+\begin{enumerate}
+    \item 
+        \begin{itemize}
+                \item Electrostatic transducers
+                \item Piezoelectric transducer
+                \item features of ultrasonic sensing
+                
+        \end{itemize}
+    \item Reflection angle for a set of mirrors
+        \begin{itemize}
+    \item interpretation iof equations
+    \item how it is explited
+    \item what a robot can see by using ultrasonic range finders
+    \end{itemize}
+\item dupa
+\end{enumerate}
+
+
+\section{Distance imaging}
+Can be used to measure surfaces, underwater distances, 3d or 2d imaging of the human body.
+
+
+\nt{Speed of an accoustic wave depends on temperature in a non-linear way}
+
+\dfn{Types of sound}
+{
+    Depending on the frequency we classify sounds differently:
+
+    \begin{itemize}
+        \item ... - 20Hz - Infrasound
+        \item 20Hz - 20kHz Hearing sound
+        \item 20kHz - 10GHz - Ultrasound
+        \item 10 GHz - ... - Hypersound 
+    \end{itemize}
+}
+
+
+
+
+
+\section{Electrostatic transducers}
+
+The charge across a capacitor is almost constant, the voltage across it however changes as the value of capacitance changes with vibrations of the air(capacitance depends on the position of the diaphragm in relation to the polarised backplate).
+\\
+The diaphragm is made of  a thin layer of metallised plastic, which is kept constantly tensioned. To keep this tension even, it is separated into smaller sections which work in tandem as a single capacitor.
+
+\\
+Advantages of such a device are the following:
+\begin{itemize}
+    \item strong signal
+    \item narrow beam
+    \item long range
+    \item they work as transceiver
+\end{itemize}
+
+\begin{itemize}
+    \item large size
+    \item high voltage is required to generate excitation pulses and to receive them.
+    \item they are noisy
+\end{itemize}
+
+
+\dfn{Zones of propagation}
+{
+    There are 2 zones of wave propagation for a capacitor microphone:
+    \begin{itemize}
+        \item Fresnel zone - contains dead zones where the pressure is 0, and as such objects in these zones can't be detected
+        \item 
+    \end{itemize}
+}
+
+
+
+\section{Piezoelectric transducers}
+\ex{Construction materials}
+{
+    \begin{itemize}
+            \item Quartz SiO2
+            \item Zriconate piezoceramics PTZ-5A
+            \item Lead-niobate piezoveramics PbNb2O6
+            \item Piezopolymers, such as PVDF, etc.
+    \end{itemize}
+}
+
+Piezoelectric transducers utilise the phenomenon of resonance frequencies of elements created from the above mentioned materials. This allows us to use much smaller energies to exploit these kinds of devices, and makes them inherently very frequency specific.
+
+Applications include:
+\begin{itemize}
+        \item parking sensors,
+        \item alarm protection,
+        \item water level sensors,
+\end{itemize}
+
+
+It is difficult to use the same sensor as both a transceiver and a receiver, as they use different frequencies. Transceivers use the resonant frequency, while a receiver uses the (inverse???) resonant frequency. If they are to work as both, these frequencies need to be very close to each other
+
+
+
+
+
+
+
+\section{Echo detection}
+
+\subsection{Threshold detection}
+
+Advantages:
+\begin{itemize}
+        \item simplicity
+            \iyrm easy for technical application
+        
+\end{itemize}
+
+Disadvantages:
+\begin{itemize}
+        \item final result depends on the signal strength
+        \item cannot distinguish overlapping echos
+        \item sensitivity to noise
+\end{itemize}
+
+
+\section{Reflection angle for a set of mirrors}
+\subsection{}
+
+\nt{If a wavelength is much bigger than irregularities on a surface the na signal is reflected like a light beam. Angle of incidence is equal to the angle of reflection. The wevelength of most often used ultrasonic sensors in range finders:
+\begin{item}
+    \begin{itemize}
+            \item 40kHz $\sim$ 8.6mm
+            \item 50kHz $\sim$ 6.7mm
+    \end{itemize}
+\end{item}
+}

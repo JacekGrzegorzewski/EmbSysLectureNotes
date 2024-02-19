@@ -1,0 +1,292 @@
+\chapter{Least squares approximation}
+\section{Introduction}
+The subject of the seventh laboratory was the estimation of parameters
+of a linear system using the least squares method.
+The least squares method was originally developed by C. F. Gauss in the 19Th century, and used for estimating the orbit of the dwarf planet Ceres. It is a very general method used for data fitting, but for the purpose of system identification and estimation it can be stated as follows:
+
+\dfn{Least Squares}
+{
+Given a linear system, and its noise-corrupted output of the form:
+\begin{equation}
+    y = x^{T}\gamma + z
+\end{equation}
+Where:
+\begin{itemize}
+        \item x - input vector
+        \item $\gamma^{*}$ - coefficient vector
+        \item $z$ - additive noise 
+        \item $y$ - system output
+\end{itemize}
+We can obtain a large set of data points $y_k = x_k^{T}\gamma + z_k$, which 
+can be put into matrix form as follows:
+\begin{equation}
+    Y_N = \phi_N\gamma + Z_N
+\end{equation}
+Where:
+\begin{itemize}
+    \item $Y_N = \begin{bmatrix}
+        y_1 \\ \vdots \\ y_N
+    \end{bmatrix}$ 
+\item $\phi_N = \begin{bmatrix}
+        x_1^{(1)} & \dots & x_1^{(S)}  \\
+                  &\vdots &\\
+        x_N^{(1)} & \dots & x_N^{(S)}  \\
+
+\end{bmatrix}$
+\end{itemize}
+In this notation, the optimal estimator of the coefficient vector can be
+written as:
+\begin{equation}
+\hat{\gamma} = (\phi_N^{T}\phi_N)^{-1}\phi^{T}_N Y_N 
+\end{equation}
+}
+\clearpage
+\subsection{Online Least-Squares}
+When done offline, the stated definition is enough for satisfactory estimation of coefficients. One however may receive new data continuously. In this case, with the above definition, each new data point would necessitate recalculation of 4 matrix multiplications and 1 inversion, which is not at all computationally efficient.\\
+An alternative recursive formulation can be used. This recursive formula is not equivalent to the original one, but should converge to the same values.
+
+\dfn{Recursive least squares}
+{
+    \begin{equation}
+        \begin{cases}
+            P_k = P_{k-1} - \frac{P_{k-1}\phi_k\phi_k^{T}\phi_{k-1}}{1+\phi_k^{T}P_{k-1}\phi_k}\\
+            \hat{\gamma_k} = \hat{\gamma_{k-1}} + P_k\phi_k(y_k - \phi_k^{T}\hat{\gamma_{k-1}})
+        \end{cases}
+    \end{equation}
+    Where:
+    \begin{itemize}
+        \item $\hat{\gamma_k}$ - the k-th estimate of the coefficient vector
+        \item  $P_k$ - the covariance matrix, as the approximation converges, its coefficients all go to 0.
+        \item  $\phi_k = \begin{bmatrix}
+       u_k \\
+                  \vdots \\
+                  u_{k-n} \\
+\end{bmatrix}$ -- vector of last  n inputs, where n is the length of the parameter vector
+            
+    \end{itemize}
+
+
+    The algorithm now consists of 2 steps, the first step consists of calculating the covariance matrix, and then using this covariance matrix to estimate the coefficient vector. The initial values $\gamma_0$ and $P_0$ can be arbitrary, but the coefficient matrix should be different from a zero matrix.\\
+    As an aside, this algorithm can be used to estimate parameters which change with time. In that case, a memory coefficient  $\lambda$ should be introduced. The value of this coefficient should be a little less than 1, to allow the algorithm to "forget" older values in its estimation.
+}
+
+This online formula was the one used to estimate the coefficients of the linear systems simulated during the laboratory. 
+
+\section{Laboratory}
+
+The dynamics of the system estimated during the laboratory were described by the following equation:
+\begin{equation}
+    y_k = 4u_k + 3u_{k-1} + 2u_{k-2} + u_{k-3} + z_k
+\end{equation}
+Which gives $ \gamma = \begin{bmatrix}
+    4 &3 &2 &1 
+\end{bmatrix}^{T}$. The noise was independent in each sample, and followed a uniform distribution with a 0 mean. A block diagram of the system can be seen below:
+%% build diagram
+
+
+\begin{figure}[h!]
+    \begin{center}
+\begin{tikzpicture}[block/.style = {draw, fill=white, rectangle, minimum height=3em, minimum width=3em},
+sum/.style= {draw, fill=white, circle, node distance=1cm},
+input/.style = {coordinate},
+tmp/.style = {coordinate},
+output/.style= {coordinate},
+pinstyle/.style = {pin edge={to-,thin,black}},
+auto,
+node distance = 2cm,
+>=latex'
+]
+    \node [input, name=rinput] (rinput) {};
+    \node [block, right of=rinput] (controller) {$\{\gamma_k\}$};
+    \node [sum, right of=controller,node distance=2cm] (sum2) {$+$};
+    \node [tmp, above = 1cm of sum2](noise);  %
+    \node [output, right of=sum2, node distance=2cm] (output) {};
+    \draw [->] (rinput) -- node{$u_k$} (controller);
+    \draw [->] (controller) -- (sum2);
+    \draw [->] (sum2) -- node{$y_k$} (output);
+    \draw [->] (noise)-- node{$z_k$}(sum2);
+\end{tikzpicture}
+\caption{Conceptual block diagram of a linear system}
+\label{}
+\end{center}
+\end{figure}
+
+\clearpage
+\subsection{Results}
+The results of estimation for different noise ranges can be seen below:
+\begin{figure}[h!]
+\begin{center}
+\begin{tikzpicture}
+\begin{axis}[
+    xmin = 1, xmax = 25,
+    ymin = 0, ymax = 5,
+    grid = both,
+    minor tick num = 1,
+    major grid style = {lightgray},
+    minor grid style = {lightgray!25},
+    width = 0.45\textwidth,
+    height = 0.50\textwidth,
+    xlabel = N,
+    ylabel = $\gamma_k$,
+    scaled x ticks=false]
+
+
+    \addplot[color=blue,
+        ]
+        table [col sep=space, x index = 0, y index=1]{./plot_data/chapter_6/lin_reg_0_01.dat};
+
+    \addplot[color=red,
+        ]
+        table [col sep=space, x index = 0, y index=2]{./plot_data/chapter_6/lin_reg_0_01.dat};
+
+    \addplot[color=green,
+        ]
+        table [col sep=space, x index = 0, y index=3]{./plot_data/chapter_6/lin_reg_0_01.dat};
+
+    \addplot[color=orange,
+        ]
+        table [col sep=space, x index = 0, y index=4]{./plot_data/chapter_6/lin_reg_0_01.dat};
+
+      \legend{$\gamma_1$,
+          $\gamma_2$,
+          $\gamma_3$,
+          $\gamma_4$}
+\end{axis}
+\end{tikzpicture}  
+\begin{tikzpicture}
+\begin{axis}[
+    xmin = 1, xmax = 25,
+    ymin = 0, ymax = 5,
+    grid = both,
+    minor tick num = 1,
+    major grid style = {lightgray},
+    minor grid style = {lightgray!25},
+    width = 0.45\textwidth,
+    height = 0.50\textwidth,
+    xlabel = N,
+    ylabel = $\gamma_k$,
+    scaled x ticks=false]
+
+
+    \addplot[color=blue,
+        ]
+        table [col sep=space, x index = 0, y index=1]{./plot_data/chapter_6/lin_reg_0_1.dat};
+
+    \addplot[color=red,
+        ]
+        table [col sep=space, x index = 0, y index=2]{./plot_data/chapter_6/lin_reg_0_1.dat};
+
+    \addplot[color=green,
+        ]
+        table [col sep=space, x index = 0, y index=3]{./plot_data/chapter_6/lin_reg_0_1.dat};
+
+    \addplot[color=orange,
+        ]
+        table [col sep=space, x index = 0, y index=4]{./plot_data/chapter_6/lin_reg_0_1.dat};
+
+      \legend{$\gamma_1$,
+          $\gamma_2$,
+          $\gamma_3$,
+          $\gamma_4$}
+\end{axis}
+\end{tikzpicture}  
+
+\caption{For low values of noise - left plot shows $z_k \sim U[-0.01,0.01]$ and the right  $z_k \sim U[-0.1,0.1]$ - the coefficients converge extremely quickly. }
+\end{center}
+\end{figure}
+
+
+
+\begin{figure}[h!]
+\begin{center}
+\begin{tikzpicture}
+\begin{axis}[
+    xmin = 1, xmax = 200,
+    ymin = 0, ymax = 5,
+    grid = both,
+    minor tick num = 1,
+    major grid style = {lightgray},
+    minor grid style = {lightgray!25},
+    width = 0.45\textwidth,
+    height = 0.50\textwidth,
+    xlabel = N,
+    ylabel = $\gamma_k$,
+    scaled x ticks=false]
+
+
+    \addplot[color=blue,
+        ]
+        table [col sep=space, x index = 0, y index=1]{./plot_data/chapter_6/lin_reg_1_0.dat};
+
+    \addplot[color=red,
+        ]
+        table [col sep=space, x index = 0, y index=2]{./plot_data/chapter_6/lin_reg_1_0.dat};
+
+    \addplot[color=green,
+        ]
+        table [col sep=space, x index = 0, y index=3]{./plot_data/chapter_6/lin_reg_1_0.dat};
+
+    \addplot[color=orange,
+        ]
+        table [col sep=space, x index = 0, y index=4]{./plot_data/chapter_6/lin_reg_1_0.dat};
+
+      \legend{$\gamma_1$,
+          $\gamma_2$,
+          $\gamma_3$,
+          $\gamma_4$}
+\end{axis}
+\end{tikzpicture}  
+\begin{tikzpicture}
+\begin{axis}[
+    xmin = 1, xmax = 500,
+    ymin = 0, ymax = 5,
+    grid = both,
+    minor tick num = 1,
+    major grid style = {lightgray},
+    minor grid style = {lightgray!25},
+    width = 0.45\textwidth,
+    height = 0.50\textwidth,
+    xlabel = N,
+    ylabel = $\gamma_k$,
+    scaled x ticks=false]
+
+
+    \addplot[color=blue,
+        ]
+        table [col sep=space, x index = 0, y index=1]{./plot_data/chapter_6/lin_reg_5_0.dat};
+
+    \addplot[color=red,
+        ]
+        table [col sep=space, x index = 0, y index=2]{./plot_data/chapter_6/lin_reg_5_0.dat};
+
+    \addplot[color=green,
+        ]
+        table [col sep=space, x index = 0, y index=3]{./plot_data/chapter_6/lin_reg_5_0.dat};
+
+    \addplot[color=orange,
+        ]
+        table [col sep=space, x index = 0, y index=4]{./plot_data/chapter_6/lin_reg_5_0.dat};
+
+      \legend{$\gamma_1$,
+          $\gamma_2$,
+          $\gamma_3$,
+          $\gamma_4$}
+\end{axis}
+\end{tikzpicture}  
+
+\caption{For high values of noise - left plot shows $z_k \sim U[-1,1]$ and the right  $z_k \sim U[-5,5]$ - the coefficients converge more slowly, but in comparison to other kinds of systems still very quickly. }
+\end{center}
+\end{figure}
+
+
+
+
+
+As these plots show, even for highly noisy systems, the estimates ultimately approach their true values, and do so relatively quickly.
+\section{Conclusion}
+The effectiveness of the recursive least squares algorithm is clear from the results obtained. It could easily be implemented on a microcontroller, as relatively few operations are required at each time-step. Its however necessitates at least approximating a given system as linear, which is a very heavy constraint. The behavior of this method in non-linear system depends on the kind of non-linearity, and will be investigated in a future laboratory class.
+
+
+
+
+

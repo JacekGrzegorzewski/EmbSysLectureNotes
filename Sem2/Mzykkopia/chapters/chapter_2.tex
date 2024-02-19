@@ -1,0 +1,49 @@
+\section{Convergence of random sequences}
+The usual notions of convergence are in general not applicable to sequences of random variables. As such, in analysing the limiting behavior of such sequences different definitions have to be utilised. Three most important of these are:
+\begin{itemize}
+    \item Strong convergence
+    \item Weak convergence
+    \item Mean-Square(MS) convergence
+\end{itemize}
+Both the strong, and MS convergence implies weak convergence. \\
+During the class, we were to analyse the MS convergence of a sequence of means of sets of uniformly random variables with 0 expected value.
+MS convergence guarantees that the mean-square error will tend to 0 as the number of samples in a given sequence increases. It guarantees nothing however about the behaviour of each individual random variable.
+\subsection{Laboratory}
+Given was a generator of random variables $\theta_k \sim \mathcal{U}[-0.5,0.5]$ s.t. $\theta_k = \theta^{*}+z_k$, where $\theta^{*}$ represents the mean value, and $z_k$ represents random noise with $Ez_k = 0$. We were tasked with generating a set of $R$ means of $N$ variable sequences, and for each such set calculate its Mean Square Error(MSE), as well as plot these errors a function of N for specific values of R. The resulting scatter plot was then to be compared against the theoretical limiting value of such a process. \\
+To summarize, we have:
+
+\begin{itemize}
+    \item $\theta_k = \theta^{*} + z_k$ where $Ez_k = 0,\; \text{Var}z_k < \infty$. $\theta_k \sim \mathcal{U}[-0.5,0.5]$, which  can be generated as  $\text{rand()}-0.5$
+    \item  $\text{Var}z_k = E(z_k^{2}) = \frac{1}{12}$       
+\end{itemize}
+
+We can generate a mean of this random variable as such:
+\begin{equation}
+    \hat{\theta}_N = \frac{1}{N}\Sigma^{N}_{k=1}\theta_k
+\end{equation}
+And create a sequence of R such means:
+\begin{equation}
+    \hat{\theta}^{(1)}_N, \hat{\theta}^{(2)}_N, \cdots , \hat{\theta}^{(R)}_N
+\end{equation}
+From these sequences, we can obtain a value for the MSE at N:
+\begin{equation}
+    \begin{aligned}
+        \text{MSE}_N &= \frac{1}{R}\Sigma^{R}_{r=1}(\hat{\theta}^{(r)}_N - \theta^{*})^{2}&\mbox{}\\[1.25ex]
+        \text{MSE}_N &=\frac{1}{R}\Sigma^{R}_{r=1}(\hat{\theta}_N^{(r)})^{2} &\mbox{We used the fact that the theoretical mean is equal to 0}\\[1.25ex]
+    \end{aligned}
+\end{equation}
+\clearpage
+By comparing these values against the theoretical value of $\text{Var}\hat{\theta}_N = \frac{1}{12N}$, we can observe the limiting behaviour of the sequence.
+
+
+\begin{figure}[h!]
+    \begin{center}
+    \fbox{\includegraphics[clip, trim = 4cm 8cm 4cm 8cm, scale =0.70]{lab3_hist.pdf}}
+    \caption{Resulting plots}
+    \end{center}
+\end{figure}
+
+As this plot demonstrates, we can say that the MSE of the sequence of means approaches 0 as N increases, which in turn shows its MSE convergence.
+
+
+

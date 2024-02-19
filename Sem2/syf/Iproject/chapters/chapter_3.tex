@@ -1,0 +1,65 @@
+\chapter{Serial chains}
+\subsection{DHT parameters in biquaterionic form}
+Denavit-Heartenberg convention can be used without modification with biquaternions instead of uniform matrices. If we write a transformation in the DHT convention as $a_i = r_{zi}t_{zi}r_{xi}t_{zi}$ then we'll have both:\\
+
+\noindent  \begin{minipage}{0.5\linewidth}
+\begin{equation}
+    \begin{cases}
+        r_{zi} = \cos{(\frac{\theta_i}{2})} + \sin{(\frac{\theta_i}{2})}k\\
+        t_{zi} = 1 - \varepsilon \frac{d}{2} k\\
+        r_{zi} = \cos{(\frac{\alpha_i}{2})} + \sin{(\frac{\alpha_i}{2})}i\\
+        t_{zi} = 1 - \varepsilon\frac{a}{2} i 
+    \end{cases}
+\end{equation}    
+\end{minipage}
+\begin{minipage}{0.5\linewidth}
+
+\begin{equation}
+    \begin{cases}
+        r_{zi}t_{zi} = \begin{bmatrix}
+            R_z(\theta_i) &  \begin{bmatrix}
+                0   \\ 0 \\ d
+            \end{bmatrix} \\
+                \mathbb{0} & 1
+        \end{bmatrix}\\
+        r_{xi}t_{xi} = \begin{bmatrix}
+            R_x(\alpha) &  \begin{bmatrix}
+                a   \\ 0 \\ 0
+            \end{bmatrix} \\
+                \mathbb{0} & 1
+        \end{bmatrix}
+    \end{cases}
+\end{equation}    
+\end{minipage}
+
+One can check that these produce the same results. As an example a simple 2R manipulator will be described using biquaterionic DHT transformations.
+\subsubsection{Example - 2R}
+The DHT parameter table describing the 2R manipulator in its inital state is given below:
+\begin{center}
+\begin{tabular}{|c|c|c|c|c|}
+\hline
+i & $\theta_i$ & $d_i$ & $\alpha_i$ & $a_i$\\
+\hline
+1 & $\theta_1$ & 0 & 0 &  $L_1$ \\
+\hline
+2 & $\theta_2$ &0 &0 &  $L_2$\\
+\hline
+\end{tabular}
+\end{center}
+From this we get:
+\begin{equation}
+    \begin{cases}
+        h_1 = (c_1+s_1k)(1-\frac{L_1}{2}\varepsilon i) = c_1+s_1k - \frac{L_1}{2}\varepsilon( c_1i+s_1j )\\
+        h_2 = (c_2+s_2k)(1-\frac{L_2}{2}\varepsilon i) = c_2+s_2k - \frac{L_2}{2}\varepsilon( c_2i+s_2j )\\
+    \end{cases}
+\end{equation}
+The last tranlation along the X axis can be actually skipped, but for the sake of consistancy it will be kept here.
+
+\begin{equation}
+    h = h_1h_2 = c_1c_2-s_1s_2 +
+\end{equation}
+
+\subsection{Plucker lines}
+
+\subsection{Example - 2R manipulator}
+

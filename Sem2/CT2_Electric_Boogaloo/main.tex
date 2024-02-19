@@ -1,0 +1,32 @@
+\documentclass{report}
+
+\input{tex/preamble}
+\input{tex/macros}
+\input{tex/letterfonts}
+
+
+\title{\Huge{Subject}\\As transcribed by Jacek Grzegorzewski}
+\author{\huge{Lecturer}}
+
+
+\includeonly{%
+             tex/preabmle,
+             tex/macros,
+             tex/letterfonts,
+             chapters/chapter_1,
+             chapters/chapter_2,
+             }
+
+
+\begin{document}
+\maketitle
+\newpage% or \cleardoublepage
+% \pdfbookmark[<level>]{<title>}{<dest>}
+\pdfbookmark[section]{\contentsname}{toc}
+\tableofcontents
+\pagebreak
+
+\include{chapters/chapter_1.tex}
+\include{chapters/chapter_2.tex}
+
+\end{document}

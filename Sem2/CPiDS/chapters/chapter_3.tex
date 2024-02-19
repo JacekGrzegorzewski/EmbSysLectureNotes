@@ -1,0 +1,200 @@
+\chapter{ROS2 - part 2}
+Content:
+\begin{itemize}
+    \item Communication mechanisms: services and actions
+    \item Nodes execution
+    \item Configuration, launchers
+    \item Transformations: tf2
+    \item Debugging tools: rqt\_plot, view\_frames
+\end{itemize}
+\section{Communication}
+\subsection{Services}
+\begin{itemize}
+    \item Request-response model (one-to-one)
+    \item Services defines as .srv files
+    \item Underlaying layer: DDS
+    \item Standard services: std\_srvs package
+
+\end{itemize}
+
+
+
+\subsection{Actions}
+
+\begin{itemize}
+        \item Uses a client-server model
+        \item Functionality similar to services
+        \item Preeemptable(can be cancelled during execution)
+        \item Provides feedback during the execution
+        \item An action client sends a goal to an action server that acknowledges the goal and returns a feedback result
+        
+\end{itemize}
+
+
+
+\subsection{Comparison}
+Topics:
+\begin{itemize}
+        \item Purpose: continuous data streams, e.g. sensor data
+        \item Many to many connection
+        \item Data might be published and subscribed independently (at any time)
+\end{itemize}
+Services:
+\begin{itemize}
+        \item Purpose: remote procedure calls that can be executed quickly e.g. getting the current battery state
+        \item One to one connection
+\end{itemize}
+Actions:
+\begin{itemize}
+        \item Purpose: remote procedure calls that runs for a longer time but provides feedback during the execution e.g. robot movement
+        \item One to one connection, can be preempted
+\end{itemize}
+
+
+\section{Nodes parametrization}
+
+\begin{itemize}
+        \item Supported types:
+            \begin{itemize}
+                    \item bool, int64, float64, string
+                    \item byte[], bool[], int64[], float64[], string[]
+                    
+            \end{itemize}
+        \item Defined in YAML files
+        \item Parameters are node specific (different than in ROS1 where it was a parameter server)
+
+\end{itemize}
+
+\nt
+{
+    Useful commands(CLI)
+    \begin{itemize}
+            \item ros2 param list
+            \item ros2 param get <node\_name> <param\_name>
+            \item ros2 param set <node\_name> <param\_name> <value>
+    \end{itemize}
+}
+
+
+\section{Launchers}
+\begin{itemize}
+    \item The \textbf{launch system} in ROS2 is responsible for helping the user describe the configuration of their system and then execute it as described. The configuration of the system includes what programs to run, where to run then, what arguments to pass them.
+    \item It's a script that runs the whole robotic system, so it allows to start multiple nodes with one command instead of starting each node manually
+    \item Can be written in Python, XML, YAML
+    \item CLI: ros2 launch package\_name launcher\_name
+\end{itemize}
+
+
+\section{Executors}
+
+
+Execution management in ROS 2 is explicated by the concept of Executors. An Executor uses one of more threads of the underlying operating system to invoke the callbacks of subscriptions, timers, service servers, action servers, etc. on incoming messages and events.
+\subsection{what?}
+When the spin() function is called, the current thread starts querying the rcl and middleware layers for incoming messages and other events, and calls the corresponding callback functions until the node shuts down.
+An incoming message is not stored in a queue on the Client Library Layer but kept in the middleware until it is taken for processing by a callback function. 
+A wait set is used to inform the Executor about available messages on the middleware layer, with one binary flag per queue.
+\subsection{Executor types}
+
+\subsubsection{The Multi-Thread Executor}
+The Multi-Thread Executor creates a configurable number of threads to allow for processing multiple messages or events in parallel.
+
+\subsubsection{Static Single-Threaded Executor}
+
+The Static Single-Threaded Executor optimizes the rntime costs for scanning the structure of  a node in terms of subscriptions, timers, service servers, action servers, etc.
+It performs this scan only once when the node is added, while other executors regularly scan for such changes.
+
+
+
+
+\section{TF2}
+
+\subsection{Rottaion representation - RPY angles}
+
+\begin{itemize}
+        \item RPY $\rightarrow$ roll, pitch, yaw
+        \item ZYX euler angles
+        \item Three values representation
+        \item drawback: singular configurations (system lose one DOF) if two axes are aligned
+        
+\end{itemize}
+
+
+dupa
+
+
+
+\subsection{Rotation representation - Unit quaternions}
+
+A quaternion is a 4-tuple representation of orientation, which is more concise than a rotation matrix, Quaternions are very efficient for analysing situations where rotations in three dimensions are involved.
+
+ \begin{equation}
+    q = w + xi + yj + zk
+\end{equation}
+
+\subsection{Rotation representation - Rotation matrix}
+
+A rotation matrix is a transformation matrix that is used to perofrm a rotation in Euclidean space
+\begin{item}
+    $R \in \mathbb{R}^{3\times 3}$ 
+\item $R R^{T} = R^{T}R = \mathbb{I}_3$ 
+\item $det(R) = 1$
+\end{item}
+
+\subsection{tf2 in ROS2}
+
+tf2(team fortress 2) is a library that provides support or managing coordinate systems in a robotic system.
+\begin{itemize}
+        \item Provides support for handling relationships between different coordinate frames.
+        \item Essential for most robotic tasks, such as sensor fusion, localization
+        \item Enables easy conversion of data between various frames of reference
+\end{itemize}
+
+\begin{itemize}
+        \item Transofrmation = translation + rotation(quaternion) WHY NOT JUST A BIQUATERNIONS, NOW WE HAVE TO CONSTRUCT UNNECESSARY PAIRS OF QUATERNIONS
+        \item Coordinate system $\rightarrow $ frame
+        \item Components: Dynamic Broadcaster, Static Broadcaster, Listener
+\end{itemize}
+
+\subsection{Dynamic TF Broadcaster in ROS2}
+
+Dynamic TF broadcasting allows real-time updates to coordinate transforms, providing flexibility in robotic systems.
+\begin{itemize}
+        \item Dynamically updates transform data during runtime
+        \item Useful for scenarios, where relationships between frames change dynamically (e.g. moving robot)
+
+\end{itemize}
+
+\subsection{Static TF Broadcasting in ROS2}
+
+Static TF broadcasting in ROS 2 is used to establish fixed coordinate transforms between frames that remain constant throughout the robot's operation.
+\begin{itemize}
+        \item Defines transforms that do not change during runtime.
+        \item Ideal for representing fixed relationships between frames in a robotic system, e.g. transform between sensros
+        \item Improves efficiency by removing the need for continuous updates
+
+        
+\end{itemize}
+
+\subsection{TF Listening in ROS 2}
+TF listening in ROS 2 allows a node to receive and use real-time coordinate transforms between frames, providing up-to-date spatial information in a robotic system.
+
+\begin{itemize}
+        \item Listens to TF messages to retrieve transforms dynamically
+        \item Essential for tasks requiring knowledge of spatial relationship in real-time
+        \item Enables adaptability in response to changes in the robot's environment.        
+\end{itemize}
+
+
+\section{ROS tools - rqt\_graph}
+\begin{itemize}
+        \item rqt\_graph can visualize the ROS graph of the application
+        \item The ROS graph contains all the running nodes etc.
+\end{itemize}
+
+A
+\section{ROS tools - view\_frames}
+\begin{itemize}
+        \item The tool can be used to visualize the transformation tree of the system
+\end{itemize}
+
+

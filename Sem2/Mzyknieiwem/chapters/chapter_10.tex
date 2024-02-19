@@ -1,0 +1,149 @@
+
+
+\chapter{Non-linear block systems}
+Modeling of nonlinear system is based on the assumption, that
+the system can be described as a composition of a linear dynamic block,
+and a static nonlinear one. The most common example of such a system
+is the Hammerstein system
+\\
+ 
+     %uk -> $\mu()$ -> $\{\gamma_i\}_i^{\infinity}$ - $v_k$ -> sum with noise $z_k$ -> y_k\\
+     Where:
+     \begin{equation}
+         \begin{cases}
+             w_k = \mu(u_k)\\
+             v_k = \Sigma_{i=0}^{\infty} \gamma_i w_{k-i}
+         \end{cases} \rightarrow y_k = \sigma^{\infty}_{i=0}\gamma_i\mu(u_{k-i}) + z_k
+     \end{equation}
+ 
+
+
+
+\section{Regression function}
+For a single dimension, we have:
+\begin{equation}
+    R(u) = E\{y_k \mid u_k = u\} = E\{\gamma_0\mu{u_k}+\overbrace{\Sigma_{i=1}^{\infty}\gamma_i\mu(u_{k-1})}^{\text{History}} + z_k \mid u_k = u \} = \gamma_0\mu(u) + c_1
+\end{equation}
+But for 2:
+\begin{equation}
+    R(u,v) = E\{y_k \mid u_k = u \wedge u_{k-1} = v \} = \gamma_0\mu(u) + \gamma_1\mu(v) + c_2
+\end{equation}
+Here the remaining history is treated as the noise, this way we increase the noise to signal ratio, but at the cost of increasing dimensionality. Since we have to estimate this regression function, we have increased the complexity of estimation from $\mathcal{O}(Nh)$ to $\mathcal{O}{Nh^{2}}$.\\
+An S dimensional regression function is given by:
+\begin{equation}
+    R(u^{(0)},\dots,u^{(S-1)}) = \gamma_0\mu{u^{(0)}} + \gamma_1\mu(u^{(1)}) + \dots + \gamma_{S-1}\mu(u^{(S-1)}) + C_S
+\end{equation}
+For the FIR case (Finite memory) we can assume that $\gamma_i = 0 \text{ for } i \ge S$, where S is a known order. Under this assumption, $C_S = 0$, which can allow us to estimate the regression function using the least squares method.\\
+This however necessitates a priori knowledge about  $\mu(\cdot)$, let us assume that:
+ \begin{equation}
+     \mu(u) = a_1^{*}f_1(u) + \dots a_m^{*}f_m(u)
+ \end{equation}
+ Where the functions $f_i$ are know, linearity independent basis functions(not necessarily orthogonal). 
+ \section{FIR(s)}
+ \begin{equation}
+     \begin{aligned}
+         y_k &= \gamma_0\mu(u_k)+\gamma_1\mu(u_{k-1}) + \dots +\gamma_{s-1}\mu(u_{k-S+1}) + z_k  &\mbox{}\\[1.25ex]
+             &=\gamma_0(a_1f_1(u_k))+\dotsa_mf_m(u_k)&\mbox{}\\[1.25ex]
+         +&\gamma_1(a_1f_1(u_{k_1})+a_2f_2(u_{k-1})+\dots+a_mf_m(u_{k-1}))&\mbox{}\\[1.25ex]
+         +&\vdots&\mbox{}\\[1.25ex]
+         +&\gamma_{s-1}(a_1f_m(u_{k-S+1})+\dots + a_mf_m(u_{k-S+1}))&\mbox{}\\[1.25ex]
+         +&Z_k&\mbox{}\\[1.25ex]
+     \end{aligned}
+ \end{equation}
+ We also have:
+ \begin{equation}
+     y_k = \overbrace{\begin{bmatrix}
+         \gamma_0a_1 \\
+         \vdots \\
+         \gamma_{0}a_m\\
+         \vdots\\
+         \gamma_{S-1}a_1\\
+         \vdots\\
+         \gamma_{S-1}a_m
+ \end{bmatrix}^{T}}^{\theta}
+     \overbrace{
+     \begin{bmatrix}
+         f_1(u_k) \\
+         \vdots\\
+         f_m(u_k)\\
+         f_1(u_{k-1})\\
+         \vdots\\
+         f_1(u_{k-s+1})\\
+         \vdots \\
+         f_m (u_{k-s+1})
+ \end{bmatrix}}^{\phi_K}
+ \end{equation}
+
+Now we have a system, that's linear with respect to $\phi_K$
+\nt{
+ This is possible for the Hammerstein system, but not the Weiner system, where the order of the blocks is reversed.
+}
+ Now we may estimate $\theta$ with the least squares method based on the following equation:
+ \begin{equation}
+     \hat{\theta} = (\phi^{T}_N\phi_N)^{-1}\phi^{T}_N Y_N \xrightarrow[N \rightarrow \infty]{p.1} \theta = \begin{bmatrix}
+         \gamma_0a_1  \\
+         \vdots\\
+         \gamma_0a_m\\
+         \vdots\\
+         \gamma_{S-1}a_1\\
+         \vdots\\
+         \gamma_{S-1}a_m
+     \end{bmatrix}
+ \end{equation}
+By transforming $\theta$ into its scissor(???) matrix, we'll get:
+ \begin{equation}
+    \Theta = \begin{bmatrix}
+        \gamma_0a_1  &\gamma_1a_1 & \cots & \gamma_{S-1}a_1  \\
+        \gamma_0a_2 & \gamma_2 & & \gamma_{S-1}a_2\\
+        \vdots & & &\\
+        \gamma_0a_m & \gamma_1\a_m & \dots & \gamma_{S-1}a_m
+    \end{bmatrix} = \begin{bmatrix}
+        a_1  \\
+        a_2 \\
+        \vdots\\
+        a_m
+    \end{bmatrix} \begin{bmatrix}
+        \gamma_0 & \gamma_1& \dots\gamma_{S-1} \
+    \end{bmatrix}
+\end{equation}
+
+
+\section{SVD - Singular values Decomposition}
+
+\dfn{Eigenvalues}
+{
+    For a square matrix A, the eigenvalues are defined as:
+    \begin{equation}
+        \det(A-\lambda I) = 0
+    \end{equation}
+    If the matrix A is not square, then we can define the eigenvalues using the following observation:
+    \begin{equation}
+        \rank(A) = \rank(A^{T}) = \rank(A^{T}A) = \rank(AA^{T})
+    \end{equation}
+    To define them as:
+    \begin{equation}
+        \det(A^{T}A - \lambda I) = 0
+    \end{equation}
+    Where $\lambda$ is the eigenvalue of  $A^{T}A$, and $\sqrt{\lambda}$ is the eigenvalue of  $A$. This second eigenvalue is always positive.
+}
+
+
+\thm{SVD}
+{
+    Any matrix M can be decomposed as follows:
+    \begin{equation}
+        M_{r\times c} = P_{r\times r} D_{r\times c} Q^{T}_{c\times c}
+    \end{equation}
+    Where D is a diagonal matrix D looks as follows:
+    \begin{equation}
+        D = \begin{bmatrix}
+            \sigma_1 & & \\
+                     & \ddots & \\
+                     & & \sigma_r
+        \end{bmatrix}
+    \end{equation}
+    And both P and Q  are unitary matrices - matrices with each of its rows and column having norm equal to 1, and $P^{T}P = I$
+}
+
+
+

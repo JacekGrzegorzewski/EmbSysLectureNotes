@@ -1,0 +1,72 @@
+\chapter{Power consumption???? 2023-05-23}
+
+\section{Switching power consumption}
+
+\nt
+{
+    $P = V^{2}\times f \times C$
+}
+Because the power is dependant on the square of the voltage, we would like to lower it, but this make our system more susceptible to noise.
+
+\section
+{
+    Sources of power consumption
+}
+\subsection{Static}
+
+\subsection{Dynamic}
+
+
+\chapter{Power reduction of MCU}
+If we want to use an MCU in low power aplications, it must(or would like to have) the following:
+
+\begin{itemize}
+        \item Sleep modes
+        \item Automatic wake-up on time intervals -- usually done with watchdog, a low frequency independent clock, but with low accuracy.
+        \item Power domains
+        \item RAM retention during standby
+        \item Power monitoring
+\end{itemize}
+
+\section{Sleep modes}
+Main sleep modes:
+\begin{itemize}
+        \item Active -- Everything's running
+        \item Idle -- CPU Clock off -- nanoseconds to switch to active
+        \item Standby -- CPU Clock OFF, some peripherals on, but RAM is retained -- microseconds to go back to active
+        \item Backup -- RAM is not kept, so we need to backup the data before going into sleep. Since RAM is not kept,
+            it is not powered, so there are no static losses. This is the most efficient mode, but we need to restart
+            the processors when waking up, so it's slow. -- hundreds of microseconds to go back to active
+\end{itemize}
+\section{Power domains}
+\section{Power monitoring}
+Necessary to ensure that we don't drop below a certain voltage threshold, below which CMOS logic doesn't work properly. 
+\nt{
+VERY IMPORTANT IN BATTERY POWERED SYSTEMS!!!
+
+}
+\section{Power reduction of supporting electronics}
+\begin{itemize}
+        \item Maximize impedance in current paths - increases susceptibility to nosie
+        \item Minimize impedance in high--speed switching paths 
+        \item Minimize leakage currents
+        \item Minimize operating duty cycles
+        
+\end{itemize}
+
+
+
+\chapter{Pipelining}
+There are 3(5) stages of running an instruction on a CPU:
+\begin{itemize}
+        \item Fetch -- get instruction
+        \item Decode -- decode and get data
+        \item Execute -- execute instruction
+        \item sometimes Memory access
+        \item sometimes Write Back
+\end{itemize}
+
+The pipeline's task is to keep all of these stages working all the time.
+
+
+

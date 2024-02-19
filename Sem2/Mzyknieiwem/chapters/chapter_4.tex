@@ -1,0 +1,103 @@
+
+
+
+\chapter{Who knows??? 26.10	09:18:59-ZEST}
+
+\dfn{$\mathbb{R}^{3}$ - 3D euclidean space}
+{
+    A 3D euclidean space consists of a basis of 3 vectors: $e_1, e_2, e_3$\\
+    This basis need not be orthogonal, but if it is, the following holds:
+    \begin{equation}
+        \begin{cases}
+        \vec{e}_i\dot\vec{e}_j = 0,\; i\neq j\\
+        \vec{e}_i\dot\vec{e}_j = 1,\; i = j
+        \end{cases}
+    \end{equation}
+    Furthermore, if the above holds and $\norm{\vec{e}_i} = 1$.
+    For any vector $\vec{v}$, its components with respect to a given basis are given as:
+     \begin{equation}
+        \begin{cases}
+            v_1 = \vec{v}\dot\vec{e}_1 = <\vec{v},\vec{e}_1>\\
+            v_2 = \vec{v}\dot\vec{e}_2 = <\vec{v},\vec{e}_2>\\
+            v_3 = \vec{v}\dot\vec{e}_3 = <\vec{v},\vec{e}_3>\\
+        \end{cases}
+    \end{equation}
+    Which gives the vector $\vec{v}$ as:
+     \begin{equation}
+         \vec{v} = <\vec{v},\vec{e}_1>\vec{e}_1 + <\vec{v},\vec{e}_2>\vec{e}_2  <\vec{v},\vec{e}_3>\vec{e}_3
+    \end{equation}
+    And the square of its norm is:
+    \begin{equation}
+        \vec{v}\dot\vec{v} = v_1^{2} + v_2^{2} + v_3^{2}
+    \end{equation}
+}
+
+\dfn{Scalar product of 2 functions}
+{
+    Given 2 functions $\phi_1, \phi_2 $ their scalar product is given by:
+    \begin{equation}
+        \phi_1(x)\dot\phi_2(x) \equiv \int_D \phi_1(x) \phi_2(x)dx
+    \end{equation}
+    \ex{Orthogonal functions}
+    {
+        A trivial example would be a 2 step functions which are equal to 1 over different subsets of the real line.\\
+       A more involved an useful example would be the orthogonality of  $\sin$ and $\cos$
+    }
+}
+\dfn{$L_2$ class of functions}
+{
+    We say that $f(x) \in L_2$ if $\int f^{2}\,dx < \infty$
+}
+
+
+\dfn{An orthogonal basis of functions}
+{
+    We are given(google it) a set of orthogonal functions:
+    \begin{equation}
+        \{\phi_i(x)\}^{\infty}_{i=1}
+    \end{equation}
+    A function $f(x)$ can then be written in terms of that basis as follows:
+     \begin{equation}
+         f(x) = \Sigma_{i=1}^{\infty} a_i\phi_i(x)\;\text{where: }\; a_i = f(x) \dot\phi_i(x)
+    \end{equation}
+
+    In this course, we will assume that $f(x)$ is a probability density function. If we assume so, then:
+    \begin{equation}
+        \begin{aligned}
+            a_i &= \int f(x)\phi_i(x)dx &= E\phi_i(x)
+        \end{aligned}
+    \end{equation}
+    Where $E\phi_i(x)$ means the expected value of $\phi_i(x)$.
+}
+
+This means that we can recover the probability density of the original function by obtaining coefficients $a_i$, if we are given a set of observations. There are 2 problems with this, first we need an infinite amount of coefficients,
+and second we need  $f(x)$ to find these expected values.
+The first part is of little consequence when we're only approximating. 
+The second can be dealt with by just assuming that we have to take the averages and take them as estimators of the actual expected values:
+\begin{equation}
+    \hat{x}_i = \frac{1}{N}\Sigma_{k=1}^{N}\phi_i(x_k),\; i = 1,2,\cdots 
+\end{equation}
+
+Which ultimately gives an estimator of $f(x)$ as:
+ \begin{equation}
+     \hat{f}(x) = \Sigma_{i=1}^{S} \hat{a}_i\phi_i(x)
+\end{equation}
+Where S is an integer called \textbf{Scale}. No matter what S we choose, as long as it is not $\infty$ there will be approximation errors. They are not of much consequence however:
+\begin{equation}
+    \begin{aligned}
+        \norm{f(x)}&=f(x)\cdot f(x)&\mbox{}\\[1.25ex]
+        f(x)\cdot f(x)&\equiv \int_D f(x)f(x)&\mbox{}\\[1.25ex]
+        \int_D f(x) f(x) dx&=\int_D(a_1\phi_1(x)+\cdots )^{2}\,dx&\mbox{}\\[1.25ex]
+        \int_D(a_1\phi_1(x)+\cdots )^{2}\,dx&=\Sigma^{\infty}_{i=1}a_i^{2}&\mbox{Here we assumed orthonormality}\\[1.25ex]
+    \end{aligned}
+\end{equation}
+We know then, that $\Sigma^{\infty}_{i=1}a_i^{2} < \infty$, which means that the sequence $a_i \to 0$, so every new element of it will add less and less information about the true function.
+In fact, we can guarantee the folowing:
+\begin{equation}
+    \begin{cases}
+        S(N) \xrightarrow[\text{as} N \to \infty]{\longrightarrow} \infty\\
+        \frac{S(N)}{N} \to 0
+    \end{cases} \rightarrow  \hat{f}(x) \xrightarrow[\text{p.1}]{n \to \infty} f(x)
+\end{equation}
+
+

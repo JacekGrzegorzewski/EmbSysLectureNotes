@@ -1,0 +1,40 @@
+\documentclass{report}
+
+\input{tex/preamble}
+\input{tex/macros}
+\input{tex/letterfonts}
+
+
+\title{\Huge{Intermediate Project}\\ Jacek Grzegorzewski}
+\author{\huge{Biquaterionic polynomial decomposition,\\
+and its application to kinematics and manipulator synthesis}}
+
+
+\includeonly{%
+             tex/preabmle,
+             tex/macros,
+             tex/letterfonts,
+             chapters/chapter_1,
+             chapters/chapter_2,
+             chapters/chapter_3,
+             }
+
+
+\begin{document}
+\maketitle
+\newpage% or \cleardoublepage
+% \pdfbookmark[<level>]{<title>}{<dest>}
+\pdfbookmark[section]{\contentsname}{toc}
+\tableofcontents
+\pagebreak
+
+\include{chapters/chapter_1.tex}
+\include{chapters/chapter_2.tex}
+\include{chapters/chapter_3.tex}
+
+
+
+\nocite{*}
+\printbibliography %Prints bibliography
+
+\end{document}

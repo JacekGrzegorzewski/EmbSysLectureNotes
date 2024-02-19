@@ -1,0 +1,193 @@
+\chapter{Duality}
+\dfn{Duality}
+{
+    Let us write an LP problem in the form introduced before
+    \begin{equation}
+        \begin{cases}
+        \text{Maximize  }\; c^{T}x\\
+        \text{Subject to  }\; Ax\le b, x \ge 0  
+        \end{cases}
+    \end{equation}
+    We will call this problem the \textit{primal program} and denote it as \textit{PP}\\
+    The following problem ( described using the same vectors and matrices)
+
+    \begin{equation}
+        \begin{cases}
+        \text{Minimize  }\; b^{T}y\\
+        \text{Subject to  }\; A^{T}y\ge c, y \ge 0  
+        \end{cases}
+    \end{equation}
+    will be called its \textit{dual program} (or its dual) and denoted by \textit{(DP)}. The optimal values of the two problems will be denoted as:
+    \begin{itemize}
+        \item $\text{Opt}$(PP)
+        \item $\text{Opt}$(DP)
+    \end{itemize}
+}
+
+\thm{Weak duality theorem}
+{
+    The following implications are true for any linear programm (PP) and its dual(DP):
+    \begin{itemize}
+        \item (PP) is unbounded $\rightarrow $ (DP) has no feasible solutions
+        \item (DP) is unbounded $\rightarrow $ (PP) has no feasible solutions
+        \item Both(PP) and (DP) are bounded and have feasible solutions\\
+            $\rightarrow \text{Opt}(PP) \le \text{Opt}(DP)$
+    \end{itemize}
+    What can we use the above theorem for?\\
+    If we just want to bound the value of (PP), we only need to find any feasible solutions of (PP)(bound below) and (DP) (bound above). This can be used in practice if the problem is too large to be tractable.
+}
+
+\thm{Strong duality theorem}
+{
+    If either of (PP) and (DP) has a feasible solution and is bounded, the same is true for the other one. Moreover, in this case
+    \begin{equation}
+        \text{Opt}(PP) = \text{Opt}(DP)
+    \end{equation}
+    \nt{Important fact: The solution to (DP) can be read from the final simplex tableau of (PP) in the following way:
+    \begin{itemize}
+        \item each dual variable $y_k$ corresponding to a basic variable $z_k$ is equal to \textbf{zero}
+        \item each dual variable $y_k$ corresponding to a non-basic variable $z_k$ standing in column j of the simplex tableau \textbf{is the equal to the value in the bottom line of this column}
+    \end{itemize}
+
+    }
+By the above, if solving (DP) is easier than solving(PP) (e.g. when the number of constraints is much bigger than the number of variables), we should solve(DP).\\
+Whats more, the solution to (DP) can be used in so-called \textbf{Sensitivity analysis}
+
+}
+
+\qs{Sensitivity analysis}
+{How opt(PP) changes if we change the RHS of the constraints by a little?}
+
+\thm{}
+{
+    Suppose the problem (PP') is defined as follows:
+    \begin{equation}
+        \begin{cases}
+        \text{Maximize  }\; c^{T}x\\
+        \text{Subject to  }\; Ax\le b+\Delta b, x \ge 0  
+        \end{cases}
+    \end{equation}
+    Then for $\Delta b$ small enough, Opt(PP') can be computed using the formula:
+     \begin{equation}
+         \text{Opt}(PP') = \text{Opt}(PP) + \Delta b^{T}y^{*}
+    \end{equation}
+    Where $y^{*}$ is the optimal solution of (DP)
+    \nt{What "small enough" means can be computed from the simplex tableau, but the formula is complicated, and as such not stated here. Most professional solvers can do it for us.}
+}
+
+\ex{}
+{
+    Given once again the problem
+    \begin{equation}
+        \begin{aligned}
+            \text{Maximize}&10x_1+9x_2&\mbox{}\\[1.25ex]
+            \text{Subject to }&6x_1+5x_2&\le 60\mbox{}\\[1.25ex]
+            &x_1+x_2&\le 15\mbox{}\\[1.25ex]
+            &x_1&\le 8\mbox{}\\[1.25ex]
+            &x_1,x_2&>0\mbox{}\\[1.25ex]
+        \end{aligned}
+    \end{equation}
+    Suppose that the objective function is denominate in USD, and that we can increase the RHS of each constraint by 0.5 for \$1.\textbf{Which one should be increase, if any?}
+\\
+The final simplex tableau looked like this:
+    \begin{center}
+    \begin{tabular}{|cc|c|c|}
+    \hline
+    $-z_2$ & $-z_1$ & 1 & \\
+    \hline
+    $\frac{6}{7}$& $-\frac{1}{7}$ & $\frac{30}{7}$ &$x_2$ \\
+    $\frac{5}{7}$& $-\frac{2}{7}$ &$ \frac{11}{7}$ & $z_3$ \\
+    $-\frac{5}{7}$&$ \frac{2}{7} $&$ \frac{45}{7}$ & $x_1$ \\
+    \hline
+    $\frac{4}{7}$ &$ \frac{11}{7} $& $\frac{720}{7}$ &$v $\\
+    \hline
+    \end{tabular}
+    \end{center}
+    From this table we can read the optimal solution of (DP) as:
+    \begin{equation}
+        \begin{cases}
+            y_1 = \frac{11}{7}\\
+            y_2 = \frac{4}{7}\\
+            y_3 = 0
+        \end{cases}
+    \end{equation}
+    Or in vector form $y^{*} = \begin{bmatrix}
+        \frac{11}{7} & \frac{4}{7} & 0 
+    \end{bmatrix}$
+This means that:
+\begin{itemize}
+    \item If we increase the RHS of 1st constraint by 0.5, we gain $\frac{11}{7}\times 0.5 = \frac{11}{14}$, which is less than \$1 that we pay for it.
+    \item If we increase the RHS of 2nd constraing by 0.5, we gain $\frac{4}{7}\times 0.5 = \frac{2}{7}$, which is still less than \$1 that we pay for it.
+    \item If we increase the RHS of the 3rd constraint, we gain nothing, but still have to pay.
+\end{itemize}
+}
+
+\section{Alternatives to the Simplex algorithm}
+Computational complexity of Simplex:
+\begin{itemize}
+        \item worst-case complexity: exponential
+        \item expected complexity: polynomial
+\end{itemize}
+Alternatives:
+\begin{itemize}
+    \item Modifications of the Simplex procedure: 
+        \begin{itemize}
+            \item dual simplex
+            \item primal-dual method
+    \end{itemize}
+\item Interior-point methods:
+    \begin{itemize}
+        \item Karmarkar and Dinkin (affine scaling) methods (\textbf{fist polynomial-time algorithms usd in practice})
+        \item barrier method
+        \item primal-dual interior-point method(\textbf{reasonably faster then Simplex for large-scale problems})
+    \end{itemize}
+\item Khachiyan's ellipsoid method(\textbf{polynomial, but slow in practice})
+\end{itemize}
+
+
+\begin{algorithm}[H]
+\KwIn{This is some input}
+\KwOut{This is some output}
+\SetAlgoLined
+\SetNoFillComment
+\tcc{This is a comment}
+\vspace{3mm}
+The Edmonds-Karp version of the algorithm looks as follows:\\
+\For{$(v_1,v_2) \in E$}
+{
+    \uIf{$(v_1,v_2) \not \in E$}
+    {
+        add $(v_2,v_1)$ to E wth $c((v_2,v_1)) := 0$
+    }
+}
+
+\Repeat
+Find a path $P = \{\e_1,\cdots ,e_k\}$ from s to t with positive capacit
+consisting of the smallest number of integers
+
+\Untill{aasd}
+
+
+$x \leftarrow 0$\;
+$y \leftarrow 0$\;
+\uIf{$ x > 5$} {
+    x is greater than 5 \tcp*{This is also a comment}
+}
+\Else {
+    x is less than or equal to 5\;
+}
+\ForEach{y in 0..5} {
+    $y \leftarrow y + 1$\;
+}
+\For{$y$ in $0..5$} {
+    $y \leftarrow y - 1$\;
+}
+\While{$x > 5$} {
+    $x \leftarrow x - 1$\;
+}
+\Return Return something here\;
+\caption{what}
+\end{algorithm}
+
+
+

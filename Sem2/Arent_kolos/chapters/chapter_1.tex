@@ -1,0 +1,110 @@
+\chapter{Something}
+\section{Basic feedback}
+
+A general feedback system is composed of:
+\begin{itemize}
+        \item r - reference signal
+        \item $\phi$ - input output equation of the plant
+        \item y - output of the whole system
+        \item  $\psi$ - I/O of the feedback compensator
+        \item e - error
+        
+\end{itemize}
+By composing $\gama = \psi \dot \phi$ we get what's called a loop IO map, from which we obtain a new
+equation called the feedback equation.
+
+
+\\
+The feedback of the loop IO map is most effective if  $\gamma$ has large gain.
+When that is the case, we can be sure that $\gamma(e) \approx r$, which is close to the idol case.
+This is under the assumption that e is bounded.
+
+\\
+The robustness of the system states that despite disturbances we have  $\gamma(e) \approx r$.
+By rewriting the original system subject to disturbances d, we get a different system:
+ \begin{equation}
+    z = d - \delta(z)
+\end{equation}
+Here again if the gain is large, we say that the output z is insensitive to the disturbance d.
+\\
+This high gain property  of $\delta$ decreases the gain of the whole system, but makes the linear
+bad much wider. This is essentially the origin of control, as the concept of a feedback loop for
+an electronic vacuum tube system was stated in a patent as a way to extend the linear band of the
+system. 
+
+\section{Robustness of feedback}
+Robustness is defined as the system remaining stable under changes to the plant and compensator.
+
+Robustness of feedback deals with some properties of the Nyquist plot of a known, for the moment open-loop stable, system which
+has been closed. We need to keep the Nyquist plot as far away from  the point -1 as possible to ensure good behaviour of the system.
+\\
+The classical approach used 2 parameters to indicate this closeness:
+ \begin{itemize}
+        \item $\phi_m$ - phase margin
+        \item  $k_m$ - gain margin
+\end{itemize}
+These however were found to be insufficient to fully describe robustness, so 2 more were considered:
+\begin{itemize}
+        \item $s_m$ - modolus margin
+        \item  $\tau_m$ - delay margin
+\end{itemize}
+
+The classical approach establishes robustness by constraining minimum values of the gain and phase margin.\\
+Adequate values of these margins give not only robustness, but also satisfactory response characteristics.
+This is because if the Nyquist plot is close to -1, we get zeros close to the imaginary axis.
+
+ 
+\subsection{Open gain}
+
+The above specifications brake down for open-loop unstable systems and MIMO systems, as such,
+new criterion's are needed. One such criterion is the Doyle criterion. Say the system is perturbed
+from the nominal loop gain $L_0$ to the actual loop gain $L$. Doyle's criterion states, that the system 
+remains stable under perturbations not affecting the number of open-loop positive poles if:
+ \begin{equation}
+     \frac{ \norm{L - L_0}}{\norm{L_0}} < \frac{1}{\norm{T_0}}
+\end{equation}
+Where $T_0$ is the nominal complimentary sensitivity of the closed loop system:
+\begin{equation}
+    $T_0 = \frac{L_0}{1+L_0}$
+\end{equation}
+This is merely a sufficient condition.
+
+There is another criterion  called the inverse loop stability, which is exactly the same as
+the Doyle one but deals with inverses on the left side, and the right side has to be less than $\frac{1}{\norm{S_0}}$.
+The relation between $S_0$ and $T_0$ is $S_0 = 1-T_0$.
+
+To make the sytem stable, we need both $S_0$ and $T_0$ to be small, which is impossible since the both add up to 1.
+A solution to this is to make them small in different frequency ranges. Usually $S_0$ is small at low frequencies, while
+$T_0$ at high frequencies.
+
+\section{Guillemin-Truxal procedure}
+
+In this procedure, we we assume a known plant $P$. The closed loop transfer function then is:
+ \begin{equation}
+    H = \frac{PC}{1+PC}
+\end{equation}
+
+We then choose some desired $H$, and solve for C:
+ \begin{equation}
+    C = \frac{1}{P} \frac{H}{1-H}
+\end{equation}
+This compensator should give the desired H. 
+Choosing an appropriate H is not a simple take, usually one starts by investigating H for
+low order compensator C. More specifically one analyses a closed loop system of type k, where k is the number
+of poles at the origin.
+\\
+Then one still has a lot of free variables to determine for $H$. There are multiple procedures to choose these
+coefficients.
+Some filters which can be chosen include:
+ \begin{itemize}
+        \item Butterworth polynomials
+        \item Chebychev polynomials
+        \item Elliptic(Chebychev) rational funcitons
+        \item ITAE standard forms
+        \item etc.
+\end{itemize}
+
+\section{Adaptice Control}
+Mzyk i dupa
+\section{Adaptive pole placement}
+

@@ -1,0 +1,243 @@
+
+\chapter{Linear Programming -- I}
+
+
+\dfn{Linear programming(LP) problem}
+{
+    An optimization problem is called a linear programming problem of it can
+    be described as follows:
+    \begin{equation}
+        \begin{cases}
+        \text{Maximize  }\; c^{T}x\\
+        \text{Subject to  }\; Ax+b\le 0, x > 0  
+        \end{cases}
+    \end{equation}
+    
+    The problem can be stated in a matrix form:
+    \ex{Matrix form}
+    {
+        \begin{equation}
+            \begin{cases}
+                \text{MAximize  }\; \begin{bmatrix}
+                    10 &9  
+                \end{bmatrix} \begin{bmatrix}
+                     x_1\\x_2
+                \end{bmatrix}
+                \\
+                \text{Subject to ...}
+            \end{cases}
+        \end{equation}
+    }
+}
+
+\section{Equivalent forms of LP}
+\begin{itemize}
+    \item A maximization and a minimization problem can be stated using the same constraints by using minus signs appropriately.
+    \item An equivalence constraint can be stated as 2 inequalities.
+    \item An unconstrained variable problem($x \in \mathbb{R}^{n}$) can be modeled as a 2 variable problem, with for example x being the positive part, and y the negative part.
+\end{itemize}
+
+\section{Solving LP problems}
+\subsection{2D problems}
+Any 2D LP problem can be solved geometrically.\\
+HERE BE PICTURE\\
+To solve a 2D problem simply draw a polygon defined by the constraints, the set of points inside this polygon is called \textit{The feasible set}, all solutions will come from this set. More specifically, all we have to do is evaluate the goal function at the vertices of the polygon, since the maximal value can only occur there. \textbf{This principle can be extended to the multidimensional case!}\\
+Whats more, we can simply follow the path along the vertices of the polygon defined by an increase of the objective function to find the solution.
+\nt
+{
+    These observations together lead to the definition of the \textit{Simplex Algorithm}. The simplest algorithm for solving LP problems.
+}
+\subsection{Simplex Algorithm}
+\qs{}{What does it mean algebraically that we are in a vertex of the feasible set}
+\sol We satisfy exactly n constraints with equality
+    If we introduce additional variables -- called slack variables\\
+    $z_1 = b_1 -A_1x,\; \ddots,\; z_m = b_m - A_mx$, The feasible set can be described by the set of inequalities $x \ge 0,\; z \ge 0$ and any vertex an be descrived as apoint where exactly n of the variables  $x_1,\cdots ,x_n,z_1,\cdots ,z_m$ equal 0.
+    \nt{Not every point defined that way is within the feasible set, only those points which satisfy the constraint inequalities are vertices of the polygon}.
+
+ \dfn{Simplex tableau}
+ {
+     The (short) simplex tablea at the beginning of the algorithm looks like this:
+     \begin{center}
+     \begin{tabular}{|cccc|c|c|}
+
+     \hline
+     $-x_1$ & $-x_2$ & $\cdots $& $-x_n$ & 1 &  &\\
+     \hline
+     $a_{11}$ & $a_{12}$ & $\cdots $& $a_{1n}$ &$b_1$ & $z_1$\\
+     $\vdots$ &  $\vdots$ & & $\vdots$ &  $\vdots$ &  $\vdots$\\
+     $a_{m_1}$ & $a_{m_2}$ & $\cdots $ & $a_{mn}$ &  $b_m$ &  $z_n$\\
+     \hline
+     $-c_1$ & $-c_2$ & $\cdots $ & $-c_n$ & 0 & v\\
+     \hline
+     \end{tabular}
+     \end{center} 
+
+     The interpretation of which is:
+     \begin{itemize}
+         \item ...
+         \item top row(with variable names) multiplied using the scalar product by any other ow, except the variable name column, gives what stands in the variable column, eg. $-x_1a_{11} + \cdots -x_na_{1n} + b_1 = z_1$
+     \end{itemize}
+
+ }\clearpage
+ To move between variables we have to perform what's called a \textbf{pivot}.
+ Let's call all the elements of the tableau before the pivot $d_{ij}$, all those after it, $\hat{d}_{ij}$.\\
+ If the basic variable in row  $i_0$ is interchanged iwth the non-baic variable in column $j_0$ we compute the new tableai according to the rules:
+
+ \begin{equation}
+    \begin{aligned}
+        \hat{d}_{i_0j_0}&:=\frac{1}{d_{i_0j_9}}&\mbox{}\\[1.25ex]
+        \hat{d}_{i_0j}&:= \frac{d_{i_0j}}{d_{i_0j_0}}&\mbox{for $j \neq j_0$}\\[1.25ex]
+        \hat{d}_{ij_0}&:= -\frac{d_{ij_0}}{d_{i_0j_0}}&\mbox{for $i \neq i_0$}\\[1.25ex]
+        \hat{d}_{ij}&:= d_{ij} - \frac{d_{i_0j}d_{d_{ij_0}}}{d_{i_0j_0}}&\mbox{for $i \neq i_0,\; j \neq j_0$}\\[1.25ex]
+    \end{aligned} 
+ \end{equation}
+ \nt{The above describes the Pivot function}
+\begin{algorithm}[H]
+\KwIn{This is some input}
+\KwOut{This is some output}
+\SetAlgoLined
+\SetNoFillComment
+\tcc{This is a comment}
+\vspace{3mm}
+The first phase:\\
+\While{ there is $i\le m$ s.t.  $d_{i,n+1} < 0$}
+{
+    $\hat{i} := \max{i \le m \; : \; d_{i,n+1} < 0}$\\
+    $j_0 = \min_{j=1,\dots,n }{j \; : \; d_{\hat{i}j}<0}$\\
+    \uIf{ such $j_0$ does not exist}
+    {
+    error(feasible set is empty)
+    }
+    Find $i_0$ s.t.:\\
+$\frac{d_{i_0,n+1}}{d_{i_0j_0}} = \min_{i=\hat{i},\dots,m}\frac{d_{i,n+1}}{d_{i,j_0}}>0$\\
+pivot(D,i_0,j_0)\\
+}\\
+The main phase:\\
+\While{$j\le n$ s.t.  $d_{m+1,j}<0$}
+{
+    Find $j_0$ s.t. $d_{m+1,j_0} = \min_{j=1,\cdots ,n}{d_{m+1,j} < 0}$\\
+    Find $i_0$ s.t. $d_{i_0j_0} > 0$ and $\frac{d_{i_0,n+1}}{d_{i_0j_0}} = \min_{i=1,\dots,m}{\frac{d_{i,n+1}}{d_{i,j_0}} > 0 \; : \;d_{i,j_0} > 0}$\\
+    \uIf {such $i_0$ does not exists} 
+    {error(objective function is unbounded)}
+    pivot(D,$i_0$,$j_0$)
+
+}
+\Return 
+\caption{Simplex algorithm}
+\end{algorithm}
+\subsubsection{Special cases 2023-10-25}
+The first special case happens when the feasible set is empty, this is handeled by the first phase. The second phase handles the case when the feasible set is unbounded and there is no solution, as our goal increases indefinitely for example.\\
+A third case can occur when more than n different hyperplanes intersect at a single point. The simplex algorithm can then enter into an infinite loop.
+This case is not covered in any way by the simplex algorithm. In theory this is a problem, but in practice this is handeled by perturbing the $b$ values in the Simplex tableau. This will not change the optimal value very much,or not at all even, but will remove the intersection.
+
+\ex{Example from last lecture}
+{
+    \begin{equation}
+        \begin{aligned}
+            \text{Maximize}&10x_1+9x_2&\mbox{}\\[1.25ex]
+            \text{Subject to }&6x_1+5x_2&\le 60\mbox{}\\[1.25ex]
+            &x_1+x_2&\le 15\mbox{}\\[1.25ex]
+            &x_1&\le 8\mbox{}\\[1.25ex]
+            &x_1,x_2&>0\mbox{}\\[1.25ex]
+        \end{aligned}
+    \end{equation}
+    First we create a tableau:
+
+    \begin{center}
+    \begin{tabular}{|cc|c|c|}
+    \hline
+    $-x_1$ & $-x_2$ & 1 & \\
+    \hline
+    $6 & 5 & 60 &z_1 \\
+    1 & 2 & 15 & z_2 \\
+    \boxed{1} & 0 & 8 & z_3 \\
+    \hline
+    -10 & -9 & 0 &v $\\
+    \hline
+    \end{tabular}
+    \end{center}
+    There is no Phase 1 -- all the values in the last column are positive.
+    We begin Phase 2 with the following pivot marked with a box in the original table.
+
+    \begin{center}
+    \begin{tabular}{|cc|c|c|}
+    \hline
+    $-z_3$ & $-x_2$ & 1 & \\
+    \hline
+    $-6 & \boxed{5} & 12 &z_1 \\
+    -1 & 2 & 7 & z_2 \\
+    1 & 0 & 8 & x_1 \\
+    \hline
+    10 & -9 & 80 &v $\\
+    \hline
+    \end{tabular}
+    \end{center}
+Proceeding again as before by pivoting about the boxed number:
+    \begin{center}
+    \begin{tabular}{|cc|c|c|}
+    \hline
+    $-z_3$ & $-z_1$ & 1 & \\
+    \hline
+    $-\frac{6}{5}$ & $\frac{1}{5}$ & $\frac{12}{5}$ &$z_1$ \\
+    $\boxed{\frac{7}{5}}$ & $\frac{-2}{5}$ & $\frac{11}{5}$ & $z_2$ \\
+    $1$ & $0$ & $8$ & $x_1$ \\
+    \hline
+    $ \frac{-4}{5}$ & $\frac{9}{5}$ & $\frac{508}{5} $&$v$\\ 
+    \hline
+    \end{tabular}
+    \end{center}
+Another negative was introduced in the last row, which is not something unexpected. Again as before:
+    \begin{center}
+    \begin{tabular}{|cc|c|c|}
+    \hline
+    $-z_2$ & $-z_1$ & 1 & \\
+    \hline
+    $ \frac{6}{7}$ & $-\frac{1}{7}$ & $\frac{30}{7}$ &$x_2$ \\
+    $\frac{5}{7}$ & $-\frac{2}{7}$ &$ \frac{11}{7}$ & $z_3$ \\
+    $-\frac{5}{7}$ &$ \frac{2}{7} $&$ \frac{45}{7}$ & $x_1$ \\
+    \hline
+    $\frac{4}{7}$ &$ \frac{11}{7} $& $\frac{720}{7}$ &$v $\\
+    \hline
+    \end{tabular}
+    \end{center}
+There are no negatives in the last row, so the procedure finishes.
+We can read the value of the objective function on the left of $v$, while the values of the variables appear to the left of $x_1$ and $x_2$(if the procedure finished with variables in to top row, they would be zeros).
+So ultimately:
+\begin{equation}
+    \begin{cases}
+        x_1 = \frac{45}{7}\\
+        x_2 = \frac{30}{7}\\
+        10x_1+9x_2 = \frac{720}{7}
+    \end{cases}
+\end{equation}
+}
+%
+%\ex{Different example}
+%{
+%    ...
+%
+%    \\
+%    \\
+%    Now the first phase is necessary:
+%
+%    \begin{center}
+%    \begin{tabular}{|cc|c|c|}
+%    \hline
+%    $-x_1$ & $-x_2$ & $1$ &\\
+%    $-1$ &$1$ &$-1$ & $z_1$ \\
+%    $0$ & $-1$ & $-2$ & $z_2 \leftarrow \hat{i}$\\
+%    $-1$ & \boxed{1} & 1 & $z_3 \leftarrow i_0$\\
+%    1 & 0 & 4 & $z_4$
+%    \hline
+%    \hline
+%    \end{tabular}
+%    \end{center}
+%
+%    ...
+%    We did the step 3 times, after which it the same procedure as before follows. Didn't habe the time to write it down, as apparently you can't lock a whole row of a table in mathmode :(.
+%}
+
+
+
+
+

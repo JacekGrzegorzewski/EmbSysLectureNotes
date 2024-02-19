@@ -1,0 +1,140 @@
+
+\chapter{Heuristic optimization algorithms}
+
+
+
+\dfn{Heuristic algorithm}
+{
+    WE call an algorithm \textit{Heuristic}, if it is designed to solve a problem in a faster or more efficient way than
+    traditional methods by sacrificing accuracy and completeness for speed.
+
+    For heuristic algorithms:
+    \begin{itemize}
+            \item We are usually not 100\% sure that we ahve reached the correct solution after the end of the algorithm
+            \item Instead, we have a high probability that we obtain a good solution in a few iterations.
+    \end{itemize}
+}
+\section{When to use}
+\begin{itemize}
+        \item For large scale problems when the complexity of classical algorithms is to high to make the tractable in a sensible  time, e.g. for large-scale discrete optimization problems (even ILP can quickly become intractable with traditional methods)
+        \item As an upper level of two-level procedures - we use heuristic algorithm to find the neighbourhood of the solution and then improve it using some classical approach.
+
+\end{itemize}
+
+\section{Types of heuristic algorithms}
+\begin{itemize}
+        \item Simple heuristics (The algorithm is so simple, it can be specified in every detail)
+        \item Meta-heuristics (Only general outline of the algorithm is specified - the details are tailored to the problem being solved).
+        \item Trajectory-based (we create a trajectory leading to a possible solution)
+        \item Population-based (we work with a number of points(a population) which interact with each other creating a new, better population)
+        
+\end{itemize}
+Simple heuristics:
+\begin{itemize}
+        \item Hill climbing
+        
+\end{itemize}
+Trajectory-based metah-heuristics:
+\begin{itemize}
+        \item Iterated local search
+        \item Simulated annealing
+        \item Tabu search
+\end{itemize}
+Population-based meta-heuristics:
+\begin{itemize}
+        \item Genetic optimization
+        \item Particle swarm optimization
+        \item Ant colony optimization
+\end{itemize}
+
+
+
+\section{Hill climbing}
+\begin{itemize}
+        \item Discrete search space
+        \item For each point, a neighbourhood is defined
+        \item We start from some point $x_0$ 
+        \item At step k search through the list of neighbours of $x_k$, choosing either the neighbour who improves the value of the 
+            objective function f by the biggest margin ( \textit{Greedy search}) or the first (in search order) neighbour improving the value of f( \textit{Anxious search}) 
+        \item We end when no movement is possible
+\end{itemize}
+How the neighbourhood is defined?
+\begin{itemize}
+        \item General rules: Always defined in the same way. Contains a finite number of feasible solutions, and gives the possibility of getting from any feasible solution to any other one.
+        \item In practice, its definition depends mostly on the type of problem we're solving:
+            \begin{itemize}
+                \item When optimizing in $\mathbb{R}^{n}$ we may choose a $2n-\text{point}$ or  $(3^{n}-1)-\text{point}$ neighbourhood
+                \item  In the traveling salesman problem we look for a route through k towns. Here a neighbourhood of a given route may contain all the routes with two towns replaced with each other.
+                \item When we optimize on a graph, a neighbourhood may contain all the point connected to the current solution with an edge.
+            \end{itemize}
+\end{itemize}
+Main problem with hill climbing:
+Useful in finding a local minimum.
+
+
+\section{Iterated local search}
+\begin{itemize}
+        \item We do a local search starting from some $x_0$ using hill climbing
+        \item When we have reached a solution, we perturb it and repeat the local search starting from the new point.
+        \item The solution is the best of the results found.        
+\end{itemize}
+
+Local search with variable neighbourhood:
+\begin{itemize}
+        \item We do local search starting from some $x_0$ using hill climbing.
+        \item After a fixed number of steps or when we have reached a solution, we redefine the neighbourhood and continue the search from the point reached
+        \item Usually the successive definitions of neighbourhoods are such that the latter contain more points.
+        
+\end{itemize}
+
+\section{Simulated annealing}
+\begin{itemize}
+        \item As in hill climbing, we work with a discrete space with neighbourhoods defined for any point.
+        \item We start from some point $x_0$ 
+        \item At any step k, we choose a candidate x at random from the neighbourhood of $x_k$ 
+        \item Then we take $x_{k+1} = x$ with probability:
+             \[
+                 P(x_k,x) = \min{ \{1,\text{exp}(\frac{f(X)-f(x_k)}{T_k})\}}
+                 
+            .\] 
+            And with remaining probability $x_{k+1 = x_k}$
+        \item $T_k$ in the above expression is the \textit{temperature} at iteration $k$. The temperatures $T_k$ decrease from iteration to iteration. Typically, $T_{k+!} = \alpha T_k$ for some  $\alpha \in (0,1)$ or  $T_{k+1} = \frac{T_k}{1+\beta T_k}$ for $\beta > 0$ is defined in such a way, that we go down from some  $T_{\text{Max}}$ to  $T_{\text{min}}$ in some predefined number of iterations.
+\end{itemize}
+
+The main idea of simulate annealing is the following:
+\begin{itemize}
+        \item  At the beginning of the algorithm we decrease the value of f with high probability.
+        \item Towards the end of the algorithm we only take into account the candidates which improve the value of $f$
+
+        
+\end{itemize}
+In that way:
+\begin{itemize}
+        \item At the beginning we search for a neighbourhood of the global maximizer.
+        \item Later we refine the search
+        
+\end{itemize}
+
+
+\section{Tabu search}
+The main idea of tabu search is to improve search in such a way that:
+\begin{itemize}
+        \item  We are not limited to the moves which improve the value of the objective function as in hill climbing.
+        \item We avoid cycling, which is typical if we allow for some limited decrease in the value of f.
+\end{itemize}
+
+This is do be by using the memory about the search so far in the following way:
+\begin{itemize}
+        \item  We create a list of moves which are forbidden (tabu list). We choose next iterate from the neighbourhood limited to points outside the list.
+        \item At each step the tabu list is adjusted
+        
+\end{itemize}
+
+\dfn{Tabu list}
+{
+    Tabu is a list of elements of the form $(\text{attribute}, \text{cadence}$, where attribute i some characteristics of x which is forbidden and cadence is the number of moves for which it is forbidden.
+}
+
+
+\section{Genetic optimization}
+

@@ -1,0 +1,52 @@
+\documentclass{beamer}
+
+\usepackage{multicol}
+\usepackage{hyperref}
+\usepackage[T1]{fontenc}
+\usetheme{Warsaw}
+
+%\input{tex/preamble}
+\input{tex/macros}
+
+
+\definecolor{brightred}{rgb}{.9,.1,.0}
+\usecolortheme[named=brightred]{structure}
+
+
+\title{Biquaterionic polynomial decomposition}
+\author{Jacek Grzegorzewski}
+\date{26/27.11.2023}
+
+\setbeamercovered{transparent=5}
+
+
+\includeonly{%
+             tex/preabmle,
+             tex/macros,
+             tex/letterfonts,
+             chapters/chapter_1,
+             chapters/chapter_2,
+             chapters/chapter_3,
+             chapters/chapter_4,
+             }
+
+
+\begin{document}
+%\maketitle
+%\newpage% or \cleardoublepage
+%% \pdfbookmark[<level>]{<title>}{<dest>}
+%\pdfbookmark[section]{\contentsname}{toc}
+%\tableofcontents
+%\pagebreak
+%
+%\include{chapters/chapter_2.tex}
+%\include{chapters/chapter_3.tex}
+%\include{chapters/chapter_4.tex}
+
+\begin{frame}
+    \titlepage
+\end{frame}
+
+\include{chapters/chapter_1.tex}
+
+\end{document}

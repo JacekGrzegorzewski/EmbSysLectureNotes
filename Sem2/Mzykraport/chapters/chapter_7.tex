@@ -1,0 +1,301 @@
+\chapter{Wiener system approximation}
+Non-linear systems in general are modeled in 3 different ways:
+\begin{itemize}
+        \item A Hammerstein system, where the non-linearity is applied to the input of an otherwise linear system
+        \item A Wiener system, where the non-linearity is applied to the output of an otherwise linear system
+        \item A Hammerstein-Wiener system, where both input and output non-linearities are applied(they can be different)
+\end{itemize}
+
+The identification of a Hammerstein system is considered a solved problem in modern literature.
+It can even be solved using a least squares approach, where we treat every non-linear function as a different input. 
+This way, the system is linear in its non-linear inputs, and the least-squares can be applied to this larger system, although
+more data is required due to a larger number of coefficients.\\
+%% graph of a wiener system
+The subject of the 8th laboratory was identification of a Wiener system. A Wiener system can not be written as a linear combination
+of non-linear input functions with linear dynamics. To identify it, kernel based methods can be used. Given a set of input output pairs,
+the estimate of the coefficient vector can be written as:
+\begin{equation}
+    \begin{cases}
+        
+        \phi_k^{*} = \phi_k - \phi_{\text{ref}}\\
+        \hat{\gamma} = \left(\Sigma_{k=1}^{N}\phi_k^{*}{\phi_k^{*}}^{T}K\left(\frac{\norm{\phi_k^{*}}}{h}\right)\right)^{-1}\Sigma^{N}_{k=1}\phi^{*}_ky_k K\left(\frac{\norm{\phi_k^{*}}}{h}\right)
+    \end{cases}
+\end{equation}
+Comparing this equation with the original offline least-squares equation, it becomes apparent, that this method is essentially just least-squares, which uses only local behaviour around each sample.
+
+\section{Laboratory}
+
+The system estimated during the laboratory class depended on which group one was assigned to. The difference however was only in the non-linearity applied at the output, the linear block was the same for both groups with $\gamma = \begin{bmatrix}
+    3 & 2 &1  
+\end{bmatrix}^{T}$.
+
+%% block diagram
+
+\begin{figure}[h!]
+    \begin{center}
+\begin{tikzpicture}[block/.style = {draw, fill=white, rectangle, minimum height=3em, minimum width=3em},
+sum/.style= {draw, fill=white, circle, node distance=1cm},
+input/.style = {coordinate},
+tmp/.style = {coordinate},
+output/.style= {coordinate},
+pinstyle/.style = {pin edge={to-,thin,black}},
+auto,
+node distance = 2cm,
+>=latex'
+]
+    \node [input, name=rinput] (rinput) {};
+    \node [block, right of=rinput] (controller) {$\{\gamma_k\}$};
+    \node [block, right of=controller] (mu) {$\mu(\cdot)$};
+    \node [sum, right of=mu,node distance=2cm] (sum2) {$+$};
+    \node [tmp, above = 1cm of sum2](noise);  %
+    \node [output, right of=sum2, node distance=2cm] (output) {};
+    \draw [->] (rinput) -- node{$u_k$} (controller);
+    \draw [->] (controller) -- node{$x_k$} (mu);
+    \draw [->] (mu) -- (sum2);
+    \draw [->] (sum2) -- node{$y_k$} (output);
+    \draw [->] (noise)-- node{$z_k$}(sum2);
+\end{tikzpicture}
+\caption{Conceptual block diagram of a Wiener system}
+\label{}
+\end{center}
+\end{figure}
+
+
+Non linearities:
+\begin{itemize}
+        \item Left - $\mu(x) = \sin(x)$
+        \item Right - $\mu(x) = x^{2} + x$
+\end{itemize}
+\subsection{Results}
+\subsubsection{Estimation of gamma}
+Through trial and error, it was found that estimation works best for an intermediate kernel window size parameter of $h = 0.3$. As such, the effect of noise will only be presented for this value of  $h$.
+ 
+\begin{figure}[h!]
+\begin{center} 
+\begin{tikzpicture}
+\begin{semilogxaxis}[
+    xmin = 1, xmax = 100000,
+    ymin = -2, ymax = 3.5,
+    grid = both,
+    minor tick num = 1,
+    major grid style = {lightgray},
+    minor grid style = {lightgray!25},
+    width = 0.45\textwidth,
+    height = 0.50\textwidth,
+    xlabel = N,
+    ylabel = $\gamma_k$,
+    scaled x ticks=false]
+
+
+    \addplot[color=blue,
+            ]
+        table [col sep=space, x index = 0, y index=1]{./plot_data/chapter_7/wien_est_0_01.dat};
+
+
+   \addplot[color=red,
+       ]
+       table [col sep=space, x index = 0, y index=2]{./plot_data/chapter_7/wien_est_0_01.dat};
+
+   \addplot[color=green,
+       ]
+       table [col sep=space, x index = 0, y index=3]{./plot_data/chapter_7/wien_est_0_01.dat};
+
+
+      \legend{$\gamma_1$,
+          $\gamma_2$,
+          $\gamma_3$}
+\end{semilogxaxis}
+\end{tikzpicture}
+\begin{tikzpicture}
+\begin{semilogxaxis}[
+    xmin = 1, xmax = 100000,
+    ymin = -1, ymax = 3.5,
+    grid = both,
+    minor tick num = 1,
+    major grid style = {lightgray},
+    minor grid style = {lightgray!25},
+    width = 0.45\textwidth,
+    height = 0.50\textwidth,
+    xlabel = N,
+    ylabel = $\gamma_k$,
+    scaled x ticks=false]
+
+
+    \addplot[color=blue,
+            ]
+        table [col sep=space, x index = 0, y index=1]{./plot_data/chapter_7/wien_est_0_1.dat};
+
+
+   \addplot[color=red,
+       ]
+       table [col sep=space, x index = 0, y index=2]{./plot_data/chapter_7/wien_est_0_1.dat};
+
+   \addplot[color=green,
+       ]
+       table [col sep=space, x index = 0, y index=3]{./plot_data/chapter_7/wien_est_0_1.dat};
+
+
+      \legend{$\gamma_1$,
+          $\gamma_2$,
+          $\gamma_3$}
+\end{semilogxaxis}
+\end{tikzpicture}
+
+
+ 
+
+\caption{Left plot shows $z_k \sim U[-0.01,0.01]$ and the right  $z_k \sim U[-0.1,0.1]$ }
+
+
+\end{center}
+\end{figure}
+
+
+
+\begin{figure}[h!]
+\begin{center} 
+\begin{tikzpicture}
+\begin{semilogxaxis}[
+    xmin = 1, xmax = 100000,
+    ymin = 0, ymax = 4.0,
+    grid = both,
+    minor tick num = 1,
+    major grid style = {lightgray},
+    minor grid style = {lightgray!25},
+    width = 0.45\textwidth,
+    height = 0.50\textwidth,
+    xlabel = N,
+    ylabel = $\gamma_k$,
+    scaled x ticks=false]
+
+
+    \addplot[color=blue,
+            ]
+        table [col sep=space, x index = 0, y index=1]{./plot_data/chapter_7/wien_est_1_0.dat};
+
+
+   \addplot[color=red,
+       ]
+       table [col sep=space, x index = 0, y index=2]{./plot_data/chapter_7/wien_est_1_0.dat};
+
+   \addplot[color=green,
+       ]
+       table [col sep=space, x index = 0, y index=3]{./plot_data/chapter_7/wien_est_1_0.dat};
+
+
+      \legend{$\gamma_1$,
+          $\gamma_2$,
+          $\gamma_3$}
+\end{semilogxaxis}
+\end{tikzpicture}
+\begin{tikzpicture}
+\begin{semilogxaxis}[
+    xmin = 1, xmax = 100000,
+    ymin = -0, ymax = 4.0,
+    grid = both,
+    minor tick num = 1,
+    major grid style = {lightgray},
+    minor grid style = {lightgray!25},
+    width = 0.45\textwidth,
+    height = 0.50\textwidth,
+    xlabel = N,
+    ylabel = $\gamma_k$,
+    scaled x ticks=false]
+
+
+    \addplot[color=blue,
+            ]
+        table [col sep=space, x index = 0, y index=1]{./plot_data/chapter_7/wien_est_5_0.dat};
+
+
+   \addplot[color=red,
+       ]
+       table [col sep=space, x index = 0, y index=2]{./plot_data/chapter_7/wien_est_5_0.dat};
+
+   \addplot[color=green,
+       ]
+       table [col sep=space, x index = 0, y index=3]{./plot_data/chapter_7/wien_est_5_0.dat};
+
+
+      \legend{$\gamma_1$,
+          $\gamma_2$,
+          $\gamma_3$}
+\end{semilogxaxis}
+\end{tikzpicture}
+
+
+ 
+
+\caption{Left plot shows $z_k \sim U[-1,1]$ and the right  $z_k \sim U[-5,5]$ }
+
+
+\end{center}
+\end{figure}
+
+
+
+
+\clearpage
+\subsubsection{Estimation of $\mu(\cdot)$}
+Based on the estimate of the parameters of the linear block, we can estimate the intermediate $\hat{x}_k$  input of the non-linear block. With this input-output pair, we can estimate the output non-linearity using non-parametric methods from the previous laboratories. The results can be seen below:\\
+ 
+\begin{figure}[h!]
+\begin{center}
+\begin{tikzpicture}
+\begin{axis}[
+    xmin = -6, xmax = 6,
+    ymin = -1, ymax = 30,
+    grid = both,
+    minor tick num = 1,
+    major grid style = {lightgray},
+    minor grid style = {lightgray!25},
+    width = \textwidth,
+    height = 0.50\textwidth,
+    xlabel = x,
+    ylabel = $\mu_N(\cdot)$,
+    scaled x ticks=false]
+
+
+    \addplot[color=blue,
+        ]
+        table [col sep=space, x index = 0, y index=1]{./plot_data/chapter_7/wien_nonlin_.dat};
+
+    \addplot[color=red,
+        ]
+        table [col sep=space, x index = 0, y index=2]{./plot_data/chapter_7/wien_nonlin_.dat};
+
+    \addplot[color=green,
+        ]
+        table [col sep=space, x index = 0, y index=3]{./plot_data/chapter_7/wien_nonlin_.dat};
+
+    \addplot[color=orange,
+        ]
+        table [col sep=space, x index = 0, y index=4]{./plot_data/chapter_7/wien_nonlin_.dat};
+
+
+    \addplot[color=gray,
+        ]
+        table [col sep=space, x index = 0, y index=5]{./plot_data/chapter_7/wien_nonlin_.dat};
+
+
+
+
+ \legend{ $x^2+x$,
+          $N = 100$,
+          $N = 1000$,
+          $N = 10000$,
+          $N = 100000$}
+\end{axis}
+\end{tikzpicture} 
+
+\caption{Estimated non-linearity for $z_k \sim U[-1,1]$ and  $h = 0.3$}
+\end{center}
+\end{figure}
+
+
+
+
+\section{Conclusions}
+Estimation of a Wiener system is a far more complex problem than simple linear regression, or even Hammerstein system estimation. This is made evident by the amount of data needed to estimate the linear block of the system, especially when compared to the ease this was done with a purely linear system. With enough data however, both blocks can be estimated accurately -- up to a multiplicative constant. What is surprising, is how well the non-linearity is approximated with few samples, despite the linear block being far from well approximated under the same conditions.
+
+

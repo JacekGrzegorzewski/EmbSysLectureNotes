@@ -1,0 +1,177 @@
+
+\chapter{Fundamental properties of feedback systems}
+
+A feedback system has in general the following form
+\begin{figure}[h!]
+\centering
+\begin{tikzpicture}[block/.style = {draw, fill=white, rectangle, minimum height=3em, minimum width=3em},
+sum/.style= {draw, fill=white, circle, node distance=1cm},
+input/.style = {coordinate},
+tmp/.style = {coordinate},
+output/.style= {coordinate},
+pinstyle/.style = {pin edge={to-,thin,black}},
+auto,
+node distance = 2cm,
+>=latex'
+]
+\node [input, name=linput] (linput) {};
+\node [sum, right of=linput](sum){}
+\node [block,right of=sum](C){$\phi $};  %
+\node [block, below of=C](S){$\psi$};  %
+\node [output, right of=C] (output) {};
+\node [tmp, below of=C] (tmp_1){};
+
+\draw [->] (linput) -- node{$\gamma$} (sum);
+\draw [->] (sum) -- node{e} (C);
+\draw [--] (C) -- node{y} (output);
+\draw [->] (output) |-  (S);
+\draw [->] (S) -| node{x} (sum);
+
+
+\end{tikzpicture}
+\caption{FIX IN THE FUTURE}
+\label{csys}
+\end{figure}
+
+
+In this system, we have the following control objectives:
+\begin{equation}
+    \begin{cases}
+        y - r \text{ to be small}\\
+        y = r \text{ideal case}\\
+        y \rightarrow t \text{ok}\\
+        y \approx r \text{ we can live with}
+    \end{cases}
+\end{equation}
+
+The feedback equations are as follows:
+\begin{equation}
+    \begin{cases}
+        \gamma(e) = r - e \text{ -- the actual feedback equation}\\
+        \norm{\gamma(e)} > k \norm{e},\; k > 1, \text{ the high gain condition}
+    \end{cases}
+\end{equation}
+Due to the fact that all norms have to fullfill the triangle inequality we can write the high gain condition in the following form(if k is much larger than 1): $ \norm{e} \le \frac{1}{k-1}\norm{r}$
+\dfn{High Gain Feedback}
+{
+    High gain feedback is a controll law such that the following is satiswfied:
+    \begin{equation}
+        \exists k > 1 \; : \; \norm{\gamma(e)} > k \norm{e} \rightarrow  \gamma(e) \approx r  
+    \end{equation}
+}
+\subsection{performance robustness of high gain feedback systems}
+In the case of high gain feedback systems the relationship between r and y is determined by $\psi^{-1}$. The mapping $\psi(\psi^{-1})$ is fully dependant on the designer, that means it is know and almost fully dependant on th designer's needs.\\
+We can write 
+\begin{equation}
+    \label{kurwa}
+    y = \psi^{-1}(r^{'}) = \psi^{-1}(\Phi(r)) = (\Phi\circ\psi^{-1})(r)
+\end{equation}
+\nt{If in \ref{kurwa} $\Phi$ and  $\psi^{-1}$ are such that their composition is the identity mapping ($\psi = \Phi$) then we get that $y = r$}
+
+
+\section{Some other system}
+
+\begin{figure}[h!]
+\centering
+\begin{tikzpicture}[block/.style = {draw, fill=white, rectangle, minimum height=3em, minimum width=3em},
+sum/.style= {draw, fill=white, circle, node distance=1cm},
+input/.style = {coordinate},
+tmp/.style = {coordinate},
+output/.style= {coordinate},
+pinstyle/.style = {pin edge={to-,thin,black}},
+auto,
+node distance = 2cm,
+>=latex'
+]
+\node [input, name=linput] (linput) {};
+\node [sum, right of=linput](sum){}
+\node [block,right of=sum](C){$\phi $};  %
+\node [block, below of=C](S){$\psi$};  %
+\node [sum, right of=C, node distance = 2cm] (output) {+};
+\node [input, above of=output](tinput){d};
+\node [tmp, right of=output](tmp){}
+
+\draw [->] (linput) -- node{} (sum);
+\draw [->] (sum) -- node{e} (C);
+\draw [->] (C) --  (output);
+\draw [->] (tinput) -- node{d} (output);
+\draw [->] (tmp) |-  (S);
+\draw [--] (output) -- node{z} (tmp);
+\draw [->] (S) -|  (sum);
+
+
+\end{tikzpicture}
+\caption{FIX IN THE FUTURE}
+\label{csys}
+\end{figure}
+In this system we have the following:
+\begin{equation}
+    \begin{cases}
+        z = d + y\\
+        y = \phi(e)\\
+        e = - \psi(z)\\
+        z = d + \phi(e) = d -\delta(z) ,\; \delta = ((-\phi)\circ(-\psi))
+    \end{cases}
+\end{equation}
+
+This $\delta$ can help us rewrite the whole system as follows:
+
+
+\begin{figure}[h!]
+\centering
+\begin{tikzpicture}[block/.style = {draw, fill=white, rectangle, minimum height=3em, minimum width=3em},
+sum/.style= {draw, fill=white, circle, node distance=1cm},
+input/.style = {coordinate},
+tmp/.style = {coordinate},
+output/.style= {coordinate},
+pinstyle/.style = {pin edge={to-,thin,black}},
+auto,
+node distance = 2cm,
+>=latex'
+]
+\node [input, name=linput] (linput) {};
+\node [sum, right of=linput](sum){}
+\node [block,right of=sum](C){$\delta$};  %
+\node [tmp, below of=C](S){$\psi$};  %
+\node [tmp, right of=C, node distance = 2cm] (output) {+};
+\node [tmp, right of=output](tmp){}
+
+\draw [->] (linput) -- node{d} (sum);
+\draw [->] (sum) -- node{z} (C);
+\draw [--] (C) --  (output);
+\draw [--] (tmp) |-  (S);
+\draw [--] (output) -- node{z} (tmp);
+\draw [->] (S) -| node{-} (sum);
+
+
+\end{tikzpicture}
+\caption{FIX IN THE FUTURE}
+\label{csys}
+\end{figure}
+
+Suppose that we are able to design $\psi$ (and $\phi$?) s.t. $\exists k_1,k_2 >>1 $ s.t.:\\
+\begin{equation}
+    \begin{cases}
+        \norm{\gamm(e)} >> k_1\norm{e}\\
+        \norm{\delta{z}} >> k_2\norm{z}
+    \end{cases}
+    \text{Where we have:}\\
+    \begin{cases}
+        \gamma = \psi \circ \phi\\
+        \delta = (-\phi)\circ(-\psi)
+    \end{cases}
+\end{equation}
+Then we can derive:
+\begin{equation}
+    \begin{aligned}
+        z + \delta(z)&= d&\mbox{}\\[1.25ex]
+        \delta(z)& = d - z&\mbox{}\\[1.25ex]
+        k_2\norm{z}&\le \norm{d} + \norm{z}&\mbox{Here we applied the triangle inequality}\\[1.25ex]
+        (k_1-1)\norm{z}& \le \norm {d}&\mbox{}\\[1.25ex]
+        \norm{z}&\le \frac{1}{k_2-1}\norm{d}&\mbox{}\\[1.25ex]
+        
+    \end{aligned}
+\end{equation}
+Thus if $ k_2$ is infinity then $\frac{1}{k_2-1}\norm{d} = 0$ whatever the value of $d$ is. In this case d has no influence on z.
+If $k_2$ is large then the influence of $d$ on $z$ is strongly attenuated.
+

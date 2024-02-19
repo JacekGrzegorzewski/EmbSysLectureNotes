@@ -1,0 +1,76 @@
+
+\chapter{Parametric estimation of non-linearities in a Hammerstein system}
+
+
+If $\mu(\cdot) = a_1f_1(\cdot) + \dots + a_mf_m(\cdots)$, then the output is linear
+with respect to the parameters, no mater what $f_i$ are.
+\nt{In the literature, the Hammerstein system is considered a solved problem. What the engineers are now trying to accomplish with respect to it
+is to simply increase the rate of convergence}
+\chapter{Wiener system}
+
+A Wiener system is essentially an inverted Hammerstein system. In a Wiener system, the dynamics are applied before the non-linearities.
+The problem can be stated as follows:
+\qs{Wiener system identification}
+{
+    Using the set of tuples $\left\{ (u_k,y_k) \right\}_{k=1}^{N}$, estimate both $\mu(\dot) $ and  $\gamma_i$.
+}
+\ex{}
+{
+Let $\mu(x) = x^{2}$, and $\{\gamma_i\} = 1, 1, 0, 0, 0, \dots$.
+Then we have:
+\begin{equation}
+    x_k = 1u_k  1u_{k-1}
+\end{equation}
+Which gives:
+\begin{equation}
+    y_k = (u_k - u_{k-1})^{2} + z_k = u_k^{2} + u_{k-1}^{2} + 2u_ku_{k-1} + z_k
+\end{equation}
+Even in this simple system, we already have a problem.
+}
+
+\section{Vector norms}
+I know this
+\section{Aproximaton)}
+
+Given:
+\begin{equation}
+    u(\gamma^{T},\phi_k),\; \gamma =  \begin{bmatrix}
+        \gamma_0 \\
+        \vdots\\
+        \gamma_S
+    \end{bmatrix}  \\
+    ,\; \phi_k = \begin{bmatrix}
+        u_k  \\
+        u_{k-1}\\
+        \vdots\\
+        \u_{k-S}
+    \end{bmatrix}
+\end{equation}
+
+Tjem we can obsrve:
+\begin{equation}
+    (\mu(cx) )'= c\mu'(cx)
+\end{equation}
+If we can guarantee $\norm{\phi_k} \le R \rightarrow x_k \le c_2R$ 
+
+We can estimate a wiener system using the kernel functions, as for small $h$ they parametrize liear approximations f our both desiered fnctio ,\
+
+as follows:
+\begin{equation}
+    \hat{\gamma} = \left( \Sigma_{k=1}^{N}\phi_k\phi_K^{T}K(\frac{\norm{\phi_k}}{h}  )\right)^{-1}\Sigma\phi_k y_k K(\norm{\phi_k}/h)
+\end{equation}
+
+The norm can be apbitrary
+Which givews a parametric non parametric approach to aprametrization.
+
+\section{Asymptoti propertiers}
+
+ \begin{itemize}
+        \item $h \rightarrow  0$
+        \item Probabilityt of selection $P(K(\frac{\norm{\phi_k}}{h}) = 1) \sim h^{s+1} \leftarrow$ Expected no of selected situations is $Nh^{S+1}$\\
+            This condition gives $Nh^{s+1 \rightarrow \infty}$
+\end{itemize}
+
+
+
+

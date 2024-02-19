@@ -1,0 +1,187 @@
+\chapter{Cross-correlation approach}
+
+
+\section{Introduction}
+Every dynamical SISO system can be written as:
+\begin{equation}
+    y_k = \Sigma_{i=0}^{\infty}\gamma_iu_{k-i}
+\end{equation}
+
+No mater the nature of the system then, we can estimate it by estimating $\gamma_i$.
+One way to do it is by using cross-correlation:
+ \begin{equation}
+     \hat{\gamma}_\tau = \frac{1}{N-\tau}\Sigma^{N-\tau}_{k=1}u_ky_{k+\tau}
+\end{equation}
+
+In principle, to fully estimate a system the above sum would have to be infinite, and an infinite number of
+them would have to be calculated.
+In practice however, the successive $\gamma_i$ get smaller and smaller, and only a few of them have to be approximated.
+
+\clearpage
+\section{Laboratory}
+The cross-correlation method was to be applied to 3 different systems:
+\begin{itemize}
+        \item A linear system
+        \item A Hammerstein system
+        \item A Wiener system
+\end{itemize}
+No noise was added at the output.
+Theory suggests, that this approach will always work for the linear and Hammerstein systems, but will only work for a Wiener system if the input follows a 
+Gaussian distribution.
+
+\subsection{Linear system}
+\begin{figure}[h!]
+\begin{center}
+\begin{tikzpicture}
+\begin{axis}[
+    xmin = 10, xmax = 10000,
+    ymin = 0, ymax = 1.5,
+    grid = both,
+    minor tick num = 1,
+    major grid style = {lightgray},
+    minor grid style = {lightgray!25},
+    width = \textwidth,
+    height = 0.50\textwidth,
+    xlabel = N,
+    ylabel = $\gamma_k$,
+    scaled x ticks=false]
+
+    \addplot[color=blue,
+        ]
+        table [col sep=space, x index = 0, y index=1]{./plot_data/chapter_9/Lin_corr.dat};
+    \addplot[color=red,
+        ]
+        table [col sep=space, x index = 0, y index=2]{./plot_data/chapter_9/Lin_corr.dat};
+    \addplot[color=green,
+        ]
+        table [col sep=space, x index = 0, y index=3]{./plot_data/chapter_9/Lin_corr.dat};
+    \addplot[color=orange,
+        ]
+        table [col sep=space, x index = 0, y index=4]{./plot_data/chapter_9/Lin_corr.dat};
+    \addplot[color=grey,
+        ]
+        table [col sep=space, x index = 0, y index=5]{./plot_data/chapter_9/Lin_corr.dat};
+
+
+ \legend{ $\gamma_0$,
+          $\gamma_1$,
+          $\gamma_2$,
+          $\gamma_3$,
+          $\gamma_4$,
+          $\gamma_5$,
+      }
+\end{axis}
+\end{tikzpicture} 
+
+\caption{Cross correlation estimation of a linear system}
+
+\end{center}
+\end{figure}
+
+
+\clearpage
+\subsection{Hammerstein system}
+
+
+\begin{figure}[h!]
+\begin{center}
+\begin{tikzpicture}
+\begin{axis}[
+    xmin = 10, xmax = 10000,
+    ymin = 0, ymax = 1.5,
+    grid = both,
+    minor tick num = 1,
+    major grid style = {lightgray},
+    minor grid style = {lightgray!25},
+    width = \textwidth,
+    height = 0.50\textwidth,
+    xlabel = N,
+    ylabel = $\gamma_k$,
+    scaled x ticks=false]
+
+    \addplot[color=blue,
+        ]
+        table [col sep=space, x index = 0, y index=1]{./plot_data/chapter_9/Ham_corr.dat};
+    \addplot[color=red,
+        ]
+        table [col sep=space, x index = 0, y index=2]{./plot_data/chapter_9/Ham_corr.dat};
+    \addplot[color=green,
+        ]
+        table [col sep=space, x index = 0, y index=3]{./plot_data/chapter_9/Ham_corr.dat};
+    \addplot[color=orange,
+        ]
+        table [col sep=space, x index = 0, y index=4]{./plot_data/chapter_9/Ham_corr.dat};
+    \addplot[color=grey,
+        ]
+        table [col sep=space, x index = 0, y index=5]{./plot_data/chapter_9/Ham_corr.dat};
+
+
+ \legend{ $\gamma_0$,
+          $\gamma_1$,
+          $\gamma_2$,
+          $\gamma_3$,
+          $\gamma_4$,
+          $\gamma_5$,
+      }
+\end{axis}
+\end{tikzpicture} 
+
+\caption{Cross correlation estimation of a Hammerstein system, $\mu(\cdot) = x + x^$}
+
+\end{center}
+\end{figure}
+\subsection{Wiener system}
+\begin{figure}[h!]
+\begin{center}
+\begin{tikzpicture}
+\begin{axis}[
+    xmin = 10, xmax = 10000,
+    ymin = 0, ymax = 1.5,
+    grid = both,
+    minor tick num = 1,
+    major grid style = {lightgray},
+    minor grid style = {lightgray!25},
+    width = \textwidth,
+    height = 0.50\textwidth,
+    xlabel = N,
+    ylabel = $\gamma_k$,
+    scaled x ticks=false]
+
+    \addplot[color=blue,
+        ]
+        table [col sep=space, x index = 0, y index=1]{./plot_data/chapter_9/Wien_corr.dat};
+    \addplot[color=red,
+        ]
+        table [col sep=space, x index = 0, y index=2]{./plot_data/chapter_9/Wien_corr.dat};
+    \addplot[color=green,
+        ]
+        table [col sep=space, x index = 0, y index=3]{./plot_data/chapter_9/Wien_corr.dat};
+    \addplot[color=orange,
+        ]
+        table [col sep=space, x index = 0, y index=4]{./plot_data/chapter_9/Wien_corr.dat};
+    \addplot[color=grey,
+        ]
+        table [col sep=space, x index = 0, y index=5]{./plot_data/chapter_9/Wien_corr.dat};
+
+
+ \legend{ $\gamma_0$,
+          $\gamma_1$,
+          $\gamma_2$,
+          $\gamma_3$,
+          $\gamma_4$,
+          $\gamma_5$,
+      }
+\end{axis}
+\end{tikzpicture} 
+
+\caption{Cross correlation estimation of a Wiener system, $\mu(\cdot) = x + x^2$}
+
+\end{center}
+\end{figure}
+
+
+
+
+
+\section{Conclusions}
+The cross-correlation method is extremely simple, and even for just a few calculated coefficients gives satisfactory results. Theory suggests that it's not practical for the class of Wiener systems, as these require Gaussian inputs, but that does not appear to be the case for the tested examples. Only highly non-linear blocks prevented estimation of the Wiener systems, but then even Gaussian inputs didn't allow for its estimation.

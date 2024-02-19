@@ -1,0 +1,198 @@
+\chapter{Optimization conditions in $\mathbb{R}^{n}$}
+The condition for a point $x^{*}$ in a function's domain to be a stationary point(an extremum), is for the following inequality
+to hold at every point in this points neighbourhood:
+\begin{equation}
+    f(x_0) \ge f(x) \; \forall x \text{ in the neighbourhood of $x_0$}
+    \label{ext}
+\end{equation}
+The above condition is for a maximum, with a minimum, the inequality would be inverted. This condition however
+may be very difficult to check directly for complicated functions, and as such some indirect methods have to be considered.
+Of note here is that we are only talking about local behaviour, if this condition hold in the whole domain $D$ where the 
+function is considered, then we deal with a global extrema. The case of global extrema however is much harder to deal with,
+as there are more conditions to be checked. \\
+By limiting our analysis only to local behaviour, we can develop more easily checked conditions for the existence of an extremum,
+which may later be generalised to global maxima and minima.
+
+\section{Local extrema}
+
+
+The condition for finding local extrema of a function in $\mathbb{R}^{n}$ is based on its Taylor series expansion.
+Every function in $\mathbb{R}^{n}$ can be written as an infinite series expanded around a point $x_0$, and by cutting 
+this expansion short at just the linear terms, we get the linear approximation of this function around this point:
+\begin{equation}
+    f(x) \approx f(x_0) + \nabla f(x)(x-x_0) + R(x)
+\end{equation}
+Where:
+\begin{itemize}
+        \item $x,x_0 \in  \mathbb{R}^{n}$ 
+        \item $\nabla f(x) = \begin{bmatrix}
+                \pdv{f}{x_1}\\ \vdots \\ \pdv{f}{x_n}
+
+        \end{bmatrix}$ - the gradient of f
+    \item $\lim_{x \rightarrow x_0}\frac{R(x)}{\norm{x-x_0}} = 0$ - a remainder term of second order terms, if $x - x_0$ is small, this term is much smaller than it.
+\end{itemize}
+\nt{This may not always be possible, there are several common examples where this Taylor series does not exist around a given point,
+but for the purposes of the exam and this explanation it's always possible}
+
+
+If we rewrite the original equation of a maximum \ref{max},and substitute in
+the Taylor series, we get the following:
+\begin{equation}
+    \begin{aligned}
+        f(x_0) - f(x)&\ge 0 &\mbox{   $\forall x$ in the neighbourhood of $x_0$}\\[1.25ex]
+        -\nabla f(x) (x-x_0) - R(x)&\ge 0&\mbox{We can ignore $R(x)$, as the sign of the linear term will dominate}\\[1.25ex]
+        -\nabla f(x) (x-x_0) &\ge 0&\mbox{We obtain a necessary condition for an extremum}\\[1.25ex]
+    \end{aligned}
+\end{equation}
+
+Since the sign of the term on the left can vary with x, the only way for this inequality to hold in the entire neighbourhood of $x_0$, is for the linear term to be 0. For that to be true for arbitrary, but still small $x-x_0$ we need $\nabla f(x) = 0$.\\
+This is the necessary condition for a point to be a critical point, the first derivatives taken with respect to all free variables must disappear.
+Once we find such points, we still don't know if the point is a minium, or a maximum. To determine which it is, we can continue the Taylor series into the quadratic terms as follows:
+
+\begin{equation}
+    f(x) \approx f(x_0) + \nabla f(x)(x-x_0) + \frac{1}{2}(x-x_0)H(x)(x-x_0)^{T} + R(x)
+\end{equation}
+Where:
+\begin{itemize}
+        \item $x,x_0 \in  \mathbb{R}^{n}$ 
+        \item $\nabla f(x) = \begin{bmatrix}
+                \pdv{f}{x_1}\\ \vdots \\ \pdv{f}{x_n}
+
+        \end{bmatrix}$ - the gradient of f
+    \item $H(x)$ - the hessian of f
+    \item $\lim_{x \rightarrow x_0}\frac{R(x)}{\norm{x-x_0}^{2}} = 0$ - a remainder term of third order terms, if $x - x_0$ is small, this term is much smaller than it.
+\end{itemize}
+
+When we substitute this longer expansion, assume that the necessary condition holds, and ignore higher order terms, we get the following inequality:
+\begin{equation}
+-\frac{1}{2} (x-x_0)H(x_0)(x-x_0)^{T} \ge 0
+\end{equation}
+
+This kind of a construction is called a quadratic form. A quadratic from is positive definite, if for all values of $x$ it is larger than 0, and negative definite if less than 0. To determine which is which, we can just analyse definitiveness of the Hessian  $H(x)$, if it is positive definite, then the whole form is, and similarily for the other case.
+
+\nt{THE HESSIAN ITSELF WHEN EVALUATED AT $x_0$ MUST NOT BE EQUAL TO 0. WHEN THIS IS THE CASE, WE CAN'T CONCLUDE ANYTHING AS THE SIGN OF THE ABOVE EXPANSION IS NOT DOMINATED BY EITHER OF THE CONSIDERED DERIVATIVES!!!}
+
+To consider check weather the hessian is definite or not, it has to be first defined:
+\dfn{Hessian of a function}
+{
+    The hessian of a function can be defined in terms of the Jacobian of its gradient:
+    \begin{equation}
+        \begin{aligned}
+            H(x) &= J(\begin{bmatrix}
+                \pdv{f}{x_1} \\ \vdots \\ \pdv{f}{x_n}
+            \end{bmatrix})\\
+            J(\begin{bmatrix}
+                \pdv{f}{x_1} \\ \vdots \\ \pdv{f}{x_n}
+            \end{bmatrix}&= \begin{bmatrix}
+            \pdv{f}{x_1,x_1} & \cdots & \pdv{f}{x_1,x_n}\\
+            \vdots & \ddots & \vdots\\
+            \pdv{f}{x_n,x_1} & \cdots &\pdv{f}{x_n,x_n}\\
+            \end{bmatrix}
+        \end{aligned}
+    \end{equation}
+    For all functions which we'll be forced to consider, all mixed derivatives are equal, e.g. $\pdv{f}{x_i,x_j} = \pdv{f}{x_j,x_i}$
+    \ex{Some lower dimensional examples}
+    {
+        For $f(x)$ we get:
+         \begin{equation}
+            H(x) = \begin{bmatrix}
+                \pdv{f}{x,x}
+            \end{bmatrix}
+        \end{equation}
+        \\
+        For $f(x,y)$ we get:
+         \begin{equation}
+            H(x) = \begin{bmatrix}
+                \pdv{f}{x,x} & \pdv{f}{x,y} \\
+                \pdv{f}{y,x} & \pdv{f}{y,y}
+            \end{bmatrix}
+        \end{equation}
+    }
+}
+A matrix is positive(negative) definite if all its eigenvalues have positive(negative) real part. Below are a couple examples showing how it is done for the first 2 dimensions.
+\ex{}
+{
+    For the univariate case, we have:
+    \begin{equation}
+        \det{H - \lambda I} = \pdv{f}{x,x} - \lambda = 0
+    \end{equation}
+    So we get the only eigenvalue $\lambda_0 = \pdv{f}{x,x}$. This combined with the condition for a maximum:
+    \[
+\frac{1}{2} (x-x_0)H(x_0)(x-x_0)^{T} \le 0
+    .\] 
+    States that for a maximum, we need  this eigenvalue to be less than 0. 
+    For a minimum, the condition would be inverted.
+    This formula should be familiar to anyone who's finished high school.
+
+    For the multivariate case, we have:
+    \begin{equation}
+        \det{H - \lambda I} =  \det{ \begin{bmatrix}
+                \pdv{f}{x,x} & \pdv{f}{x,y} \\
+                \pdv{f}{y,x} & \pdv{f}{y,y}
+        \end{bmatrix} 
+    - \lambda }= 0
+    \end{equation}
+    If we expand this into a quadratic polynomial, we obtain:
+    \begin{equation}
+        \lambda^{2} - \lambda( \pdv{f}{x,x}  + \pdv{f}{y,y})+  \pdv{f}{x,x} \pdv{f}{y,y} - 2 \pdv{f}{x,y}
+    \end{equation}
+    If we already had these eigenvalues, we could write the above as:
+    \begin{equation}
+        (\lambda - \lambda_0)(\lambda - \lambda_1) = \lambda^{2} -\lambda(\lambda_0+\lambda_1) + \lambda_0 \lambda_1
+    \end{equation}
+    \clearpage
+    For a maximum, we need both $\lambda$ to be negative, so $\lambda_1\lambda_2 \ge 0$, and $\lambda_0+\lambda_1 \le 0$ . By equating these 2 equations we can rewrite these conditions as:
+
+    \begin{equation}
+        \begin{cases}
+              \pdv{f}{x,x} \pdv{f}{y,y} - 2 \pdv{f}{x,y} \ge 0 \\
+     \pdv{f}{x,x}  + \pdv{f}{y,y} \le 0
+        \end{cases}
+    \end{equation}
+    The first condition in this particular case is equivalent to considering the sign of the determinant. The second, because the determinant is positive, is equivalent to either $ \pdv{f}{x,x} \le 0$ or $ \pdv{f}{y,y} \le 0$, which now should again be familiar to anyone who's finished high school.
+
+}
+
+When the dimension is higher, it may be difficult, or impossible, to find the eigenvalues directly by solving the characteristic polynomial. We already have a solution to this problem, if we notice that we solved it before when determining the stability of a linear system of equations. We just have to extend it to also consider the case of positive definitiveness.
+
+\dfn{Positive / Negative definite matrix}
+{
+    If we're given a hessian matrix $H(x)$, we can determine if its positive/negative definite by considering its leading principal minors.
+\nt{This is the same process as when checking weather a characteristic matrix of a linear system is stable, e.g. has only negative eigenvalues}
+If:
+\begin{equation}
+            H(x) = \begin{bmatrix}
+            \pdv{f}{x_1,x_1} & \cdots & \pdv{f}{x_1,x_n}\\
+            \vdots & \ddots & \vdots\\
+            \pdv{f}{x_n,x_1} & \cdots &\pdv{f}{x_n,x_n}\\
+            \end{bmatrix}
+\end{equation}
+Then if the sequence:
+\begin{equation}
+    A_1 = \pdv{f}{x,x},\; A_2 =  \begin{bmatrix}
+                \pdv{f}{x,x} & \pdv{f}{x,y} \\
+                \pdv{f}{y,x} & \pdv{f}{y,y}
+        \end{bmatrix}, \; \dots
+
+\end{equation}
+Is of only positive sign, e.g. $A_1 \ge 0,\; A_2 \ge 0,\; \dots$ we are dealing with a positive definite matrix.  If the signs are alternating, starting with $A_1 < 0$, we have a negative definite matrix. All other combinations lead to a saddle point.
+\nt{Notice that in both cases, even minors have to be positive definite. This means that if we need to determine if a matrix is indeterminate, we only need to check if $A_2 < 0$, since that can't occur in any of these cases.}
+
+}
+
+
+
+\section{Global extrema}
+
+In case of the global extrema, maximum values may occur at the boundary of the domain, so once we check all the points which are local extrema, we have to compare their values with all boundary points. This notion extends to points at infinity, but one has to be careful, as then the notion of the limit is dependant on the path which leads to the limiting point.
+\textbf{This however enters the are of constrained optimization, which would necessitate introduction of Lagrange multipliers, which was not done during this course}.
+\\
+Even is the domain is unbounded and spans the whole of $\mathbb{R}^{n}$, it is still difficult to determine if an extrema is a local or global one. So you have to be clever when analysing a function, if for example it is a sum of squares, and as such will only be growing in every direction, and as such only the extreme points can be maxima or minima. \\
+This is a very complex problem, which will likely not be given to us on the test to be solved in this analytical form. These kinds of problems are usually solved in non-analytical way using gradient methods.
+
+
+\section{Gradient descent}
+
+
+NO SUCH PROBLEMS FOUND IN PROBLEM LISTS, THESE ARE NOT CALCULATIONS TO BE DONE
+BY HAND.

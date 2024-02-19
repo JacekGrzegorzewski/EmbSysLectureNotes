@@ -1,0 +1,139 @@
+
+\chapter{Parametric Estimation}
+\section{Least Squares Method}
+\subsection{Static System}
+Imagine we have a static system, which is defined with a parameter vector:
+\begin{equation}
+    a^{*}= \begin{bmatrix}
+        a_0^{*} \\
+        \vdots\\
+        a_s^{*}
+    \end{bmatrix}
+\end{equation}
+Where the $*$ means that the parameters are both true, and unknown.
+Imagine then, that the system is supplied with and input vector $x$, and gives a scalar output. So this is a MISO static system.
+\nt{Here there should be a graph, with the output summing with a noise termz before generating y}
+\\
+\dfn{Types of knowledge}
+{
+    In general, we have 2 kinds of knowledge:
+    \begin{itemize}
+        \item non-parametric - measurements output pairs: $\{(x_k,y_k)\}_{k=1}^{N}$. A cloud of measured points.
+        \item parametric - $y = F^{*}(x,a^{*})+z$, and we know the proverbial shape of the formula $F(x,a)$, but not the exact values of the parameters. We also know, that by using $a^{*}$ as an argument, we'll get the best possible results.
+    \end{itemize}
+}
+
+\thm{Gauss 1809}
+{
+    Given that the true process output is modeled as $y = F^{*}(x,a^{*})+z)$, but the shape is given as: $\bar{y} = F(x,a)$. The difference between them should be just the noise, if we managed to match $a = a^{*}$, the expected value of which should be equal to 0.  Gauss proposed a quality term:
+  \begin{equation}
+      Q(a) = E(y-\bar{y})^{2}
+ \end{equation}
+ Which is the square of the expected value of the noise, the square makes it always positive.
+ The above would require the knowledge of the distribution function of the system, so instead he proposed an estimator:
+ \begin{equation}
+     \begin{aligned}
+         \hat{Q}(a) &= \frac{1}{N} \Sigma_{k=1}^{N}(y_k-\bar{y}_k(a))^{2}\\[1.25ex]
+         \hat{Q}(a) &= \frac{1}{N}\Sigma_{k=1}^{N}(F^{*}(x_k,a^{*})+z_k - F^{*}(x_k,a))\\[1.25ex]
+     \end{aligned}
+ \end{equation}
+ This estimator would give the lowest value for $a = a^{*}$, it being $\hat{Q}(a^{*}) = \text{Var}\,z$, which can be written as: $\underset{x}{\arg\min}\,Q(a) = a^{*}$ 
+
+ The condition for which this will converge, is that all measurements $x_k$ are independent. Then, as a consequence of the strong law of large numbers  $\hat{Q} \rightarrow  Q$.
+
+}
+
+\subsection{Linear System}
+
+Let:
+\begin{equation}
+    x = \begin{bmatrix}
+        x^{(1)}  \\
+        \vdots\\
+        x^{(s)}
+    \end{bmatrix}
+    \;\;
+a^{*} = \begin{bmatrix}
+        a^{*(1)}  \\
+        \vdots\\
+        a^{*(s)}
+    \end{bmatrix}
+\end{equation}
+and:
+\begin{equation}
+    y = x^{T}a^{*} + z = a^{*}^{T}x + z
+\end{equation}
+Then for each measurement:
+\begin{equation}
+    y_k = x^{T}_ka^{*} + z_k \text{ for }k\in \mathbb{N}
+\end{equation}
+So for large k, we'll have a lot of equations. Let us create a dataset of measurements:
+\begin{equation}
+    Y_N = \begin{bmatrix}
+        y_1  \\
+        \vdots\\
+        y_N
+    \end{bmatrix}
+    \;\;
+    \phi_N = \begin{bmatrix}
+        x_1^{(1)} & \hdots & x_1^{S}  \\
+        x_1^{(1)} & \hdots & x_2^{S}  \\
+              & \vdots &   \\
+        x_N^{(1)} & \hdots & x_N^{S}  \\
+    \end{bmatrix} = 
+    \begin{bmatrix}
+        x_1^{T}\\
+        \vdots\\
+        x_N^{T}
+    \end{bmatrix}
+\end{equation}
+Then we can write the totality of those measurements as a single matrix equation:
+\begin{equation}
+    Y_k = \phi_N a^{*} + Z_k \text{ with } E(z_k) = 0
+\end{equation}
+The model however, is defined as:
+\begin{equation}
+    \bar{Y}_N(a) = \phi_Na
+\end{equation}
+What we mean to to then, is to minimize the norm of the difference vector:
+\begin{equation}
+    \begin{aligned}
+        \norm{Y_N - Y_N(a)} &= (Y_N - Y_N(a))^{T}(Y_N-Y_N(a))\\[1.25ex]
+        \norm{Y_N - Y_N(a)} &= (Y_N - \phi_N(a))^{T}(Y_N-\phi_N(a))\\[1.25ex]
+        \norm{Y_N - Y_N(a)} &=Q(a)\\[1.25ex]
+        
+    \end{aligned}
+\end{equation}
+After some derivations, we'll obtain:
+\begin{equation}
+    \nabla_a Q(a) = 0
+\end{equation}
+The consequence of which is:
+\begin{equation}
+    \phi_N^{T}\phi_Na = \phi_N^{T}Y_N
+\end{equation}
+The above is known as the \textbf{normal equation}. This gives us an easy way to calculate the value of a using the pseudo inverse of $\phi_N$:
+ \begin{equation}
+     \hat{a} = (\phi_N^{T}\phi_N)^{-1}\phi^{T}_N Y_N
+\end{equation}
+
+
+\nt{The same formulation can be used in estimating a dynamic system, by interpreting the multiple inputs of the static system as a history of inputs to the dynamic system}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

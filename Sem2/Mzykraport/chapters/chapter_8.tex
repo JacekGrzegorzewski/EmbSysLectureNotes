@@ -1,0 +1,289 @@
+\chapter{Singular Value Decomposition(SVD)}
+As stated in the previous report, a Hammerstein system can be identified
+using least squares by treating the output as a linear combination of 
+non-linear inputs. The problem with this however, is that we estimate
+products of coefficients of the non-linearity, and the linear function.
+To recover the coefficients of both blocks separately, SVD can be used to
+do so up to a multiplicative constant.\\
+\dfn{SVD}
+{
+    It can be proven, that every matrix - including rectangular matrices - can be decomposed into a product of 3 matrices as follows:
+    \begin{equation}
+        M = U\Sigma V^{T}
+    \end{equation}
+    Where:
+    \begin{itemize}
+        \item U,V - orthogonal matrices
+        \item $\Sigma$ - matrix of singular values of the square roots of eigenvalues of  $MM^{T}$ or $M^{T}M$
+    \end{itemize}
+
+}
+\\
+Given a system with topology:
+\begin{figure}[h!]
+    \begin{center}
+\begin{tikzpicture}[block/.style = {draw, fill=white, rectangle, minimum height=3em, minimum width=3em},
+sum/.style= {draw, fill=white, circle, node distance=1cm},
+input/.style = {coordinate},
+tmp/.style = {coordinate},
+output/.style= {coordinate},
+pinstyle/.style = {pin edge={to-,thin,black}},
+auto,
+node distance = 2cm,
+>=latex'
+]
+    \node [input, name=rinput] (rinput) {};
+    \node [block, right of=rinput] (controller) {$\mu(\cdot)$};
+    \node [block, right of=controller] (mu) {$\{ \gamma_k\}$};
+    \node [sum, right of=mu,node distance=2cm] (sum2) {$+$};
+    \node [tmp, above = 1cm of sum2](noise);  %
+    \node [output, right of=sum2, node distance=2cm] (output) {};
+    \draw [->] (rinput) -- node{$u_k$} (controller);
+    \draw [->] (controller) -- node{$w_k$} (mu);
+    \draw [->] (mu) -- (sum2);
+    \draw [->] (sum2) -- node{$v_k$} (output);
+    \draw [->] (noise)-- node{$z_k$}(sum2);
+\end{tikzpicture}
+\caption{Conceptual block diagram of a Hammerstein system}
+\label{}
+\end{center}
+\end{figure}
+
+
+A linear block of the form:
+\begin{equation}
+    \begin{aligned}
+        v_k &= \gamma_0w_k + \gamma_1w_{k-1} + \dots \gamma_nw_{k-n} + z_k \\
+        v_k &= \begin{bmatrix}
+            \gamma_0 & \dots  & \gamma_n
+        \end{bmatrix} \begin{bmatrix}
+            w_k \\  \vdots \\ w_0
+        \end{bmatrix} = \gamma^{T} w
+        
+    \end{aligned}
+\end{equation}
+And a non-linearity:
+
+
+\begin{equation}
+    \begin{aligned}
+        \mu(u) &= c_1f_1(u) + c_2f_2(u) + \dots + c_mf_m(u)\\
+        \mu(u) &= \begin{bmatrix}
+            c_1 & \dots  & c_m
+        \end{bmatrix} \begin{bmatrix}
+            f_1(u) \\  \vdots \\ f_m(u)
+        \end{bmatrix} = c^{T} f(u)
+        
+    \end{aligned}
+\end{equation}
+
+We can create a matrix:
+\begin{equation}
+    M = c \gamma^{T}
+\end{equation}
+If we then perform SVD of this matrix, we will recover both coefficient vectors up to a multiplicative constant:
+\begin{equation}
+    \text{SVD}(M) = \begin{bmatrix}  c & \vdots  
+    \end{bmatrix} \begin{bmatrix}
+        \sigma_1 & \dots  \\
+        \vdots & \ddots
+    \end{bmatrix}
+    \begin{bmatrix}
+        \gamma   \\
+        \dots
+    \end{bmatrix}
+\end{equation}
+
+Note that all the rows of $M$ are linear combinations of 2 vectors, as such, only one singular value exits.
+
+\section{Laboratory}
+The system investigated during the laboratory was given by:
+\begin{itemize}
+    \item $\mu(\cdot) = 2u+3u^{2} = \begin{bmatrix}
+        2 &3  
+    \end{bmatrix}  \begin{bmatrix}
+        u \\u^{2}
+    \end{bmatrix}$
+
+\item $ \gamma = \begin{bmatrix}
+        3 & 2 &1 
+\end{bmatrix}^{T}$
+\end{itemize}
+
+In order to identify this system, we have to create an estimate $\hat{M}$ for later factorization. This can be done using a least squares method, by reinterpreting the system as linear in its non-linear inputs:
+\begin{equation}
+y_k = \underbrace{\begin{bmatrix}
+        \gamma_0c_1 \\ \gamma_0c_2 \\\gamma_1c_1 \\ \gamma_1c_2 \\ \gamma_2c_1 \\ \gamma_2 c_2
+    \end{bmatrix}^{T}}_{\theta} \underbrace{\begin{bmatrix}
+    u_k \\ u_k^{2} \\u_{k-1} \\ u_{k-1}^{2} \\ u_{k-2} \\ u_{k-2}^{2}
+\end{bmatrix}}_{\phi_k} + z_k
+\end{equation}
+Then we can estimate $\hat{\theta}$ as:
+ \begin{equation}
+     \hat{\theta} = (\Phi_N^{T}\Phi_N)^{-1}\Phi^{T}_NY_N
+\end{equation}
+Where:
+\begin{equation}
+    \begin{aligned}
+        Y_N &= \begin{bmatrix}
+            y_1 \\ \vdots \\ y_N
+        \end{bmatrix}\\
+            \Phi_N &= \begin{bmatrix}
+            \phi_1^{T} \\ \vdots \\ \phi_N^{T}
+        \end{bmatrix}
+        
+    \end{aligned}
+\end{equation}
+After this, $\hat{\theta}$ will have to be transformed into $\hat{M}$. This operation however has no name in algebra, and has to be done manually.
+\clearpage
+\section{Results}
+In order to remove the multiplicative constant from consideration, the results were normalized using the knowledge of their true value.
+
+\begin{figure}[h!]
+\begin{center}
+\begin{tikzpicture}
+\begin{axis}[
+    xmin = 10, xmax = 150,
+    ymin = 0, ymax = 4,
+    grid = both,
+    minor tick num = 1,
+    major grid style = {lightgray},
+    minor grid style = {lightgray!25},
+    width = 0.45\textwidth,
+    height = 0.50\textwidth,
+    xlabel = N,
+    ylabel = $\gamma_k$,
+    scaled x ticks=false]
+
+
+    \addplot[color=blue,
+        ]
+        table [col sep=space, x index = 0, y index=1]{./plot_data/chapter_8/SVD_c_1_0.dat};
+
+    \addplot[color=red,
+        ]
+        table [col sep=space, x index = 0, y index=2]{./plot_data/chapter_8/SVD_c_1_0.dat};
+
+    \addplot[color=green,
+        ]
+        table [col sep=space, x index = 0, y index=3]{./plot_data/chapter_8/SVD_c_1_0.dat};
+
+
+      \legend{$\gamma_1$,
+          $\gamma_2$,
+          $\gamma_3$,
+          }
+\end{axis}
+\end{tikzpicture} 
+\begin{tikzpicture}
+\begin{axis}[
+    xmin = 10, xmax = 150,
+    ymin = 1, ymax = 4,
+    grid = both,
+    minor tick num = 1,
+    major grid style = {lightgray},
+    minor grid style = {lightgray!25},
+    width = 0.45\textwidth,
+    height = 0.50\textwidth,
+    xlabel = N,
+    ylabel = $\gamma_k$,
+    scaled x ticks=false]
+
+
+    \addplot[color=blue,
+        ]
+        table [col sep=space, x index = 0, y index=1]{./plot_data/chapter_8/SVD_g_est_1_0.dat};
+
+    \addplot[color=red,
+        ]
+        table [col sep=space, x index = 0, y index=2]{./plot_data/chapter_8/SVD_g_est_1_0.dat};
+
+      \legend{$c_1$,
+          $c_2$,
+          }
+\end{axis}
+\end{tikzpicture} 
+\caption{$z_k \sim U[-1,1]$}
+\end{center}
+\end{figure}
+
+\begin{figure}[h!]
+\begin{center}
+\begin{tikzpicture}
+\begin{axis}[
+    xmin = 10, xmax = 1000,
+    ymin = 0, ymax = 4,
+    grid = both,
+    minor tick num = 1,
+    major grid style = {lightgray},
+    minor grid style = {lightgray!25},
+    width = 0.45\textwidth,
+    height = 0.50\textwidth,
+    xlabel = N,
+    ylabel = $\gamma_k$,
+    scaled x ticks=false]
+
+
+    \addplot[color=blue,
+        ]
+        table [col sep=space, x index = 0, y index=1]{./plot_data/chapter_8/SVD_c_5_0.dat};
+
+    \addplot[color=red,
+        ]
+        table [col sep=space, x index = 0, y index=2]{./plot_data/chapter_8/SVD_c_5_0.dat};
+
+    \addplot[color=green,
+        ]
+        table [col sep=space, x index = 0, y index=3]{./plot_data/chapter_8/SVD_c_5_0.dat};
+
+
+      \legend{$\gamma_1$,
+          $\gamma_2$,
+          $\gamma_3$,
+          }
+\end{axis}
+\end{tikzpicture} 
+\begin{tikzpicture}
+\begin{axis}[
+    xmin = 10, xmax = 1000,
+    ymin = 1, ymax = 4,
+    grid = both,
+    minor tick num = 1,
+    major grid style = {lightgray},
+    minor grid style = {lightgray!25},
+    width = 0.45\textwidth,
+    height = 0.50\textwidth,
+    xlabel = N,
+    ylabel = $\gamma_k$,
+    scaled x ticks=false]
+
+
+    \addplot[color=blue,
+        ]
+        table [col sep=space, x index = 0, y index=1]{./plot_data/chapter_8/SVD_g_est_5_0.dat};
+
+    \addplot[color=red,
+        ]
+        table [col sep=space, x index = 0, y index=2]{./plot_data/chapter_8/SVD_g_est_5_0.dat};
+
+      \legend{$c_1$,
+          $c_2$,
+          }
+\end{axis}
+\end{tikzpicture} 
+\caption{$z_k \sim U[-5,5]$}
+\end{center}
+\end{figure}
+
+
+
+
+
+\section{Conclusions}
+SVD gives a convenient way to recover the original coefficients of both blocks. What's more, most software used in engineering(Matlab, Mathematica, Octave, Python, ...) includes methods for performing this operation very quickly. It should be noted however, that it is not necessary to use SVD to recover these coefficients, one could just calculate the ratios of these coefficient products, to obtain their values up to a multiplicative constant.
+This however takes more time, and as such SVD should be used to save time.
+\\
+Of note is how much simpler this problem is when compared to a Wiener system, an exponentially smaller amount of data is necessary to identify the systems parameters to a comparable accuracy. This is to be expected, as what we're doing here is just linear regression.
+
+
+

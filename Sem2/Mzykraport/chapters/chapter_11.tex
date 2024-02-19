@@ -1,0 +1,187 @@
+\chapter{Instrumental variables}
+\section{Introduction}
+During previous laboratories, we always worked with the assumption, that 
+the noise applied at the output was fully independent and uncorrelated. 
+This assumption however is only very rarely true, in most cases, either due
+to a feedback loop or some other reason, the noise is correlated with its
+history. When this is the case, identification methods may exhibit some undesirable behaviours. During this last laboratory, this behaviour was investigated for the case of identifying a linear system using the least squares approach. \\
+It turns out, that without the assumption of independent noise, the least squares method does converge to a limit, but this limit is not the true value of the system's coefficients. It is close, but a small bias will always exist with this method. \\
+If a large enough sample size is available, one may deal with this bias by using instrumental variables. In our case, this instrumental variable will
+be the output of an estimated system, who's output will by definition not be corrupted by any noise. At the beginning, the estimates of both systems
+should be the same, but after enough samples are used in estimation, the instrumental systems output should be unbiased.
+
+\section{Laboratory}
+
+The system investigated during the laboratory had the following block structure.
+
+\begin{figure}[h!]
+    \begin{center}
+\begin{tikzpicture}[block/.style = {draw, fill=white, rectangle, minimum height=3em, minimum width=3em},
+sum/.style= {draw, fill=white, circle, node distance=1cm},
+input/.style = {coordinate},
+tmp/.style = {coordinate},
+output/.style= {coordinate},
+pinstyle/.style = {pin edge={to-,thin,black}},
+auto,
+node distance = 2cm,
+>=latex'
+]
+    
+    
+    
+    \node [input, name=rinput] (rinput) {};
+    \node [tmp, right of=rinput] (ins_line) {};
+    \node [block, right of=ins_line] (mu) {Linear Block};
+    \node [block, below of=mu] (ins) {LS Model};
+    \node [output, right of=ins] (ins_out) {};
+    \node [sum, right of=mu,node distance=3cm] (sum1) {$+$};
+    \node [block, above of=sum1] (F) {F};
+    \node [input, above of=F] (noise_F) {};
+    \node [output, right of=sum1] (output2) {};
+
+
+
+    \draw [-] (rinput) -- node{$u_k$} (ins_line);
+    \draw [->] (ins_line) -- (mu);
+    \draw [->] (ins_line) |- (ins);
+    \draw [->] (mu) -- node{$v_k$} (sum1);
+    \draw [->] (sum1) -- node{$y_k$} (output2);
+    \draw [->] (ins) -- node{$\bar{y}_k$} (ins_out);
+    \draw [->] (noise_F) -- node{$\epsilon_k$} (F);
+    \draw [->] (F) -- node{$z_k$} (sum1);
+
+\end{tikzpicture}
+\caption{$v_k = 0.5v_{k-1} +0.3v_{k-2}+u_k$, $z_k = 0.5z_{k-1}+\epsilon_k$,  $y_k = v_k + z_k$  and $u_k \sim U[-1,1],\; \epsilon_k \sim U[-0.1,0.1]$}
+\label{}
+\end{center}
+\end{figure}
+
+Of note here, is that the output of the LS model is not corrupted by any noise, and as such can serve as the instrumental block. However, to do so a specific update procedure is needed. Both of these update sequences can be done online after each other using the following equations:\\
+\textbf{Online Least Squares}:
+
+    \begin{equation}
+        \begin{cases}
+            P_k = P_{k-1} - \frac{P_{k-1}\phi_k\phi_k^{T}\phi_{k-1}}{1+\phi_k^{T}P_{k-1}\phi_k}\\
+            \hat{\gamma}_k = \hat{\gamma}_{k-1} + P_k\phi_k(y_k - \phi_k^{T}\hat{\gamma}_{k-1})
+        \end{cases}
+    \end{equation}
+    Where:
+    \begin{itemize}
+        \item $\hat{\gamma}_k$ - the k-th estimate of the coefficient vector
+        \item  $P_k$ - the covariance matrix, as the approximation converges, its coefficients all go to 0.
+        \item  $\phi_k = \begin{bmatrix}
+       u_k \\
+                  \vdots \\
+                  u_{k-n} \\
+\end{bmatrix}$ -- vector of last  n inputs, where n is the length of the parameter vector
+    \end{itemize}
+\\
+\textbf{Instrumental Least Squares}:
+
+    \begin{equation}
+        \begin{cases}
+            P_k = P_{k-1} - \frac{P_{k-1}\psi_k\phi_k^{T}\phi_{k-1}}{1+\phi_k^{T}P_{k-1}\psi_k}\\
+            \hat{\gamma}_k = \hat{\gamma}_{k-1} + P_k\psi_k(y_k - \phi_k^{T}\hat{\gamma}_{k-1})
+        \end{cases}
+    \end{equation}
+    Where:
+    \begin{itemize}
+        \item $\hat{\gamma}_k$ - the k-Th estimate of the coefficient vector
+        \item  $P_k$ - the covariance matrix, as the approximation converges, its coefficients all go to 0.
+        \item  $\phi_k = \begin{bmatrix}
+       u_k \\
+                  \vdots \\
+                  u_{k-n} \\
+\end{bmatrix}$ -- vector of last  n inputs, where n is the length of the parameter vector
+
+        \item  $\psi = \begin{bmatrix}
+                \bar{u}_k \\
+                  \vdots \\
+                  \bar{u}_{k-n} \\
+\end{bmatrix}$ -- vector of last  n inputs, where some of them may be produced by the system itself, of the estimated system.
+    \end{itemize}
+
+    \clearpage
+
+\section{Results}
+Below are the results of estimation of systems suffering from correlated noise. To simplify the visualization, the Euclidean norm of the difference between the true value of the parameter vector and its estimate are plotted.
+
+
+
+\begin{figure}[h!]
+\begin{center}
+\begin{tikzpicture}
+\begin{semilogxaxis}[
+    xmin = 5, xmax = 10000000,
+    ymin = 0, ymax = 0.2,
+    grid = both,
+    minor tick num = 1,
+    major grid style = {lightgray},
+    minor grid style = {lightgray!25},
+    width = \textwidth,
+    height = 0.4\textwidth,
+    xlabel = N,
+    ylabel = $\norm{\gamma_N}_2$]
+
+    \addplot[color=blue,
+        ]
+        table [col sep=space, x index = 0, y index=1]{./plot_data/chapter_11/LS_ints.dat};
+
+    \addplot[color=red,
+        ]
+        table [col sep=space, x index = 0, y index=2]{./plot_data/chapter_11/LS_ints.dat};
+
+ \legend{ Ordinary least squares,
+          Instrumental lest squares,
+      }
+\end{semilogxaxis}
+\end{tikzpicture} 
+
+\caption{Cross correlation estimation of a linear system}
+
+\end{center}
+\end{figure}
+
+
+\begin{figure}[h!]
+\begin{center}
+\begin{tikzpicture}
+\begin{semilogxaxis}[
+    xmin = 10000, xmax = 10000000,
+    ymin = 0, ymax = 0.012,
+    grid = both,
+    minor tick num = 1,
+    major grid style = {lightgray},
+    minor grid style = {lightgray!25},
+    width = \textwidth,
+    height = 0.4\textwidth,
+    xlabel = N,
+    ylabel = $\norm{\gamma_N}_2$]
+
+    \addplot[color=blue,
+        ]
+        table [col sep=space, x index = 0, y index=1]{./plot_data/chapter_11/LS_ints.dat};
+
+    \addplot[color=red,
+        ]
+        table [col sep=space, x index = 0, y index=2]{./plot_data/chapter_11/LS_ints.dat};
+
+ \legend{ Ordinary least squares,
+          Instrumental lest squares,
+      }
+\end{semilogxaxis}
+\end{tikzpicture} 
+
+\caption{Cross correlation estimation of a linear system}
+
+\end{center}
+\end{figure}
+
+
+In comparison to the previously investigates linear system with uncorrelated noise, number of samples needed for convergence is much larger. It is also noteworthy that even once the instrumental least squares error gets smaller than the bias of ordinary least squares, it still sometimes gives an error larger than ordinary least squares. only after $10^5$ samples does the error get consistently lower than the previous method's bias.
+
+
+\clearpage
+\section{Conclusions}
+
+The assumption of non-correlated noise is a very strong one. It's very rare to find such systems in nature at any practical level of complexity. This means that when performing our usual estimation procedures we're going to suffer from bias. That fact has to be accepted, as usually there is very little that can be done about it. If however one has access to a very large number of samples, during this laboratory we demonstrated that this bias can be made arbitrarily low. The sample size needed for this performance boost is staggering, especially when compared to how few samples were needed for the ordinary least squares.

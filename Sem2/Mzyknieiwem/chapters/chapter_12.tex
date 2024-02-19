@@ -1,0 +1,84 @@
+\chapter{Correlation ???}
+
+
+Given 2 signals $Y(\omega,k)$ and  $X(\omega,k)$ we can find their cross correlation function:
+ \begin{equation}
+    \zeta(Y(\omega,k_1),x(\omega,k_2)) = C(\tau)
+\end{equation}
+
+If we take $Y = X$, we get the autocorrelation function:
+ \begin{equation}
+    \zeta(X(\omega,k_1),X(\omega,k_2)) = C(\tau)
+\end{equation}
+
+
+\ex{}
+{
+    $A(0) = 1$
+}
+
+\section{Discretised dynamic systems}
+Consider a system:
+\nt
+{
+    Here be figure:\\
+    $
+    u_k -> \{gamma_i\}_0^infty -> Sum with zk -> y_k
+    $
+}
+Where $Eu_k = 0$.
+Then we have:  $y_k = \Sigma_{i=0}^{\infty}\gamma_iu_{k-i} + z_k$
+\\
+Consider the cross correlation function:
+\begin{equation}
+    \begin{aligned}
+        C_{u,y} &   = E\left\{ u_k \cdot y_{k+\tau}\right\} \\
+                &= E\left\{ u_k(\gamma_0 u_{k+\tau} + \gamma_1u_{k+\tau-1}+\dots+z_k)\right\}\\
+                &= \sigma^{2}_u \cdot \gamma_\tau
+    \end{aligned}
+\end{equation}
+Conclusion:
+\begin{equation}
+    C_{u,y}(\tau) = \text{Corr}(A)\cdot\gamma_\tau
+\end{equation}
+
+This allows us to use this function for non-parametric identification, since it gives us $\gamma_\tau$
+\section{Non-parametric estimation algorithm:}
+Find $\gamma_\tau$ by:
+\begin{equation}
+    \hat{\gamma}_\tau = \frac{1}{N-\tau} \Sigma_{k=1}^{N-\tau}u_ky_{k+\tau}
+\end{equation}
+
+Now we want the difference between the estimated output of this system $\bar{y}$ and the noiseless output of the actual system  $v$ to tend to 0, which can be 
+guaranteed if the ratio of the number of coefficients to the number of data points tends to 0.
+
+
+\section{Hammerstein system}
+
+
+\nt{Hammerstein has the order of dynamics and non-linearities reversed}
+
+If we now compute the cross correlation between the input and output signals we get:
+\begin{equation}
+    \begin{aligned}
+        C_{u,y}(\tau)&=E\left\{u_k\cdot\left( \gamma_0\mu(u_{k+\tau}) + \gamma_1\mu(u_{k+\tau-1}) + \dots + \gamma_\tau\mu(u_k) + \dots + z_k  \right)\right\}&\mbox{}\\[1.25ex]
+        \cdot&=Eu_k\mu(u_k) \cdot gamma_\tau &\mbox{}\\[1.25ex]
+    \end{aligned}
+\end{equation}
+Which gives:
+\begin{equation}
+    C_{u,y}(\tau) = \text{Corr}(A)\cdot \gamma_\tau
+\end{equation}
+\nt{THIS ONLY WORKS FOR WHITE NOISE INPUT!!!!\\
+    AND DOES NOT WORK FOR WIENER SYSTEM}
+
+    \thm{Bussgang Theorem(Wiener System)}
+    {
+        If $\left\{u_k\right\}$ has the normal distribution, then:
+         \begin{equation}
+             C_{u,y}(\tau) = \text{Corr}\gamma_\tau
+        \end{equation}
+        Which allows us to use this non-parametric estimation for Wiener system
+        \nt{Proof in "Applied non-parametric regression" by some german}
+    }
+

@@ -1,0 +1,48 @@
+
+\chapter{Navigation}
+
+\section{Inertial navigation}
+An IMU + processor - Attitude and Heading Reference System(AHRS)
+\chapter{Probabilistic state estimation???}
+
+\section{Basics of probability}
+... Who cares
+\section{state and observation}
+\dfn{Basic concepts}
+{
+    \begin{itemize}
+        \item $x$ - real state
+        \item $\bar{x}$ - estimated state
+        \item  $z$ - observation(measurement), usually of several variables.
+        \item "Inverse" conditional problem - if we know $p(z|x)$ what is  $p(x|z)$?
+        
+    \end{itemize}
+    Bayes rule:
+    \begin{equation}
+        \label{bayes}
+        p(x|z) = \frac{p(z|x)p(x)}{p(z)} = \eta p(z|x)p(x)
+    \end{equation}
+    Where $\eta$ is athe normalization constant.
+}
+
+\subsection{Normal distribution}
+In most cases we will assume that all random variables follow some form of a normal distribution. This is because otherwise complex integrals would have to be calculated in real time, which is computationally infeasible. This approximation usually does not cause many problems, as most random processes in nature follow the Gaussian distribution.
+
+
+\dfn{Multidimensional Gaussian}
+{
+    \begin{equation}
+        \mathcal{N}(\mu,\Sigma) \sim p(X) = \frac{1}{\sqrt{(2\pi)^{n}\text{det}\Sigma}}e^{-\frac{1}{2}(x-\mu)^{T}\Sigma^{-1}(x-\mu)}
+    \end{equation}
+    \nt{Aliens from computer science have decided to re parametrize the Gaussian with the following matrix and mean: 
+    \begin{equation}
+        \begin{cases}
+            \Omega = \Sigma^{-1}\\
+            \xi = \Sigma^{-1}\mu
+        \end{cases}
+    \end{equation} 
+    But we civilised people(actual engineers) care not for their deviance.
+}
+
+}
+The Gaussian distribution has some nice properties, the main one which is linearity. This manifests in the fact that any linear transformation of the random variables also follow the Gaussian. This means that once we know the mean and covariance matrix, we can transform the original Gaussian into some nominal form, which is very commonly tabulated.

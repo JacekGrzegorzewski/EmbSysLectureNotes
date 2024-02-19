@@ -1,0 +1,54 @@
+\chapter{Equations of motion}
+\section{Introduction}
+The dynamics of an aerodynamically controlled rocket are very complex, and mostly of empirical nature.
+The main source of problems in their analysis are the aerodynamic force and moment coefficients. Their
+vales depend not only on the geometry of the rocket, but also on its orientation relative to the velocity
+vector, as well as deflection angles of the control surfaces in highly non-linear ways. By performing
+CFD simulations, one can obtain input output pairs for a given state, and use those to estimate the coefficients
+at those points. If, additionally, one possesses a set of specific equations describing the proverbial functional shape of these coefficients, regression can be used to fit them more accurately to their form.
+Below is a possible list of models for aerodynamic forces and moments, along with their advantages and disadvantages:
+\section{Aerodynamic Forces}
+\subsection{The general model}
+The general model of aerodynamic forces acting on a missile is usually written as:
+\begin{equation}
+    \begin{cases}
+        
+        F_B = \frac{1}{2}\rho S_{\text{ref}}v_B^{2}\mathbf{C}^{B}_A \begin{bmatrix}
+            -C_D \\
+            C_S\\
+            -C_L
+        \end{bmatrix}
+        \\
+        M_B = \frac{1}{2}\rho S_{\text{ref}}l_{\text{ref}}v_B^{2}\mathbf{C}^{B}_A \begin{bmatrix}
+            C_l \\
+            C_m\\
+            C_n
+        \end{bmatrix}
+
+    \end{cases}
+\end{equation}
+Where $\mathbf{C}^{B}_A$ is the transformation matrix from the chosen aerodynamic frame to the body frame. \\
+The main difficulty with these equations is that each of these coefficients $C_i$ is highly non linear, and depends not only on the mach number and orientation of the body relative to the velocity vector, but also on the deflection angles, in our case  $C_i(M,\alpha,\beta,\delta_1,\delta_2)$. This, along with not tetragonal but planar symmetry, necessitates performing a large number of simulations, from which we will obtain a 4 dimensional look-up table(Only one mach number will be considered). This is very unwieldy in theoretical applications, and as such several alternatives will be considered.
+\nt{Some sources don't transform the moments to the aerodynamic frame, i think that's a mistake, but will have to look further into it}
+
+\subsection{Summed model}
+This model is described by the equations below:
+
+\begin{equation}
+    \begin{cases}
+        F_B = \frac{1}{2}\rho S_{\text{ref}}v_B^{2}\mathbf{C}^{B}_A \begin{bmatrix}
+            -C_D \\
+            C_S\\
+            -C_L
+        \end{bmatrix}
+        \\
+        M_B = \frac{1}{2}\rho S_{\text{ref}}l_{\text{ref}}v_B^{2}\mathbf{C}^{B}_A \begin{bmatrix}
+            C_l \\
+            C_m\\
+            C_n
+        \end{bmatrix}
+
+}v_B^{2} \left( \mathbf{C}^{B}_A
+    \end{cases}
+\end{equation}
+

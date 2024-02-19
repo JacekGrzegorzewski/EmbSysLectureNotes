@@ -1,0 +1,333 @@
+\chapter{Monte Carlo simulation and Bootstrapping}
+
+The eleventh laboratory class dealt with improving the estimate of cumulative distribution function(CDF) obtained
+from just a few samples by generating simulated samples through a Monte Carlo simulation.
+A Monte Carlo simulation can be used to gain insight into even very difficult problems, at the cost of computational complexity.
+It works by generating random inputs from a known probability distribution function, performing some computation on them, and
+interpreting the results. A common example used in explaining this process is estimating the number $\pi$, by generating pairs of
+uniformly random variables, and calculating the ratio of those who's sum of squares is less than 1 to the number of all samples.\\
+In our case however, it will be used to generate additional input-output pairs to better estimate the CDF of a Hammerstein system.
+As an aside, the Monte Carlo method was used during one of the very first laboratories while using the rejection method to generate random variables following arbitrary distribution functions. It was however not introduced as such, and as a consequence an introduction to the method was in order at the beginning of the laboratory.
+
+\section{Laboratory}
+The laboratory class was divided into 2 sections. The first section introduced the concepts of Monte Carlo simulations and Bootstrapping on a single set
+of variables which were the same for everyone. Once everyone got acquainted with these concepts, they were used in estimation of the CDF of a Hammerstein system.
+This is different from identification, in that we won't be able to determine the input-output relation of the system. Instead, we'll be able to estimate with what probability will the output be of a given value.\\
+The system estimated can be described by the following block diagram:
+ 
+\begin{figure}[h!]
+    \begin{center}
+\begin{tikzpicture}[block/.style = {draw, fill=white, rectangle, minimum height=3em, minimum width=3em},
+sum/.style= {draw, fill=white, circle, node distance=1cm},
+input/.style = {coordinate},
+tmp/.style = {coordinate},
+output/.style= {coordinate},
+pinstyle/.style = {pin edge={to-,thin,black}},
+auto,
+node distance = 2cm,
+>=latex'
+]
+    \node [input, name=rinput] (rinput) {};
+    \node [block, right of=rinput] (controller) {$(\cdot)^2$};
+    \node [block, right of=controller] (mu) {$\{ \gamma_k\}$};
+    \node [output, right of=mu, node distance=2cm] (output) {};
+    \draw [->] (rinput) -- node{$u_k$} (controller);
+    \draw [->] (controller) -- node{$w_k$} (mu);
+    \draw [->] (mu) -- node{$y_k$} (output);
+\end{tikzpicture}
+\caption{$\gamma_k = w_k + w_{k-1} + w_{k-2}$, and $u_k \sim U[0,1]$}
+\label{}
+\end{center}
+\end{figure}
+
+A small sequence of N pairs $\left\{ \left( u_k,y_k \right) \right\}^{N}_{k=1}$, where $N$ is around 20, not counting the initial samples affected heavily by initial conditions, was generated to serve as the data set of actual observations.\\
+From this data set, a large set of virtual input-output pairs was generated, by taking 3 in a uniformly random manner 3 inputs from the original sequence, applying the system equations to it, and repeating the process R number of times. This way millions of pairs can be generated, allowing for very efficient resampling. These resampled pairs can't be used for identification, but can be used to generate a nice-looking CDF of the system's output.
+The results didn't vary much with R, and since it can be chosen arbitrarily, it was kept at 1000. The stair plots below show the behaviour of estimated CDFs for different lengths of the original sequence.
+
+%%
+\clearpage
+
+\begin{figure}[h!]
+\begin{center}
+\begin{tikzpicture}
+\begin{axis}[
+    xmin = -0.1, xmax = 3,
+    ymin = 0, ymax = 1.0,
+    grid = both,
+    minor tick num = 1,
+    major grid style = {lightgray},
+    minor grid style = {lightgray!25},
+    width = 0.45\textwidth,
+    height = 0.50\textwidth,
+    xlabel = $x$,
+    ylabel = $P(x > y_k)$,
+    scaled x ticks=false,
+    legend pos=north west
+    ]
+
+    \addplot[color=blue, const plot
+        ]
+        table [col sep=space, x index = 0, y index=1]{./plot_data/chapter_10/known_N_25.dat};
+    \addplot[color=red, const plot
+        ]
+        table [col sep=space, x index = 0, y index=1]{./plot_data/chapter_10/known_bootstrap_N_25.dat};
+
+
+ \legend{ Original,
+          Bootstrap,
+      }
+\end{axis} 
+\end{tikzpicture}\begin{tikzpicture}
+\begin{axis}[
+    xmin = -0.1, xmax = 3,
+    ymin = 0, ymax = 1.0,
+    grid = both,
+    minor tick num = 1,
+    major grid style = {lightgray},
+    minor grid style = {lightgray!25},
+    width = 0.45\textwidth,
+    height = 0.50\textwidth,
+    xlabel = $x$,
+    ylabel = $P(x > y_k)$,
+    scaled x ticks=false,
+    legend pos=north west
+    ]
+
+    \addplot[color=blue, const plot
+        ]
+        table [col sep=space, x index = 0, y index=1]{./plot_data/chapter_10/known_N_50.dat};
+    \addplot[color=red, const plot
+        ]
+        table [col sep=space, x index = 0, y index=1]{./plot_data/chapter_10/known_bootstrap_N_50.dat};
+
+
+ \legend{ Original,
+          Bootstrap,
+      }
+\end{axis} 
+\end{tikzpicture}
+
+
+
+
+\caption{Left plot shows bootstrap for N = 25, right N =50}
+
+\end{center}
+\end{figure}
+
+
+\begin{figure}[h!]
+\begin{center}
+\begin{tikzpicture}
+\begin{axis}[
+    xmin = -0.1, xmax = 3,
+    ymin = 0, ymax = 1.0,
+    grid = both,
+    minor tick num = 1,
+    major grid style = {lightgray},
+    minor grid style = {lightgray!25},
+    width = 0.45\textwidth,
+    height = 0.50\textwidth,
+    xlabel = $x$,
+    ylabel = $P(x > y_k)$,
+    scaled x ticks=false,
+    legend pos=north west
+    ]
+
+    \addplot[color=blue, const plot
+        ]
+        table [col sep=space, x index = 0, y index=1]{./plot_data/chapter_10/known_N_100.dat};
+    \addplot[color=red, const plot
+        ]
+        table [col sep=space, x index = 0, y index=1]{./plot_data/chapter_10/known_bootstrap_N_100.dat};
+
+
+ \legend{ Original,
+          Bootstrap,
+      }
+\end{axis} 
+\end{tikzpicture}\begin{tikzpicture}
+\begin{axis}[
+    xmin = -0.1, xmax = 3,
+    ymin = 0, ymax = 1.0,
+    grid = both,
+    minor tick num = 1,
+    major grid style = {lightgray},
+    minor grid style = {lightgray!25},
+    width = 0.45\textwidth,
+    height = 0.50\textwidth,
+    xlabel = $x$,
+    ylabel = $P(x > y_k)$,
+    scaled x ticks=false,
+    legend pos=north west
+    ]
+
+    \addplot[color=blue, const plot
+        ]
+        table [col sep=space, x index = 0, y index=1]{./plot_data/chapter_10/known_N_500.dat};
+    \addplot[color=red, const plot
+        ]
+        table [col sep=space, x index = 0, y index=1]{./plot_data/chapter_10/known_bootstrap_N_500.dat};
+
+
+ \legend{ Original,
+          Bootstrap,
+      }
+\end{axis} 
+\end{tikzpicture}
+\caption{Left plot shows bootstrap for N = 100, right N =500}
+
+\end{center}
+\end{figure}
+
+\subsubsection{An observation}
+An astute observer may object to the rationale behind this method. What this method does, is it allows us to recover the most basic, but still usefull, information characterising a system. It does so however under a very strict assumption of having a fully identified system. Under that assumption, the method is more or less pointless, as by then we would have an almost deterministic description of the system, and so no need to deal with probabilities. 
+In practice then, the first step would have to be to identify the system, and the second performing bootstrapping. 
+In that way, the procedure is again useful, as even with badly identified system, the CDF estimate can be used to obtain useful information about the system.
+An estimation procedure using kernel regression for the estimation of the non-linear block, combined with least-squares estimation of the linear block, was performed for several values of N. The kernel window size was kept at a constant $h = 0.15$, as it was observed that at this values minima in estimation error often occur.
+
+
+\begin{figure}[h!]
+\begin{center}
+\begin{tikzpicture}
+\begin{axis}[
+    xmin = -0.1, xmax = 1,
+    ymin = 0, ymax = 1.0,
+    grid = both,
+    minor tick num = 1,
+    major grid style = {lightgray},
+    minor grid style = {lightgray!25},
+    width = 0.45\textwidth,
+    height = 0.50\textwidth,
+    xlabel = $u$,
+    ylabel = $\mu$,
+    scaled x ticks=false,
+    legend pos=north west
+    ]
+
+    \addplot[color=blue
+        ]
+        table [col sep=space, x index = 0, y index=1]{./plot_data/chapter_10/Kernel_est_mu_N_25.dat};
+    \addplot[color=red
+        ]
+        table [col sep=space, x index = 0, y index=2]{./plot_data/chapter_10/Kernel_est_mu_N_25.dat};
+
+
+ \legend{ $u^2$,
+     $\hat{\mu}(\cdot)$,
+      }
+\end{axis} 
+\end{tikzpicture}\begin{tikzpicture}
+\begin{axis}[
+    xmin = -0.1, xmax = 1,
+    ymin = 0, ymax = 1.0,
+    grid = both,
+    minor tick num = 1,
+    major grid style = {lightgray},
+    minor grid style = {lightgray!25},
+    width = 0.45\textwidth,
+    height = 0.50\textwidth,
+    xlabel = $u$,
+    ylabel = $\mu$,
+    scaled x ticks=false,
+    legend pos=north west
+    ]
+
+    \addplot[color=blue
+        ]
+        table [col sep=space, x index = 0, y index=1]{./plot_data/chapter_10/Kernel_est_mu_N_50.dat};
+    \addplot[color=red
+        ]
+        table [col sep=space, x index = 0, y index=2]{./plot_data/chapter_10/Kernel_est_mu_N_50.dat};
+
+
+ \legend{ $u^2$,
+     $\hat{\mu}(\cdot)$,
+      }
+\end{axis} 
+\end{tikzpicture}
+
+
+
+
+\caption{Left plot shows $\hat{\mu}$ for N = 25, right N =50}
+
+\end{center}
+\end{figure}
+
+
+An interesting fact can be noted here, in that due to boundary artifacts of the estimation, which for this function only occur at the right boundary, will mean that the higher probabilities will always be underestimated. Which means we should expect the estimated bootstrapped CDF to obtain the value of 1 before the original function. This fact will remain true even for very high values of N.
+
+\begin{figure}[h!]
+\begin{center}
+\begin{tikzpicture}
+\begin{axis}[
+    xmin = -0.1, xmax = 3,
+    ymin = 0, ymax = 1.0,
+    grid = both,
+    minor tick num = 1,
+    major grid style = {lightgray},
+    minor grid style = {lightgray!25},
+    width = 0.45\textwidth,
+    height = 0.50\textwidth,
+    xlabel = $x$,
+    ylabel = $P(x > y_k)$,
+    scaled x ticks=false,
+    legend pos=north west
+    ]
+
+    \addplot[color=blue, const plot
+        ]
+        table [col sep=space, x index = 0, y index=1]{./plot_data/chapter_10/estim_N_25.dat};
+    \addplot[color=red, const plot
+        ]
+        table [col sep=space, x index = 0, y index=1]{./plot_data/chapter_10/estim_bootstrap_N_25.dat};
+
+
+ \legend{ Original,
+          Bootstrap,
+      }
+\end{axis} 
+\end{tikzpicture}\begin{tikzpicture}
+\begin{axis}[
+    xmin = -0.1, xmax = 3,
+    ymin = 0, ymax = 1.0,
+    grid = both,
+    minor tick num = 1,
+    major grid style = {lightgray},
+    minor grid style = {lightgray!25},
+    width = 0.45\textwidth,
+    height = 0.50\textwidth,
+    xlabel = $x$,
+    ylabel = $P(x > y_k)$,
+    scaled x ticks=false,
+    legend pos=north west
+    ]
+
+    \addplot[color=blue, const plot
+        ]
+        table [col sep=space, x index = 0, y index=1]{./plot_data/chapter_10/estim_N_50.dat};
+    \addplot[color=red, const plot
+        ]
+        table [col sep=space, x index = 0, y index=1]{./plot_data/chapter_10/estim_bootstrap_N_50.dat};
+
+
+ \legend{ Original,
+          Bootstrap,
+      }
+\end{axis} 
+\end{tikzpicture}
+\caption{Left plot shows bootstrap for N = 25, right N =50}
+
+\end{center}
+\end{figure}
+
+
+
+\section{Conclusions}
+
+Dealing with low sample size datasets is a very difficult problem in statistics. Bootstrapping offers a way to deal with this problem through proverbial brute-force.  Combined with various methods of system identification, we can expect to quickly obtain viable statistical information about the system's output, even with very few original data points. 
+
+
+
+

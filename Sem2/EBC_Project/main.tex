@@ -1,0 +1,38 @@
+\documentclass{report}
+
+\input{tex/preamble}
+\input{tex/macros}
+\input{tex/letterfonts}
+
+
+\title{\Huge{Event based control}}
+\author{\huge{G.R.A.V.E.L.\\
+    Gizmos and Reality: An Adventure Via Event-driven Logic}\\\\
+        Krzysztof Kowaczek\\
+        Tomasz Lubelski\\
+        Michał Kos\\
+        Tomasz Marut\\
+        Jacek  Grzegorzewski}
+
+
+\includeonly{%
+             tex/preabmle,
+             tex/macros,
+             tex/letterfonts,
+             chapters/chapter_1,
+           % chapters/chapter_2,
+             }
+
+
+\begin{document}
+\maketitle
+\newpage% or \cleardoublepage
+% \pdfbookmark[<level>]{<title>}{<dest>}
+\pdfbookmark[section]{\contentsname}{toc}
+\tableofcontents
+\pagebreak
+
+\include{chapters/chapter_1.tex}
+\include{chapters/chapter_2.tex}
+
+\end{document}

@@ -1,0 +1,266 @@
+
+\chapter{Preliminaries}
+\section{Quaternions}
+The algebra of quaternions -- usually denoted as $\mathbb{H}$ -- is homomorphic to the 3 dimensional special orthogonal group(SO(3)), which is the group representing rotations in 3D space. A general quaternion $h$ can be writen as follows:
+\begin{equation}
+    h = h_0 + h_1i +h_2j + h_3k
+\end{equation}
+The 3 unit versors $i$,  $j$, $k$ are not commutitative, and subject to the following equations:
+\begin{equation}
+       i^{2} = -1,\;
+       j^{2} = -1,\;
+       k^{2} = -1,\;
+       ijk = -1
+\end{equation}
+A quaternion with its scalar par $h_0$ equal to zero is called a purely vectorial quaternion, the set of which is denoted as $\mathcal{H}$.  The conjugate of a quaternion is defined as:
+\begin{equation}
+    \bar{h} = h_0 - h_1i - h_2j - h_3k
+\end{equation}
+The conjugate can be used to define the square of the norm of a quaternion:
+\begin{equation}
+    h\bar{h} = \bar{h}h = h_0^{2} + h_1^{2}+h_2^{2} + h_3^{2} \in \mathbb{R}
+\end{equation}
+If $h \in \mathcal{H}$, then $h + \bar{h} = 0$.
+\subsection{SO(3)}
+Given $v \in \mathcal{H}$, a quaternion $p \in \mathbb{H}$ can be used to rotate it around the origin by the following map:
+\begin{equation}
+    v' = \frac{pv\bar{p}}{p\bar{p}}
+\end{equation}
+In particular, if $p$ is a unit quaternion with $p\bar{p} = 1$ we have:
+
+\begin{equation}
+    v' = pv\bar{p}
+\end{equation}
+This is sometimes affectionately referred to as the \textbf{sandwich product}.
+\\
+To understand how a sandwich product of a quaternion $p$ rotates $v$, it helps to observe, that every unit quaternion can be written as:
+\begin{equation}
+    p = \cos{(\frac{\theta}{2})} + \sin{(\frac{\theta}{2})}u
+\end{equation}
+where $u\bar{u} = 1$ and  $u\in \mathcal{H}$. Then the sandwich product represents rotation of $v$ around the axis $u$ by the angle $\theta$.
+\clearpage
+To convince ourselves of this, we can first see that a rotation of $u$ around $u$ leads to the identity transformation, and investigate the behaviour of unit versors.
+\subsubsection{Rotation of a versor lying on the rotation axis}
+\begin{equation}
+    \begin{aligned}
+        u'&=pv\bar{p}&\mbox{}\\[1.25ex]
+        u'&=(\cos{(\frac{\theta}{2})}+\sin{(\frac{\theta}{2})u})u(\cos{(\frac{\theta}{2})}-\sin{(\frac{\theta}{2})u})&\mbox{}\\[1.25ex]
+        u'&=(\cos{(\frac{\theta}{2})}+\sin{(\frac{\theta}{2})u})(\cos{(\frac{\theta}{2})}u+\sin{(\frac{\theta}{2})})&\mbox{}\\[1.25ex]
+        u'&=(\cos{(\frac{\theta}{2})}^{2} + \sin{(\frac{\theta}{2})}^{2})u&\mbox{}\\[1.25ex]
+        u'&=u&\mbox{}\\[1.25ex]
+    \end{aligned}
+\end{equation}
+\subsection{Rotation of a basis versor around another bass versor}
+Let $p = \cos{(\frac{\theta}{2})} + \sin{(\frac{\theta}{2})}k$, then if we calculate the sandwich products $pi\bar{p}$ or  $pj\bar{p}$ we should expect results similar to ones well known from linear algebra:\\
+
+\noindent\begin{minipage}{.5\linewidth}
+    \begin{equation}
+        \begin{bmatrix}
+            \cos{(\theta)} \\
+            \sin{(\theta)} \\
+            0
+        \end{bmatrix} = \begin{bmatrix}
+        \cos{(\theta)} & -\sin{(\theta)} & 0\\
+        \sin{(\theta)} & \cos{(\theta)} & 0 \\
+        0 & 0 & 1
+        \end{bmatrix}
+        \begin{bmatrix}
+            1  \\ 0 \\ 0
+        \end{bmatrix}
+    \end{equation}
+\end{minipage}
+\begin{minipage}{.5\linewidth}
+    \begin{equation}
+             \begin{bmatrix}
+            -\sin{(\theta)} \\
+            \cos{(\theta)} \\
+            0
+        \end{bmatrix} = \begin{bmatrix}
+        \cos{(\theta)} & -\sin{(\theta)} & 0\\
+        \sin{(\theta)} & \cos{(\theta)} & 0\\
+        0 & 0 & 1
+        \end{bmatrix}
+        \begin{bmatrix}
+            0  \\ 1 \\ 0
+        \end{bmatrix}
+    \end{equation}
+\end{minipage}
+And in fact:
+\begin{equation}
+    \begin{aligned}
+         u'&=pi\bar{p}&\mbox{}\\[1.25ex]
+        u'&=(\cos{(\frac{\theta}{2})}+\sin{(\frac{\theta}{2})k})i(\cos{(\frac{\theta}{2})}-\sin{(\frac{\theta}{2})k})&\mbox{}\\[1.25ex]
+        u'&=(\cos{(\frac{\theta}{2})}+\sin{(\frac{\theta}{2})k})(\cos{(\frac{\theta}{2})}i+\sin{(\frac{\theta}{2})}j)&\mbox{}\\[1.25ex]
+        u'&=(\cos{(\frac{\theta}{2})}^{2}-\sin{(\frac{\theta}{2})}^{2})i + 2\sin{(\frac{\theta}{2})}\cos{(\frac{\theta}{2})}j&\mbox{}\\[1.25ex]
+        u'&=\cos{(\theta)}i + \sin{(\theta})j&\mbox{}\\[1.25ex]
+
+    \end{aligned}
+\end{equation}
+A result in complete agreement with one obtained by the use of rotation matrices
+
+\subsubsection{rotaion of arbitrary vectors, use crossproducts etc. TO DO}
+
+\subsection{T(3)}
+
+Since we already associate the 3 basis versors with the 3 standard axes of a Cartesian space, it seems natural to use quaternions to represent translations. It is in fact trivial to do, a translation is simply the addition of one purely vectorial quaternion to another:
+\begin{equation}
+    v' = v + u
+\end{equation}
+where $v,u\in \mathcal{H}$.
+\clearpage
+\subsection{SE(3)}
+The special Euclidean group(SE(3)), which represents rigid body motions in 3D space, is composed of 2 subgroups. Those being the special orthogonal group SO(3), and the translational group in 3D T(3). Given these 2, one can construct SE(3) as the semi-direct product of them as such:
+\begin{equation}
+    SE(3) = SO(3)\ltimes T(3)
+\end{equation}
+With this construction, elements of SE(3) are given by a tuple  $(r,t)$, and a product of 2 of its elements is given as follows:
+ \begin{equation}
+     \label{semidirect}
+     (r_2,t_2)(r_1,t_1) = (r_2r_1,r_2t_1\bar{r}_2+t_2)
+\end{equation}
+With $r_1,r_2\in SO(3)$, and $t_1,t_2 \in T(3)$\\
+This formula should be familiar to anyone who ever multiplied 2 DHT matrices together.\\
+In general then, a pair of quaternions is enough to represent the motion of rigid bodies. A problem however with this formulation is that it requires pairs of quaternions, which makes it mathematically unwieldy. This leads to the idea of enclosing both of these pairs in a single algebra.
+\section{Biquaternions}
+SHORT INTRODUCTION TO QUATERNIONS AND BIQUATERNIONS
+The way the above issue can be solved when using orthogonal matrices to represent rotation, is to embed SE(3) in SO(4). This may sound complicated, but this is in fact the most common way to represent elements of SE(3). An example would be the block matrix:
+\begin{equation}
+    A_i = \begin{bmatrix}
+        R & T   \\
+        \mathbb{0} & 1
+    \end{bmatrix}
+\end{equation}
+Again, this should be familiar to anyone who knows anything about robot kinematics. If we multiply 2 such matrices together we will obtain:
+\begin{equation}
+    A_1A_2 =  \begin{bmatrix}
+        R_1 & T_1   \\
+        \mathbb{0} & 1
+    \end{bmatrix} 
+ \begin{bmatrix}
+        R_2 & T_2   \\
+        \mathbb{0} & 1
+    \end{bmatrix} 
+ \begin{bmatrix}
+        R_1R_2 & R_2T_1 + T_2\\
+        \mathbb{0} & 1
+    \end{bmatrix}
+\end{equation}
+Which looks exactly like the semi-direct product presented before \ref{semidirect}. Do tho this with quaternions however, we have to utilise a different method. A way to do this, is to introduce a new type of coefficient for 
+regular quaternions. Instead of using real numbers $h_i \in \mathbb{R}$ as coefficients, one can introduce dual number coefficients $h_i \in \mathbb{D}$ $h_i = p_i + \varepsilon q_i$, where  $\varepsilon^{2} = 0$. By using these dual coefficients, we create a new algebra called the dual quaternions(sometimes also known as bi quaternions) which we will denote as $\mathbb{DH}$. An element $h \in \mathbb{DH}$ can also be written as 
+ \begin{equation}
+    h = p + \varepsilon q
+\end{equation}
+Where $p,q \in \mathbb{H}$. 
+NIECHCE MI SIE JUZ AAAAAAAAA
+\begin{comment}
+DON'T KNOW IF I SHOULD INCLUDE THIS, THIS IS HIGHLY INFORMAL AND IT'S DOUBTFULL IF IT WILL AID IN UNDERSTANING THE SUBJECT OF PEOPLE WHO HAVE NO PRECIOUS KNOWLDEGE OF IT    
+Let us imagine for a second, that instead of the quaternion having real numbers $h_i \in \mathbb{R}$ as coefficients, it will have coefficients of the kind $h_i = a_i + \beta b_i$, with  $a_i,a_i \in \mathbb{R}$ and the properties of the algebraic element $\beta$ are to be defined in the future. Such a modified quaternion could then be written as:
+\begin{equation}
+    h = p + \beta q
+\end{equation}
+where $p,q \in \mathbb{H}$. If we assume, that $p$ is supposed to represent a rotation, and  $q$ a translation, we need $q \in \mathcal{H}$ -- this is because we defined the homomorphism between quaternions and T(3) as occurring only between those quaternions with 0 real part. A product of 2 such modified quaternions would look like this:
+\begin{equation}
+    h_1h_2 = p_1p_2 + \beta(p_1q_2 + q_1p_2) + \beta^{2}q_1q_2
+\end{equation}
+Now to determine the properties of $\beta$, we can investigate the behaviour of this product for pure translations, and pure rotations. 
+A product of 2 rotations should be a sequence of consecutive rotations -- similarity to how it works with regular quaternions,
+A product of pure translations should give a translation by the total vector, so if we associate the translations with the quaterionic coefficient of  $\beta$,  the product should contain the sum of the 
+
+\end{comment}
+\clearpage
+\subsection{Elementary motions}
+A linear biquaterionic polynomial can represent either a translation, or a rotation. 
+A general formula for a linear univariate biquaterionic polynomial parametrising a rigid body motion is the following:
+\begin{equation}
+    F = 1+th,\; h \in \mathbb{DH}
+\end{equation}
+To represent a motion in SE(3), its norm polynomial has to be real:
+\begin{equation}
+    F\bar{F} = 1+(h+\bar{h})t+h\bar{h}t^{2} \in \mathbb{R}[t]
+\end{equation}
+Since the parameter t is always real, this translates to:
+\begin{equation}
+    \begin{cases}
+        h\bar{h} \in \mathbb{R}\\
+        h+\bar{h} \in \mathbb{R}
+    \end{cases}
+\end{equation}
+Since $h = p + \epsilon q,\; p,q \in \mathbb{H}$, this is equivalent to saying that $h$ itself has to satisfy the Study condition -- and so represent an element of SE(3) -- and has to have purely vectorial dual part, e.g.
+\begin{equation}
+    h = p_0+p_1\mathit{i}+p_2\mathit{j}+p_3\mathit{k} +\epsilon(q_1\mathit{i}+q_2\mathit{j}+q_3\mathit{k})
+\end{equation}
+\subsubsection{Elementary motions -- translation}
+Translations form a subgroup of SE(3), and can be easily represented by a purely dual biquaternion. In general such a quaternion has the form:
+\begin{equation}
+    h_t = 1 - \frac{\epsilon}{2}(q_1\mathit{i}+q_2\mathit{j}+q_3\mathit{k})
+\end{equation}
+Its action will translate a given point $x = 1 + \epsilon(v)$ along the vector $q$ according to \ref{act}:
+\begin{equation}
+    \begin{aligned}
+        x &\rightarrow 1 + \epsilon\frac{pv\bar{p} + 2p\bar{q}}{p\bar{p}}&\mbox{Note that $p = 1$ and  $q = q_1\mathit{i}+q_2\mathit{j}+q_3\mathit{k}$}\\[1.25ex]
+        x&\rightarrow 1 + \epsilon(v + q)&\mbox{The point is mapped onto its original position plus the translation vector}\\[1.25ex]
+    \end{aligned}
+\end{equation}
+
+We can parametrise this map using a real parameter $t$, thus giving rise to a linear biquaterionic polynomial parametrisation of translations in SE(3):
+\begin{equation}
+    H_t(t) = 1 - \frac{\epsilon t}{2}q
+\end{equation}
+It maps a point x -- defined as before -- as follows:
+\begin{equation}
+    x \rightarrow  1 + \epsilon v + \epsilon qt
+\end{equation}
+The parameter t specifies where along the line defined by the vector q the point is translated. For $t = 0$ we get the identity transformation.
+Since $h_t$ satisfies the Study condition, so does  $H_t$, and thus we've associated translations with linear trajectories in the study quadric.
+\clearpage
+\subsubsection{Elementary motions -- rotations}
+It is well known, that rotations around the origin can be represented by unit quaternions. This representation can easily be extended to the projective case, and gives an intuitive interpretation of the indeterminate parametrising the rotation. A quaternion representing a rotation about an axis $q$ located at the origin is given by the following:
+\begin{equation}
+    \begin{aligned}
+        q&= \cos{\theta} + \sin{\theta}(q_1\mathit{i} + q_2\mathit{j} + q_3\mathit{k})&\mbox{Divide by $\cos{\theta}$}\\[1.25ex]
+        \frac{q}{\cos{\theta}}&\equiv q&\mbox{$\equiv$ we take to mean projectively equal}\\[1.25ex]
+        q&\equiv 1 + \tan{\theta}(q_1\mathit{i} + q_2\mathit{j} + q_3\mathit{k})&\mbox{}\\[1.25ex]
+    \end{aligned}
+\end{equation}
+By interpreting $\tan{\theta}$ as the indeterminate variable t, we can represent rotation around an axis at the origin as a linear quaterionic polynomial. \\
+To represent a rotation around an axis located at another location, the translation biquaternion can be used to translate the rotation quaternion\cite{Siegele_2021}. To do this, the same map \ref{act} as the one used to represent the movement of a point can be used, but instead of a point it will act on a rotation quaternion. 
+\begin{equation}
+    \label{rottr}
+    \begin{aligned}
+        (1-\epsilon \frac{x}{2})(1+tv)(1+\epsilon \frac{x}{2}))   &= 1 + tv +t\frac{\epsilon}{2}(vx-xv)&\mbox{}\\[1.25ex]
+        P(t)&= 1 + tv&\mbox{The primal part}\\[1.25ex]
+        Q(t)&= \frac{t}{2}(vx-xv)&\mbox{The dual part}\\[1.25ex]
+    \end{aligned}
+\end{equation}
+The above map describes a rotation around an axis $v$, which goes through a point $x$. To see that this is the case, we can show that it's action is not going to affect any point which lies on the axis it rotates around. The coordinates of all such unaffected points will lie on a line which can be represented as a biquaternion $z = 1 + \epsilon(x + u v)$, where  $u\in \mathbb{R}$, and both x and v are purely vectorial quaternions, with $v\bar{v} = 1$. Then the point $z$ will be mapped to another point by \ref{rottr} according to \ref{act}:
+\begin{equation}
+    z \rightarrow 1 +\epsilon \frac{P(t)(x+uv)P(t) + 2P(t)\bar{Q}(t)}{P(t)\bar{P}(t)}
+\end{equation}
+The second part can be expanded as:
+\begin{equation}
+    \begin{aligned}
+        2P(t)\bar{Q}(t)&=2(1+tv)\frac{t}{2}(xv-vx)&\mbox{}\\[1.25ex]
+        2P(t)\bar{Q}(t)&=t(xv-vx)+t^{2}(vxv - x)&\mbox{}\\[1.25ex]
+    \end{aligned}
+\end{equation}
+While the first as:
+\begin{equation}
+    \begin{aligned}
+        P(t)(x+uv)P(t)&=P(t)x\bar{P}(t) + u P(t)v\bar{P}(t)&\mbox{}\\[1.25ex]
+        uP(t)v\bar{P}(t)&= u(1+t^{2})v&\mbox{}\\[1.25ex]
+        P(t)x\bar{P}(t)&= x + t(vx-xv)-t^{2}vxv&\mbox{}\\[1.25ex]
+    \end{aligned}
+\end{equation}
+Adding both of these together we get:
+\begin{equation}
+    P(t)(x+uv)\bar{P}(t) + 2P(t)\bar{Q}(t) = x + t(vx-xv) - t^{2}vxv+u(1+t^{2}) + t(xv-vx) + t^{2}(vxv-x)
+\end{equation}
+Which after simplification yields:
+\begin{equation}
+    P(t)(x+uv)\bar{P}(t) + 2P(t)\bar{Q}(t) = (x + uv)(1+t^{2})
+\end{equation}
+Which ultimately shows that this rotation polynomial maps z to itself:
+\begin{equation}
+    z \rightarrow 1+\epsilon(x+uv)
+\end{equation}
+

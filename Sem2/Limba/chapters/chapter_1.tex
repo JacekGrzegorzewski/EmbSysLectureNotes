@@ -1,0 +1,54 @@
+\chapter{Motivation}
+\section{Parallel mechanisms}
+
+\dfn{Parallel Kinematic Chain}
+{
+    A purely parallel kinematic chain is a mechanism, in which multiple serial chains are connected to the end effector.
+    For the sake of this presentation however, hybrid manipulators will also be considered parallel.\\
+    A hybrid manipulator is any kinematic chain containing closed transformation loops.\\
+    The simplest example of a parallel mechanism is the planar 4-bar:
+    %img
+    \\
+    However more complex structures are also commonly employed in robotics:
+    %
+    %delta i gough zdjecia
+}
+\subsection{Characteristics}
+\begin{itemize}
+        \item Mass concentrated near the base
+        \item Higher stability
+        \item Complex workspaces
+        \item Difficult mathematical description
+\end{itemize}
+
+\subsection{Analysis}
+\begin{itemize}
+        \item Mostly vector based
+        \item Often exploit symmetry
+        \item Analytic solutions to problems are rare
+        \item More types of singularities
+\end{itemize}
+
+\subsection{Synthesis}
+\begin{itemize}
+        \item Mostly based on ingenuity
+        \item Systematic methods are still trapped in the serial-chain framework
+        \item Often exploit Lie sub algebras of the displacement group
+        \item Generally lacking
+\end{itemize}
+\subsubsection{Virtual chain method}
+\dfn{Virtual chain method}
+{
+    The Virtual chain method was developed by dr. Kong and dr. Gosselin for the description of the desired motion of the end effector of the synthesised manipulator.\\
+    It worked by describing a serial manipulator following a desired motion, and then constructing parallel legs of an appropriate type to restrict the motion of this virtual manipulator. This was done using Lie Algebraic methods, by creating a catalogue of serial chains, along with the wrenches constricting them.
+    The intersection of these constraints should at the end produce the desired motion.
+}
+
+
+\section{Deficiencies}
+
+The Virtual chain method suffers from the clear issue of needing an a priori description of the desired motion, without having a well described apparatus to that purpose. 
+Even while describing their method, they described 2 types of motion which could not be realised by serial chains, but gave no systematic way to arrive at them. This ultimately makes the task of synthesising a parallel mechanism require a large deal of ingenuity, which greatly restricts their use to a few well described examples.
+
+
+

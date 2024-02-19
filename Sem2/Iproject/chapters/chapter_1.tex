@@ -1,0 +1,69 @@
+\chapter{Project Proposal}
+
+\section{Description}
+The most important mathematical structure to robotics is the special euclidean group SE(3), which represents rigid body motions in 3D space\cite{selig}. 
+It is well known, that this group can be represented by the algebra of biquaternions $\mathbb{DH}$, which is the algebra created by quaternions with dual number coefficients\cite{selig}. A biquaternion can be written in the form $h = p + \epsilon q$, with $\epsilon^2 = 0$ and $p,q \in \mathbb{H}$. A conjugate dual quaternion $\bar{h}$ of $h$ is given by conjugating $p$ and $q$.\\
+It's norm then is $h\bar{h} = p\bar{p} + \epsilon(p\bar{q} + q\bar{p})$, which is in general a dual number, since $p\bar{q} + q\bar{p} \in \mathbb{R}$.\\
+By treating biquaternions as vectors in $\mathbb{R}^{8}$ and projective sing this we obtain $\mathbb{P}^{7}$, a real projective space\cite{Heged_s_2013}.
+
+W can chose from this space those biquaternions with real norms -- $p\bar{q} + q\bar{p} = 0$ This is called the Study condition -- 
+and thusly obtain a quadric in $\mathbb{P}^{7}$ known as the Study quadric. 
+Elements in this quadric(excluding those with $p = 0$) correspond to rigid transformations, and trajectories in this space represent real rigid-body motions in 3D space. \\
+The position of a point, represented as $x = 1 +\epsilon v$ where  $v$ gives the coordinates of the point as a purely vectorial quaternion(or mathematically $v = -\bar{v},\; v\in \mathbb{H}$), subject to a rigid body motion defined by $h = p + \epsilon q$ is given by the map\cite{Siegele_2021}:
+ \begin{equation}
+     x \rightarrow \frac{(p - \epsilon q)x(\bar{p}+\epsilon \bar{q})}{p\bar{p}}
+\end{equation}
+Or written in another form:
+\begin{equation}
+    \label{act}
+    \begin{aligned}
+        \frac{(p - \epsilon q)x(\bar{p}+\epsilon \bar{q})}{p\bar{p}}&=\frac{px\bar{p} + \epsilon(px\bar{q} - qx\bar{p})}{p\bar{p}}&\mbox{expand the parentheses}\\[1.25ex]
+        \frac{px\bar{p} + \epsilon(px\bar{q} - qx\bar{p})}{p\bar{p}}&= 1+\epsilon\frac{pv\bar{p} + p\bar{q} - q\bar{p}}{p\bar{p}}&\mbox{substitute in x}\\[1.25ex]
+        1+\epsilon\frac{pv\bar{p} + p\bar{q} - q\bar{p}}{p\bar{p}}&= 1 + \epsilon \frac{pvp + 2p\bar{q}}{p\bar{p}}&\mbox{use the study condition}\\[1.25ex]
+    \end{aligned}
+\end{equation}
+The above map gives the position of a frame undergoing a rigid motion, while its orientation is given simply by the quaternion $p$ -- all this of course relative to the initial position and orientation.\\
+The above reasoning holds if we replace $p$ and $q$ by polynomials $P(t)$ and $Q(t)$, where $t \in \mathbb{R}$.
+Whats more, it is known that elementary motions in SE(3) -- those being translations and rotations, which correspond mechanically to translational and rotational joints -- correspond to linear motion polynomials. 
+By decomposing a biquaterionic polynomial into linear factors, we obtain a correspondence between a motion in SE(3) and a kinematic chain capable of performing it. This coupled with the fact, that quaternion multiplication is non-commutative, allows us to use this decomposition in synthesising closed kinematic chains purely algebraically.
+\clearpage
+\section{Outcome}
+The desired outcome of this project would be extension of the above to the multivariate case to allow for the synthesis of arbitrary parallel manipulators using algebraic methods.
+As a simple use case example, we'd like to redesign a crossed 4-bar double pendulum as a manipulator with all its actuators located at its base, but still capable of performing the same 2DOF motion. This example has practical justification, as a commonly used model of the human knee joint is the crossed 4-bar -- or equivalently 2 circles rolling on each other -- so such a redesign would find applications in the creation of full leg prosthetics, and the creation of bipedal humanoid robots.
+\section{Goals}
+Because the achievement of the above stated outcome will have to be preceded by the development of an appropriate mathematical apparatus, the project is broken down into smaller subgoals. Subgoals deemed most important are written in bold letters.
+\begin{itemize}
+    \item \textbf{Develop a method of using motion polynomials to describe serial manipulators}
+    \item Investigate differential and integral calculus on biquaterions -- this is important for control
+    \item Investigate applications of this formalism to manipulator control problems. 
+    \item \textbf{Find out what kinds of polynomials correspond to mechanical joints in the multivariate case}
+    \item \textbf{Find the condition for a multivariate polynomial to be decomposable into the above polynomials}
+    \item Use multivariate polynomials to describe some well known parallel manipulators, e.g. the Delta, Agile Eye, etc mathematically.
+    \item \textbf{Develop a left and right division algorithm for non-commuting multivariate polynomial rings}
+    \item \textbf{Develop a method for factoring a multivariate polynomial into factors corresponding to elementary joints}
+    \item \textbf{Use this factoring algorithm to turn serial-parallel hybrid manipulators into purely parallel ones}
+\end{itemize}
+\section{Possible problems}
+Factorisation over non commutative algebras, biquaterionic zeros of polynomials, etc. are all fairly esoteric and mostly ignored areas of mathematics. There are very few resources treating these subjects, so most of the theory will have to be developed independently. Some of the possible issues are:
+\begin{itemize}
+    \item Multivariate biquaterionic polynomials form a non-unique non-atomic factorisation domain. This is beneficial for the purpose of mechanism synthesis, but the draught of materials dealing with polynomial division over these domains is concerning.
+    \item An algorithm for finding biquaterionic zeros of real multivariate polynomials may need to be created.
+    \item A way to factor real multivariate polynomials into quadratics will have to be developed.
+    \item It may not even be possible to factor multivariate  biquaterionic polynomials into factors in any reasonable way.
+    \item Even if a factorization method is developed, it may produce linkages with irrational parameters, which will make them very difficult to construct and analyse.
+    \item It may prove too computationally difficult to perform the factorization in any reasonable timeframe.
+    \item Author's mathematical ability may be lacking.
+\end{itemize}
+
+\section{Tools}
+Which exact tools will be used for this problem will be decided during the course of this project. Possible choices include:
+\begin{itemize}
+    \item Mathematica - Mathematica would be very useful for investigation of algebraic ideals and varieties created by this approach, it does not work well however with quaternions, and even less well with quaternions while performing symbolic operations. For example it has trouble differentiating a zero quaternion from an actual 0 during simplification, can't extract dual number factors of a quaternion outside of a quaternion object, etc. Whats more, while it provides packages for multivariate polynomial division, it does so only for commutative polynomials, so a different algorithm will have to be developed either way.
+\item Sagemath - Alternative symbolic computation software with python based syntax, and a kernel compatible with jupyter. Probably will not be used, but if learning mathematica proves too time consuming this could probably be learned more quickly due to its syntax.
+\item Matlab - Some of the articles provided software examples in Octave, which is an open source Matlab clone. Additionally, if any control algorithm are to be developed for created manipulators, they would be tested in Matlab. So having the software for creation of such manipulators be written in Matlab would be convenient. 
+
+\end{itemize}
+
+\section{Literature}
+The bibliography below contains all the literature deemed important for project statement. Additional resources are already acquired, but will be included in the bibliography only once they become relevant in describing progression of the project. The articles which describe biquaterionic polynomials are what originated the idea behind this project, which means that the article where these ideas originated from is the most important one of them all. That article is \cite{Heged_s_2013}. 
+

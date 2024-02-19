@@ -1,0 +1,57 @@
+\documentclass{report}
+
+
+\input{tex/preamble}
+\input{tex/macros}
+\input{tex/letterfonts}
+
+
+\title{\huge{Biquaterionic polynomial decomposition,\\
+and its application to kinematics and manipulator synthesis}\\
+Jacek Grzegorzewski}
+
+\author{\Huge{Intermediate Project}\\ Ph.D. Witold Paluszyński\\ KCiR WUST}
+
+\includeonly{%
+             tex/preabmle,
+             tex/macros,
+             tex/letterfonts,
+             chapters/chapter_1,
+             chapters/chapter_2,
+             chapters/chapter_3,
+             chapters/milestone_1,
+             chapters/final
+             }
+
+
+
+\begin{document}
+\begin{minipage}[h!]{0.8\textwidth}
+    \maketitle
+\begin{abstract}
+Biquaterionic polynomials can be a powerful language in describing motion in SE(3). These mathematical constructs have the interesting property, that
+their decomposition defines a topology of a mechanism - planar, spherical, or spatial - and as such could serve as a convenient method of manipulator design and analysis. In fact, they could serve as an extension of local Lie Algebraic methods, which describe a given manipulator's motion by a so called "virtual chain". Based on available literature, a bivariate motion polynomial of degree 3 will be designed to describe a desired motion , and decomposed into linear factors. Possible ways of turning this decomposition into a kinematically viable mechanism are then described. It was found that the multivariate case presents multiple problems not seen in the univariate one, and the particular form of the factors into which a motion polynomial is decomposed is quite restrictive. In the future these assumptions will have to be loosened to allow for the use of this decomposition method in practical kinematic design problems.
+\end{abstract}
+\vspace*{\fill}
+\begin{flushright}
+\Huge{All rights reserved \textcopyright}
+\end{flushright}
+\end{minipage}
+
+
+%\newpage% or
+\cleardoublepage
+% \pdfbookmark[<level>]{<title>}{<dest>}
+\pdfbookmark[section]{\contentsname}{toc}
+%\tableofcontents
+\pagebreak
+
+%\include{chapters/chapter_1.tex}
+%\include{chapters/chapter_2.tex}
+%\include{chapters/chapter_3.tex}
+%\include{chapters/milestone_1.tex}
+\include{chapters/final.tex}
+%\nocite{*}
+\printbibliography %Prints bibliography
+
+\end{document}

@@ -1,0 +1,187 @@
+\chapter{November Milestone}
+The goal of this project is to develop an algorithm for factoring a multivariate biquaterionic polynomial into factors corresponding to elementary
+joints. For the november milestone the following subgoals have been acomplished:
+\begin{enumerate}
+        \item Describing serial chains using biquaterionic polynomials
+        \item Development of a division algorithm for biquaterionic polynomials
+        \item Initial investigation of the kinds of polynomials corresponding to mechanical joints in the multivariate case.
+        
+\end{enumerate}
+As the first 2 subgoals were discussed in previous chapters, and as such will be covered briefly.
+\section{Description of serial chains}
+Although the Denavit-Heartenberg convention can be readily translated into
+the language of biquaternions, it was found that it's more natural to use joint axes instead to describe the geometry of a given manipulator. 
+While not a minimal description - the Denavit-Heartenberg convention is considered minimal as it reqieres only 4 parameters to describe a frame transforation - it gives insight into how a result of decomposition might look.
+\\
+As an ilutration, a planar 2R manipulator was described using linear
+biquaterionic polynomials. The following motion polynomials
+were obtained:
+        \begin{equation}
+            \begin{cases}
+                R_1(t) = 1 + tk\\
+                R_2(u) = (1-\varepsilon\frac{L_1}{2}i)(1+uk)(1+\varepsilon\frac{L_1}{2}) = 1+uk + u\varepsilon L_1j
+            \end{cases}
+        \end{equation}
+        The product of which gives:
+        \begin{equation}
+           R(t,u)= R_1(t)R_2(u) = 1-tu +(t+u)k + \varepsilon L_1(sj-ti)
+        \end{equation}
+This bivariate motion polynomial can act on the end effector located at $1+\frac{\varepsilon}{2}(L_1+L_2)i$ for the initial configuration, producing:
+
+   \begin{equation}
+   \begin{cases}
+        x' = 1 + \varepsilon\frac{Px\bar{P} + 2P\bar{Q}}{P\bar{P}}\\
+        Px\bar{P} = (L_1+L_2)((1-ts)^2 - (s+t)^2)i+2(1-ts)(s+t)j\\
+        P\bar{Q} = L_1(s^2-s t^2+s t+t)i + L_1(s^2 t+s t-s+t^2)j\\
+        P\bar{P} = (1+t^2)(1+u^2)
+   \end{cases}
+   \end{equation}
+After using the half-tangent identities to translate the result into the language of trigonometry the following forward kinematics were obtained:
+   \begin{equation}
+   \begin{aligned}
+          x' = 1 &+ \varepsilon((L_1\cos{\theta_t} + L_2\cos{(\theta_t+\theta_u)})i\\
+        &+(L_1\sin{\theta_t} + L_2\sin{(\theta_t+\theta_u)})j)
+   \end{aligned}
+   \end{equation}
+Which are in agreement with ones found through other means.
+
+
+\section{Division algorithm}
+A division algorithm for multivariate polynomials requieres defning an ordering to its various monomial terms\cite{cox}. For a different ordering, different results will be obtained. Algorithms for a commutative field can be extended into the non-commutative case, by noting that there are now 2 division algorithms, a left and a right one. Both of these were described before, and were found to work as intended under the assumption that the indeterminates commute with the coefficients.
+\\
+\noindent\begin{minipage}{.5\linewidth}
+
+
+\begin{algorithm}[H]
+\KwIn{f1,f}
+\KwOut{q,r}
+\SetAlgoLined
+\SetNoFillComment
+\vspace{3mm}
+$q \leftarrow 0; r \leftarrow 0$\\
+$p \leftarrow f$\;
+\While{p \neq 0}
+{
+    divisionoccured \leftarrow false\\
+    \uIf{$LT(f_1)$ divides $LT(p)$}
+    {
+    $q \leftarrow q + LT(p) LT^{-1}(f_1)$\\
+    $p \leftarrow p - LT(p) LT^{-1}(f_1)f_1$
+
+    divisionoccured \leftarrow true\\
+    }
+    \uIf{ divisionoccured == false}
+    {
+        $r \leftarrow r + LT(p)$\\
+         $p \leftarrow p - LT(p)$
+   }
+}
+\Return q,r\;
+\caption{Left division}
+\end{algorithm}
+
+\end{minipage}
+\begin{minipage}{.5\linewidth}
+
+
+\begin{algorithm}[H]
+\KwIn{f1,f}
+\KwOut{q,r}
+\SetAlgoLined
+\SetNoFillComment
+\vspace{3mm}
+$q \leftarrow 0; r \leftarrow 0$\\
+$p \leftarrow f$\;
+\While{p \neq 0}
+{
+    divisionoccured \leftarrow false\\
+    \uIf{$LT(f_1)$ divides $LT(p)$}
+    {
+    $q \leftarrow q + LT^{-1}(f_1)  LT(p) $\\
+    $p \leftarrow p -  f_1LT^{-1}(f_1) LT(p)$
+
+    divisionoccured \leftarrow true\\
+    }
+    \uIf{ divisionoccured == false}
+    {
+        $r \leftarrow r + LT(p)$\\
+         $p \leftarrow p - LT(p)$
+   }
+}
+\Return q,r\;
+\caption{Right division}
+\end{algorithm}
+
+
+\end{minipage}
+
+As an example, the result of left division of the polynomial:
+\begin{equation}
+    f = 1 +ti + uj + tuk = (1 + ti)(1+uj)
+\end{equation}
+by $1+uh$ is:
+\begin{equation}
+    f= (1+uh)(th^{-1}k + h^{-1}j) + t(i - h^{-1}k) + 1 - h^{-1}j
+\end{equation}
+%%
+Which has no remainder only if $h = j$
+
+Something to keep in mind is that this remainder will be different depending on the chosen monomial ordering. This is concerning, as this gives the zeroing of the remainder as a sufficient, but not necessary condition for f1 to be a factor of f. For this algorithm to be useful then, one would need to find an appropriate order for agiven factor beforehand to zero its remainder. 
+
+
+\section{Polynomial-joint correspondance}
+This goal was not described previously, as it is still not fully entierly achieved. Before one can speak of a division algorithm, one should first know what he will divide into. Firstly, for a polynomial to correspond to a mechanical joint, it must not change its geometry depending on the values of the independant variables, as an example:
+\begin{equation}
+    H(t,u) = 1+\varepsilon( t i + u j)
+\end{equation}
+The above is a linear polynomial, which can not correspond to an elementary joint. Its geometry changes with the change of variables, which can't be the case for an elementary joint. This fact limits the polynomials which
+can represent elementary joints to ones which can be described as:
+\begin{equation}
+    H(t_1,\dots,t_n) = 1 +R(t_1,t_2,\dots ,t_n)h
+\end{equation}
+Where $h \in \mathbb{DH}$ and $R \in \mathbb{R}[t_1,\dots ,t_n]$. Here the coefficient of h is a real polynomial, which represents for example how far a prismatic joint is extended, or a rotational joint rotated. But as there is only one biquaternion in the polynomial, the geometry stays the same.\\
+
+Secondly, for a given decomposition, if we fix all variables but one, we should still have a viable closed loop kinematic chain capable of 1DOF motion. Consider:
+\begin{equation}
+    H(t_1,\dots,t_n) = (1+R_1(t_1,\dots,t_n)h_1)(1+R_2(t_1,\dots,t_n)h_2)
+\end{equation}
+If we fix all the variables except for $t_1$, we will get real polynomials in  $t_1$ as coefficients of biquaternions:
+
+\begin{equation}
+    H_{t_1}(t_1) = (1+(\Sigma_{i=0}^{m}a_it^{i}_1)h_1)(1+ (\Sigma_{i=0}^{m}b_it^{i}_1)h_2)
+\end{equation}
+If these polynomials contain quadratic terms, then we won't obtain a properly factored kinematic chain in 1 variable and would have to perform further divisions, which contradicts the fact that a factorised chain even existed. As such, after such an evaluation the coefficients must be linear:
+\begin{equation}
+    H_{t_1}(t_1) = (1+(a_0_a_1t)h_1)(1+ (b_0+b_1t)h_2)
+\end{equation}
+
+Furthermore, if we evaluate a given polynomial at 0 with all variables, we should get the identity polynomial, which implies that these coefficients have their 0 degree coefficients equal to 0.\\
+Ultimately, a biquaterionic polynomial corresponds to a mechanical joint if it is of the form:
+\begin{equation}
+    H(t) = (1+ R(t_1,\dots,t_2)h)
+\end{equation}
+Where $R(t_1,\dots,t_2) \in R[t_1,\dots,t_n] / (t_1^{2},t_2^{2},\dots,t_n^{0})$, $R(0,\dots,0) = 0 $ and $h \in \mathbb{DH}$.  For the first 3 free variables, these polynomial coefficients would look as follows:s
+
+\begin{equation}
+    \begin{aligned}
+        R(t)&=at&\mbox{1 free variable}\\[1.25ex]
+        R(t,u)&= at + bu + ctu&\mbox{2 free variables}\\[1.25ex]
+        R(t,u,v)&= at +bu + cv + dtu +etv +fuv +gtuv &\mbox{3 free variables}\\[1.25ex]
+    \end{aligned}
+\end{equation}
+
+This immediatly implies that unlike for the univariate case, where a left evaluation would correspond to a left factor and vice versa, here we will have $n!$ left and right evaluations.
+This is because once we evaluate this polynomial at a non-comutative element, the order in which they are multiplied matters. 
+It is unclear at the moment, if the order of division would have any bearing on the propper order of evalation. 
+It shouldn't since the division algorithm assumes that the free variables commue anyway, but it should be kept in mind that there may be some coupling there.
+
+\section{December plans}
+\begin{itemize}
+        \item Under the assumption that joints correspond to the above derived factors, the conditions for factorization will be investigated.
+        \item Behaviour of different orders of evaluation will be analysed.
+        \item An attempt will be made to describe a serial parallel manipulator based on the human leg for further decomposition.
+\end{itemize}
+
+
+        
+

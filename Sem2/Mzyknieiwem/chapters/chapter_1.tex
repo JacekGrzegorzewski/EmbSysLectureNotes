@@ -1,0 +1,89 @@
+
+\chapter{Something}
+
+\section{Inverse Method}
+Scheme:
+\begin{enumerate}
+    \item $F_x(x) = \int^x_{-\infty}f_x(x)dx $
+    \item $F_x^{-1}(\cdot)$
+    \item  $u \sim U[0,1] x~F^{-1}(u)$
+\end{enumerate}
+
+\begin{myproof}
+    Proof that $X \sim F_x(x)$\\
+    \begin{equation}
+        \begin{aligned}
+            P(X\le x)&= P(F_x^{-1}(u)\le x)&\mbox{}\\[1.25ex]
+            P(F_x^{-1}(u)\le x)&=P(u\leF_x(x))&\mbox{}\\[1.25ex]
+            P(u\le F_x(x))&=F_x(x)&\mbox{}\\[1.25ex]
+        \end{aligned}
+    \end{equation}
+\end{myproof}
+
+\section{Rejection Method}
+
+Given functions $f(x)$ and  $g(x)$, where  $f(x)$ is more difficult to ???, and there exists $ c > 0$ s.t.  $\forall x \; f(x) \le cg(x)$.\\
+
+\ex{}
+{
+    Suppose that $f(x) = \frac{e^{-\frac{x^{2}}{2}}}{\sqrt{2\pi}}$ if $g(x)$ is the uniform distribution, the method won't work because f is compactly supported, while g is not. A good choice for  $g(x)$ is the mirrored laplace distribution ... HERE BE EQUATION it is a simple exponential function with absolute x in the exponent.
+}
+\subsection{Scheme}
+\begin{enumerate}
+    \item Find $g(x)$ and  $c$ s.t. $f(x) \le cg(x)$ 
+    \item Let $x \sim g(x)$ and  $u \sim U[0,1]$ 
+    \item Build the pair $(x,cg(x)u)$ 
+    \item If $cg(x)u \le f(x)$ take x, otherwise reject it.
+\end{enumerate}
+\nt
+{
+    This is a method of creating arbitrary distribution given its probability density function and a well behaved random generator. So if I have a normal number generator, I can use it to generate random numbers along a different distribution for which I have no generator, as long as the above conditions are fulfilled.
+}
+\clearpage
+\ex{Simple example}
+{
+    HERE BE PLOT OF THE TRIANGLE DISTRIBUTION ON THE INTERVAL [0,1], AND OF A UNIFORM DISTRIBUTION ON THE SAME DOMAIN.
+    \begin{equation}
+        f(x) = \begin{cases}
+            0 \; as x < 0\\
+            2x \\
+            0 \; as x > 1 
+        \end{cases}
+    \end{equation}
+    \begin{equation}
+        g(x) = \begin{cases}
+            0 \; as x < 0\\
+            1 \\
+            0 \; as x > 1 
+        \end{cases}
+    \end{equation}
+ 
+    HOW DO I DO IT SIDE BY SIDE I FORGOT AAAAAAAAAA\\
+    The most appropriate choice for c is $c=2$, as
+     \begin{equation}
+        \begin{aligned}
+            f(x)&\le cg(x)&\mbox{}\\[1.25ex]
+            2x  &\le 2\cdot 1&\mbox{True on [0,1]}\\[1.25ex]
+        \end{aligned}
+    \end{equation}
+    Larger values would reject more numbers than necessary.
+    ALSO WHY DON'T I HAVE SNIPPETS FOR PLOTTING\\
+    The acceptance condition is:
+    \begin{equation}
+        \begin{aligned}
+            cg(x)u&\le f(x)&\mbox{}\\[1.25ex]
+            2 \cdot 1 \cdot u&\le 2x&\mbox{}\\[1.25ex]
+            u&\le x&\mbox{}\\[1.25ex]
+            
+        \end{aligned}
+    \end{equation}
+    \nt
+    {
+        In this example, x is just the uniform distribution, but it can be any distribution at all. On the other hand, by the definition of the rejection method u is always uniform.
+    }
+
+    \nt
+    {
+        $N \sim \sin \cos{u}$ ???? what
+    }
+}

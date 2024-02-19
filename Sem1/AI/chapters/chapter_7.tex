@@ -1,0 +1,48 @@
+\chapter{Unsupervised learning}
+\section{The k--means algorithm}
+The algorithm assumes that K -- the number of clusters to be generated -- is known. It repeats two steps: the labeling step, and the centroids shift step.
+
+\dfn{The k--means algorithm}
+{
+    \begin{itemize}
+            \item Step 0 (initialization)
+            \item Repeat \{
+                \item labeling mark all samples with the label of the nearest centroid
+                \item move all centroids to the geometric centers of their classified samples
+            \item \}
+            
+    \end{itemize}
+}
+\subsection{Empty set in an algorithm}
+What to do when an empty centroid appears during initialization?
+Method 1: Eliminate that centroid and continue with K-1 clusters\\
+Method 2: re--initialize the location of the centroid, and continue
+\subsection{No cluster separation}
+Even if the data set doesn't group naturaly into  those k--clusters, the algorithm
+will still work and divide the dataset into k clusters.
+\subsection{Choosing the number of clusters}
+Sometimes we may need to determine the number of clusters algorithmically.
+\subsubsection{Elbow point method}
+Run the algorithm many times for different number of clusters, and choose the number where
+the average distance to centroid as a function of K stops changing drastically.
+\nt
+{
+    There may be no such point, but it's very helpfull when there is.
+}
+
+\subsection{Special problems}
+\subsubsection{Cluster density}
+The algorithm doesn't work very well when we have clusters of different sizes and densities.
+\subsubsection{Concave cluster}
+If the clusters are concave, there is no way to properly generate a centroid differentiating them.
+The only workaround is to create more clusters than necessary, and then classify them using some different method.
+\nt
+{
+    This workaround also works for the density problem.
+}
+
+
+\section{Expectation maximization algorithm}
+
+An approach similar to the k--means algorithm can be made on probabilistic grounds.
+

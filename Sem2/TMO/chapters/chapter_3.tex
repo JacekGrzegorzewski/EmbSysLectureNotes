@@ -1,0 +1,179 @@
+\chapter{Network Optimization}
+\nt{By this we mean optimization on graphs}
+This subject will cover 3 basic GOP:
+\begin{itemize}
+        \item Maximum Flow\
+        \item ST-min-cut problem
+        \item Shortest Path problem
+        
+\end{itemize}
+And also a few words about solving GOPs in general.
+\section{Why?}
+\begin{itemize}
+        \item GOPs have many practical applications
+        \item also many indirect applications
+        \item The solution algorithms are much faster than ones for LP
+        
+\end{itemize}
+This last part means that if we can restate an LP problem as a GOP problem, we can use a 
+faster algorithm. This is very useful when solving very large problems(more than a million variables).
+\section{Graphs}
+\dfn{Network}
+{
+    By a \textbf{Network} we mean a weighted directed graph $G = (V,E,c)$ , where V i s the set of vertices, and $E\subset V\times V$ is the set of its edges,
+    while $c \::\: E \rightarrow \mathbb{R}^{+}$ is the weight function.
+}
+
+\section{Problems}
+\subsection{MaxFlow Problem}
+\dfn{MF Problem}
+{
+    The MF problem can be defined as follows:
+    \begin{itemize}
+        \item We are given a directed graph G with two distinguished nodes s(source) and t (sink)
+        \item The edge weights $c(e),\;e\in E$ are understood as \textbf{edge capacities}(that is -- $c(e)$ is the maximum amount we can send through an edge e)
+        \item The problem is to find the biggest amount (the maximum flow) that we can send from s to t using all the edges.
+    \end{itemize}
+    A more formal way to define this problem is as follows:\\
+    Find $x(e),\; e \in E$(flows through each edge) and  $F$(total flow from s to t) solving:
+\begin{equation}
+        \begin{aligned}
+            \text{Maximize}&F&\mbox{}\\[1.25ex]
+            \text{Subject to }& \Sigma_{e\in\alpha(s)}x(e)&=F = \Sigma_{e\in\beta(t)}x(e)\mbox{}\\[1.25ex]
+                              & \Sigma_{e\in\alpha(v)}x(e)&= \Sigma_{e\in\beta(v)}x(e)\mbox{for $v\inV / \{s,t\} $}\\[1.25ex]
+                              &0&\le x(e)&\le c(e)\mbox{for $e\in E$}\\[1.25ex]
+        \end{aligned}
+    \end{equation}
+    Where $\alpha(v)$ denotes the set of edges leaving node v, while  $\beta(v)$ denotes the set of edges ending in v.
+\\
+This problem is obviously linear, so all LP algorithms are applicable here as well. In practice however, most problems of these kinds deal with graphs containing millions of edges, which makes these approaches intractable for this problem.
+}
+
+\subsection{Augmenting Path Algorithm}
+
+The MaxFlow problem is solved using the \textbf{Augmenting Path Algorithm} -- the general idea of the algorithm comes from \textbf{Ford and Fulkerson}, while its practical implementations are due to  \textbf{Edmonds, Karp, and Dinitz}
+%\SetKwRepeat{Repeat}{repeat}{until}
+
+
+
+The first phase:\\
+
+%\begin{algorithm}[H]
+%\KwIn{This is some input}
+%\KwOut{This is some output}
+%\SetAlgoLined
+%\SetNoFillComment
+%\tcc{This is a comment}
+%\vspace{3mm}
+%The Edmonds-Karp version of the algorithm looks as follows:\\
+%\For{$(v_1,v_2) \in E$}
+%{
+%    \uIf{$(v_1,v_2) \not \in E$}
+%    {
+%        add $(v_2,v_1)$ to E wth $c((v_2,v_1)) := 0$
+%    }
+%}
+%
+%\Repeat{123}
+%{asd}
+%Find a path $P = \{\e_1,\cdots ,e_k\}$ from s to t with positive capacit
+%consisting of the smallest number of integers
+%
+%
+%
+%$x \leftarrow 0$\;
+%$y \leftarrow 0$\;
+%\uIf{$ x > 5$} {
+%    x is greater than 5 \tcp*{This is also a comment}
+%}
+%\Else {
+%    x is less than or equal to 5\;
+%}
+%\ForEach{y in 0..5} {
+%    $y \leftarrow y + 1$\;
+%}
+%\For{$y$ in $0..5$} {
+%    $y \leftarrow y - 1$\;
+%}
+%\While{$x > 5$} {
+%    $x \leftarrow x - 1$\;
+%}
+%\Return Return something here\;
+%\caption{what}
+%\end{algorithm}
+%
+%
+th versions of the Augmenting Path Algorithm have very good computational complexities:
+\begin{itemize}
+        \item Edmonds-Karp algorithm has a complexity of $\mathcal{O}(VE^{2})$ 
+        \item Dinitz algorithm has a complexity of $\mathcal{O}(V^{2}E)$
+        
+\end{itemize}
+
+
+\subsection{ST-min-cut}
+
+\dfn{St-min-cut}
+{
+    The \textbf{ST-min-cut} Problem is defined as follows:
+    \begin{itemize}
+            \item We are given a directed graph G with two distinguishing nodes: s(source) and t(sink).
+            \item The problem is to find the partition of V into two disjoint sets S and T s.t.: $s\inS,\; t\in T$ and the sum  $\Sigma_{u\in S,\;v\in T}c((u,v))$ is minimized.
+    \end{itemize}
+    
+}
+\thm{}
+{
+    The optimal clues of MaxFlow and ST-min-cut, opt(MaxFlow) and opt(ST-min-cut) are equal, as long as the graphs are connected. Moreover, a solution to the ST-min-cu can be derived from the final residual graph of the Augmenting Path Algorithm by finding any cut of G going only through original(non-residual) edges.
+}
+
+Applications of MaxFlow/ST-min-cut:
+\begin{itemize}
+        \item MaxFlow is used in airline scheduling and road-network planning
+        \item ST-min-cut is used in image processing for image cut-out and automatic editing, nose removal, image quilting and photomontage.
+        
+\end{itemize}
+
+
+
+\subsection{Shortest path problem I}
+\dfn{SP problem}
+{
+    The shortest SP problem can be defined as follows:
+    \begin{itemize}
+            \item We are given a directed graph G with two distinguished nodes s(source) and t(sink )
+            \item The edge weights $c(e),\; e \in E$ are understood as edge lengths.
+            \item Ehe problem is to find the path P joining s and t minimizing  $\Sigma_{e\inP}c(e)$
+            
+    \end{itemize}
+
+    The proble can be written as the following ILP problem:
+    find $x(e) \in \{0,1\}, e\in E$ (indicators of edge usage) solving:
+
+\begin{equation}
+        \begin{aligned}
+            \text{Maximize}&\Sigma_{e\inE}c(e)x(e)&\mbox{}\\[1.25ex]
+            \text{Subject to }& \Sigma_{e\in\alpha(s)}x(e)&=1 = \Sigma_{e\in\beta(t)}x(e)&\mbox{}\\[1.25ex]
+                              & \Sigma_{e\in\alpha(v)}x(e)&= \Sigma_{e\in\beta(v)}x(e)&\mbox{for $v\inV / \{s,t\} $}\\[1.25ex]
+            &x(e)&\in \{0,1\}&\mbox{for $e\in E$}\\[1.25ex]
+        \end{aligned}
+    \end{equation}
+}
+The problem is solved using the algorithm due to \textbf{Dijkstra}:\\
+ALGO ALGO ALGO
+\\
+\begin{itemize}
+        \item The complexity of Dijkstra's algorithm is $\mathcal{O}(V^{2})$
+        \item There are other more complicated algorithms for solving the shortest path ptoblem, with the fastest having $\mathcal{O}(E+V\log{V})$
+        \item Again, complexities much better than LP algorithms
+        
+\end{itemize}
+Applicaitons:
+\begin{itemize}
+        \item Automatic search for best way between places, such as google maps.
+        \item Robot path planning
+        
+\end{itemize}
+
+\subsection{General network optimization problem}
+

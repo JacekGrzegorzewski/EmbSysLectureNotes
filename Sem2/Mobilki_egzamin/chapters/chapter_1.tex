@@ -1,0 +1,70 @@
+
+\qs{How are kinematics of nonholonomic robots deﬁned?\\
+How are general, aﬃne and driftless models of kinematics deﬁned?
+}
+{
+    For a kinematic system, the ODE 
+    describing a driftless system can be written as:
+    \begin{equation}
+        \dot{q} = \Sigma_{i=1}^{N}A_i(q)u_i
+    \end{equation}
+    If the system suffers from drint, an uncontrollable state dependant $g_0(q)$ term must be added.
+    This definition is "Positive". A negative definition based on constraining a free system can 
+    be written as:
+    \begin{equation}
+        f(q,\dot{q}) = 0
+    \end{equation}
+    If these constraints can be written as:
+    \begin{equation}
+        A(q)\dot{q} = 0
+    \end{equation}
+    They are called Pffafian.
+    Usually the positive definition is more usefull.
+
+}
+
+
+\qs{What are standard models of wheeled robots?}
+{
+    There are several models of wheeled robots. The simpelest example is the unicycle, which
+    is usually represented either using the differential drive model, or angular/linear velocity model.\\
+    A more complicated example is the kinematic car, which has front and back wheels that act somewhat indepndantly.
+    More complicated models can be generated from theese, such as chains of trailer trailing behind a car.
+}
+
+\qs{What are definitions of fundamental concepts in probability?}
+{
+%    
+%    Axioms
+%I 0 ≤ p(X) ≤ 1
+%I p(T rue) = 1 p(F alse) = 0
+%I p(X ∪ Y ) = p(X) + p(Y ) − p(X ∩ Y )
+    The axioms of probility state, that the probability of an event
+    is a real number between 0 and 1, with 1 describing events that are
+    certain to occur. Obciously $P(x)+ P(!x) = 1$.\\
+    A random variable $X$ is a function which maps events from a given set
+    to real numbers from 0 to 1. The probability that a given event
+    has a certain value can be written as $P(X = x_k)$.
+    The expected value of a random variable is defined for discrete
+    probabilities as:
+    \begin{equation}
+        E(x) = \Sigma x P(x)
+    \end{equation}
+    While for continuous:
+    \begin{equation}
+        E(x) = G\nt xP(x) dx
+    \end{equation}  
+    \\
+    Entropy is defined as:
+    \begin{equation}
+        H_p(x) = E(-\log_2{p(x)})
+    \end{equation}
+}
+
+\qs{How are normal distributions defined and parameterized?}
+{
+    \begin{equation}
+        \mathcal{N}(\mu,\Sigma) \sim p(X) = \frac{1}{\sqrt{(2\pi)^{n}\text{det}\Sigma}}e^{-\frac{1}{2}(x-\mu)^{T}\Sigma^{-1}(x-\mu)}
+    \end{equation}
+
+}

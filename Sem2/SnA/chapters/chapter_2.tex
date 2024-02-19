@@ -1,0 +1,119 @@
+\chapter{Triangulation methods 26.10	13:18:31-CEST}
+\section{The principle of operation}
+The sensor works by projecting a beam of light onto the object of interest and calculating the distance from a reference point by determining
+where the reflected light falls on a detector. As the point of light falling on the object moves closer to or farther from the reference point. The spot position on the detector changes.\\
+There are 2 main types of such sensors:
+\begin{itemize}
+        \item specular
+        \item diffuse
+        
+\end{itemize}
+\section{Applications of optical distance range-finders}
+\section{Abbreviation and its origin}
+The position of the incident beam us detected by a PSD sensor.\\
+PSD - Position Sensitive Device|Detector\
+There are 2 types of PSD sensors:
+\begin{itemize}
+    \item Isotropic(analog)
+    \item Discrete(digital)
+\end{itemize}
+\section{Principle of operation - PSD}
+The base of PSD sensor construction is a PIN diode. This type of diode contains a wide undoped intrinsic semiconductor region...
+
+\subsection{PIN diode}
+
+In general it's less usefull than other diodes, but it has some specific use cases:
+\begin{itemize}
+        \item attenuators
+        \item fast switches
+        \item high voltage power devices
+        \item photodetectors
+        
+\end{itemize}
+It operates as follows:\\
+A PIN diode works as a standard diode for low frequencies. At higher frequencies, it looks like a perfect resistor.\\
+The reason for that is the charge stored in the intrinsic region. It causes:
+\begin{itemize}
+        \item at low frequencies the charge can be removed and the diode turns off
+        \item At higher frequencies there is not enough time to remove the charge, therefore the diode never turns off.
+\end{itemize}
+
+\nt{Because prinicple of detection is based on the high frequency operation mode, it ignores slow changing background light. Making it act as a filter for the features we're not interested in.}
+
+\ex{Determination of position of a light spot}
+{
+    Lets locate a reference frame at the center of the detector, and lets say the light falls at a distance $\Delta x$ from that frame. Then, at each of the electrodes we will measure a current:
+     \begin{equation}
+        \begin{cases}
+            I_1=\frac{1}{2}(1-\frac{2}{L}\Delta x)I_0
+            I_2=\frac{1}{2}(1+\frac{2}{L}\Delta x)I_0
+        \end{cases}
+    \end{equation}
+    The ratio of these currents then is:
+    \begin{equation}
+        \frac{I_1}{I_2} = \frac{1-\frac{2}{L}\Delta x}{1+\frac{2}{L}\Delta x}
+    \end{equation}
+    Where we can say that $\Delta x = \eta I_0$
+    ... AAAA ale on szybki
+}
+
+This principle can be easily extended to a 2 dimensional case.
+
+
+\section{Sharp distance sensors}
+The Japanese company Sharp still produces simple sensors that allow for range detection of a point using the triangulation method.
+\subsection{accomplishment of a measurement}
+
+We know the distance o the lens to the sensor, we know de distance from the emiter to the centre of the sensor, and we know the position of the point detected. We want to find the distance, to do so, we may use the following equation:
+\begin{equation}
+    \frac{\Delta x}{f} = \frac{b+\Delta x}{d}
+\end{equation}
+Ultimately we obtain:
+\begin{equation}
+    d \approx \frac{fb}{\eta\Delta I}
+\end{equation}
+
+
+\nt{These sensors break down when the object is close to them, because the light beam goes outside the sensor.}
+
+\subsection{Error of Distance Measurement}
+How does an error of distance measurement depend on an error of voltage measurement. The method of the total differential can be used:
+\begin{equation}
+\Delta d = \frac{\zeta}{U^{2}}\Delta U = \frac{d^{2}}{\zeta}\Delta U
+\end{equation}
+The above means, that the error of measurement grow quadratically with distance(the voltage measurement error is constant):
+\begin{equation}
+    \Delta d \sim d^{2}
+\end{equation}
+
+\subsection{Error reduction}
+By remembering that:
+\begin{equation}
+    \zeta = \frac{fbR_x}{\eta}
+\end{equation}
+We can substitute the above into the error equation, to see that in fact:
+\begin{equation}
+    \Delta d \sim \frac{d^{2}}{b}
+\end{equation}
+This means, that in order to increase operating range we have to increase b.
+
+\section{Triangulation scanner}
+It work similarly to the sharp sensor, 
+but it sends a set of beams in a line instead of just a single beam.
+
+\section{Spot of distance sensor beam light}
+Because most of these sensors don't use lasers, the larger the distance the more dispersed the created light spot becomes.
+
+\section{Distance determination by phase measurement}
+Time of Flight(ToF) sensors can detect distance by measuring the phase shift of the reflected signal. Then by integrating the transformed signal, its average value will correspond to the measured distance.
+
+\nt
+{
+    Whith these kinds of sensors 2 things should be kept in mind:
+    \begin{itemize}
+        \item In case that reflective object has a boundary line which material or color etc. are excessively different, in order to decrease deviation of measuring distance, it shall be recommended to set the sensor that the direction of the boundary line and the line between emiter centrer are in parallel
+        \item In order to decrease deviation of measuring distance by moving direction of the reflective object, it shall be recommended to set the sensor that the moving direction of the object and the line between emitter center and detector center are vertical.
+    \end{itemize}
+
+    \nt{Nie wiem co to znaczy, Kreczmer pisał, może dam radę przepisać sensownie zanim będzie kartkówka :(((}
+}

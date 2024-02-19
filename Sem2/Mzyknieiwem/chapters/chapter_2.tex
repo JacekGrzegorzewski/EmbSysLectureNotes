@@ -1,0 +1,104 @@
+
+\chapter{What 2023-10-12}
+\section{Random sequences}
+\dfn{Limit}
+{
+    sequence $x_1,x_2,\cdots ,x_N$ is said to approach a limit g if for an arbitrary $\epsilon$ we can always find an  $n_0$ after which the difference between the limit and the sequence terms is less than this $\epsilon$, which we write as follows:
+    \begin{equation}
+        \begin{aligned}
+            \lim_{N\rightarrow \infty} x_N = g &\leftrightarrow \forall \epsilon < 0 \; \exists n_0 \; \forall N > n_0 \;\; \norm{x_n-g}   < \epsilon &
+        \end{aligned}
+    \end{equation}
+    This definition however cannot be used with random variables as the norm condition may or may not hold. So we need a new definition for random sequences.
+
+}
+\dfn{Weak Convergence}
+{
+    \begin{equation}
+        \begin{aligned}
+            x_N \rightarrow g &\leftrightarrow P(\norm{x_N-g} > \epsilon) &\rightarrow 0&\mbox{}\\[1.25ex]
+                              &\leftrightarrow P(\norm{x_N - g} \le \epsilon) &\rightarrow 1&\mbox{}\\[1.25ex]
+                              &\leftrightarrow \lim_{N \rightarrow \infty}(\norm{x_N - g}\le \epsilon) &= 1&\mbox{}\\[1.25ex]
+            
+        \end{aligned}
+    \end{equation}
+    Weak convergence does not guarantee that certain events won't happen after some point in the sequence, it only speaks about probabilities at infinity.
+}
+\dfn{Strong Convergence}
+{
+    \begin{equation}
+        P(\norm{x_N-g} > \epsilon)& \rightarrow 0&\mbox{  Faster than $\sim \frac{1}{N}$, which implies $\Sigma^{\infty}_{n_0}P(\norm{x_N -g} > \epsilon) < \infty$}\\[1.25ex]
+    \end{equation}
+    Curiously then, we get $P(\lim_{N \rightarrow \infty}x_N = g) = 1$
+    some wierd notation with super and subtext over the limit arrow
+    
+}
+\ex{Difference between 2 definitions}
+{
+    Let \[
+        x_N = \begin{cases}
+            1, \; \text{with probability } 1-\frac{1}{N}\\
+            N, \; \text{with probability} \frac{1}{N}
+        \end{cases}
+    .\]
+    As N goes to infinity, $x_N$ goes weakly to 1, because the other case will still happen with non zero probability no mater the index. The strong limit on the other hand does nto exist, the convergence is too slow.
+}
+
+\dfn{Mean Square consistancy}
+{
+    to be continued...
+
+}
+
+
+\nt
+{
+    Both the means square consistancy and strong consistancy imply weak consistancy. But niether strong nor mean square consistancy imply anything about each other.
+}
+
+\begin{myproof}
+    Mean square consistancy($L_2$) implies weak consistancy, which can be proven as follows:\\
+        \begin{equation}
+            \begin{aligned}
+                E(x_N-g)^{2}&\equiv \int_{\omega in \Omega}(x_N-g)^{2}d\omega&\mbox{Because we're integrating a square, integrals over all other subsets are smaller}\\[1.25ex]
+                \int_{\omega \in \mathbb{O} \subset \Omega}(x_N-g)^{2}&\text{  s.t. }\mathbb{O} = \{x_N \in \mathbb{O} \: \norm{x_N-g} > \epsilon \}&\mbox{}\\[1.25ex]
+                \int_{\omega \in \mathbb{O} \subset \Omega}(x_N-g)^{2}&\ge \int_{\mathbb{O}}\epsilon^{2}d\omega&\mbox{}\\[1.25ex]
+                \epsilon^{2}\int_{\mathbb{O}}1d\omega&=\epsilon^{2} P(\norm{x_N -g} > \epsilon)&\mbox{The integral is the probability measure of the set}\\[1.25ex]
+            \end{aligned}
+        \end{equation}
+        We 've determined then that $P(\norm{x_N -g} > \epsilon) \le \frac{1}{\epsilon^{2}}E(x_N-g)^{2}$, which proves the original statement.
+\end{myproof}
+
+
+\thm{Strong law of large numbers(Kolmogorov $<3$)}
+{
+    Each theorem has some assumptions and a thesis, which should follow from them. The assumptions of this theorem are as follows:
+    \begin{itemize}
+            \item We have a sequence of random variables which are independant and identically distributed.
+            \item The expected value of $X_i$ is $E(X_i) = m$, and the variance  $\text{Var}({X_i}) = v < \infty$ has to exist and be less than infinity.
+    \end{itemize}
+    The thesis then is the following equation:
+    \begin{equation}
+        \label{SLN_Kol}
+        \frac{1}{N}\Sigma_{i=1}^{N}X_i \xrightarrow{p.1} m,\; \text{As N}\rightarrow \infty
+    \end{equation}
+}
+
+
+\thm{Central Limit Theorem (Lindenberg-Levy)}
+{
+    Same assumptions here as for the strong law of large numbers(Can i reference theorems???? Check in the future)
+    The implication is:
+    \begin{equation}
+        \frac{1}{N}\Sigma^{N}_{i=0}X_i \underset{N\rightarrow \infty}{\rightarrow} \mathcal{N}(m,\frac{v}{N})
+    \end{equation}
+}
+\ex{Simple example}
+{
+    Let's take $X_i = \text{rand}() - 0.5$, the expected value is  $m = E(X_i) = \int_{-0.5}^{0.5}xdx = 0$, and the variace $\text{var}(X_i) = E(X_i^{2}) = \frac{1}{12}$.\\
+    If we take $X_1, X_2, \cdots , X_{12} \approx U[-\frac{1}{2},\frac{1}{2}]$, then we havve:
+    \begin{equation}
+        \Sigma_1^{12}X_i \approx \mathcal{N}(0,1)
+    \end{equation}
+
+}

@@ -1,0 +1,164 @@
+
+\chapter{ROS}
+\section{Lecture plan}
+\begin{itemize}
+        \item History
+        \item ROS vs ROS_2
+        \item Features
+        \item Example robots
+        \item nodes
+\end{itemize}
+
+\section{Description}
+\dfn{ROS}
+{
+    The Robot Operating System(ROS) is a set of software libraries and tools that help build robotic applications. 
+    From drivers to state-of-the-art algorithm s, and with powerful developer tools, ROSS has what you need for robotics projects.
+    \begin{itemize}
+            \item Open source
+            \item Supported languages: C++,Python,C#, Rust
+            \item Content--based approach - software divided into separate nodes
+            
+    \end{itemize}
+}
+\section{History}
+\subsection{Motivation for development}
+Common problems of robotics were often reinvented for every project, which took time away from developing intelligent robots.
+To alleviate this issue, an idea to develop a universal framework was developed.
+
+\begin{enumerate}
+    \item before 2007 - Started as a personal project of Keenan Wyrobek and Eric Berger at stanford.
+    \item ... After 2010 - first official release in 2010.
+\end{enumerate}
+\nt{ROS releases follow a turtle naming convention}
+\subsection{Why ROS2}
+ROS2 was announced in 2014, the question is why was it planned instead of developing new releases of ROS?
+Some issues with ROS included:
+\begin{itemize}
+        \item Single point of failure (The ROS master node)
+        \item Lack of security features
+        \item No real-time support        
+\end{itemize}
+The first and third issue are of particular practical importance.
+\\ The first realease of ROS2 happened in 2017.
+\subsection{Other varieties}
+ROS industrial is a variety of ROS which has the following applications and features:
+\begin{itemize}
+        \item Standardised interfaces for robot arms
+        \item ...
+\end{itemize}
+
+\subsection{Events}
+ROS has a thriving community of developers, with 2 main events they organise being: ROSCON, and something else.
+
+\subsection{Applications}
+Virtually everything that has anything to do with robotics can use ROS. Sometimes its not a good idea to use it, as it introduces overhead, but more often than not its very convenient to use.
+\subsection{Robots}
+\subsubsection{PR2(PErsonal Robot 2) - a ROS-based robot}
+\begin{itemize}
+        \item developed by Willow Garage in 2010
+        \item an open research platform for engineers
+        \item fully integrated with ROS
+        \item autonomous navigation
+        \item a price tag of 400 000\$ in 2010
+        
+\end{itemize}    
+\subsubsection{Turtlebot_2 - most famous ROS-based robot}
+\begin{itemize}
+        \item Low cost wheeled robot with open-source software
+        \item fully integrated with ROS
+        \item autonomous navigation
+        \item only basic sensors but easily extendible
+        \item a price tag of less than 2000\$
+        
+\end{itemize}
+\section{ROS1 vs ROS2}
+ROS has a main node called the ROS core:
+\begin{itemize}
+        \item ROS master - master node centralised XML-RPC server, negotiates connections between nodes
+        \item Parameters server = centralized parameters repository
+        \item rosout -stdout for messages
+\end{itemize}
+ROS2
+\begin{itemize}
+        \item DDS(Data Distribution Service)
+        \item Supports
+        \item No central point in the system - no single point of failure -- a fully distributed system
+        \item Supports Real-time
+\end{itemize}
+
+\nt
+{
+    Its not recommended to develop new applications in ROS, EOL of ROS Noetic is May 2025. Because of this, the rest of the lecture will focus on ROS2
+}
+
+\section{ROS2}
+ROS_2 is divided into the following layers:
+\begin{enumerate}
+    \item Application layer
+    \item ROS 2 Client Layer
+    \item Abstract DDS Layer
+    \item DDS Implementation Layer
+    \item Operating system Layer -- now supports linux, windows and mac
+\end{enumerate}
+\subsection{rmv(ROS Middleware)}
+rmv is a middleware layer that provides underlying communication infrastructure for ROS
+\subsection{rcl(ROS Client Library)}
+A high live library that provides a high-level interface for building and running robotic applications using rmv. It abstracts the complexity of raw, which lessens the burden on the developer.
+
+\subsection{Data Distribution Service(DDS)}
+DDS is a middleware technology that provides a high-performance, scalable, and secure way for nodes to exchange data and communicate with each other. DDS is used as the communication layer for ROS2. It uses Interface Description Language for message definition. Importantly, it provides dynamic discovery, which means that it allows for easy creation of distributed systems.
+
+
+\subsection{Architecture}
+\dfn{Node}
+{
+    A ROS node is an independent programming unit, written for a single purpouse(e.g. path generation), and can be written in any supported language. Communication between them is fully language independent.
+    It has the following traits:
+    \begin{itemize}
+        \item Functionality: Performs some specific task in the ROS 2 ecosystem
+        \item Communication: Communicates with other nodes via ROS 2 topics / services / actions
+        \item Parameters: Configurable parameters
+
+    \end{itemize}
+}
+\ex{Running nodes}
+{
+    A node can be run either by running a single node with the following command:\\
+    \textit{ros2 run package_name node_name}\\
+    Or using launchers to start multiple nodes:\\
+    \textit{ros2 launch package_name launcher_name.py}
+}
+\subsubsection{Topic communication}
+\begin{itemize}
+        \item Based on publish-subscribe model
+        \item Message based
+        \item Messages defined as .msg files
+        \item Underlying layer: DDS
+        \item Communication frequency depends on the publisher
+        \item Standard messages(in packages): std\_msgs, geometry\_msgs, sensor\_msgs, etc.
+\end{itemize}
+
+\nt{Its good to use standard messages instead of creating our own -- whenever possible that is}
+
+\nt{When starting a publisher, it's better to use a spinner than to use a while loop. The reason for that is that a spinner can adapt to the speed of the queue, while the frequency of a loop is fixed.}
+
+\subsection{QoS - Quality of Service (in DDS)}
+QoS profiles define a set of policies:
+\begin{itemize}
+    \item History - either keep all or keep last N messages
+    \item Depth - size of the queue
+    \item Reliablility - Best effort(attempt to deliver, but don't wast time, packages may be lost), Reliable(guarantee delivery, try sending multiple times)
+    \item Durability - Transient local(persisting messages until a receiver is available) or Volatile(no attempt at sample persistence)
+\end{itemize}
+
+\subsection{ROS packages}
+A ROS package is the independent unit of building. It can contain:
+\begin{itemize}
+    \item nodes
+    \item launchers
+    \item configuration
+    \item tools / script
+    \item messages / service definitions
+    \item tests
+\end{itemize}

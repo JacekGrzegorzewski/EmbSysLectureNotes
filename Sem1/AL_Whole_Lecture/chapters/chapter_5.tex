@@ -1,0 +1,161 @@
+
+\chapter{Regular expressions(RE) ($\Sigma$ -- alphabet)}
+What are regular expressions:
+\begin{itemize}
+        \item $\empty \in RE$
+        \item  $\epsilon \in RE$ 
+        \item $ a \in RE \text{ for every } a\in \Sigma$
+        \item  if $\alpha, \beta \in RE$ then  $(\alpha + \beta) \in RE$
+        \item if  $\alpha \in RE$ then  $\al\hat{*} \in RE$
+        \item if $\alpha, \beta \in RE$ then  $\alpha \beta \in RE$
+        
+\end{itemize}
+Regular expressions correspond to regular languages:
+\begin{equation}
+    \begin{aligned}
+        RE & \quad RL \\
+        RE \ni \sigma &\leadsto [\sigma]\in RL \\
+        [\emptyset] &=\emptyset\\
+        [\epsilon] &= \{\epsilon\}\\
+        [a] &= \{a\}\\
+        [(\alpha+\beta)]&=[\alpha]\cup [\beta]&\mbox{}\\[1.25ex]
+        [\alpha^{*}]&=[\alpha]^{*}&\mbox{}\\[1.25ex]
+        [\alpha \beta]&=[\alpha]^{\cap}[\beta]&\mbox{}\\[1.25ex]
+    \end{aligned}
+\end{equation}
+\thm{}
+{
+    Languages accepted by NFA are exactly RL
+}
+\nt
+{
+    We proved that every regular language is accepted by NFA
+}
+
+\section{Nondeterministic and deterministic Buchy automata}
+
+\dfn{}
+{
+    $\mathbb{A}$ is NBA(DBA) if $\mathbb{A}$ is NFA(DFA)
+}
+
+\dfn{}
+{
+    Let $\mathbb{A} = (S,S_0,\Sigma,\delta,F)$ \\
+    $\bar{s} \in S^{\omega}$ is $\omega$ -- run with respect to $\bar{\omega} \in \Sigma^{\omega}$,
+    where $\bar{s} = (s_0,s_1,\cdots )$ is an infinite sequence of states, and  $\bar{\omega}= (a_0,a_1,\cdots )$ is an infinite sequence of letters,
+    iff $s_0 \in S_0$ and $\forall i s_{i+1} \delta (s_i,a_i)$\\
+    We can denote this fact by $\bar{s} \in \omega\text{--run}(\mathbb{A},\bar{\omega})$
+}
+
+\dfn{Language accepted by NBA $\mathbb{A}$}
+{
+    $L_{\omega}(\mathbb{A}) \subset \Sigma^{\omega}$ \\
+    $\bar{\omega} \in L_{\omega}(\mathbb{A})$ iff $\exists \bar{s} \in \omega\text{--run}(\mathbb{A},\bar{\omega}) $, $\inf(\bar{s}\cap F \neq \emptyset$,\\
+    where $\inf(\bar{s}) 0 \{ t \in S\; : \: \forall^{\infty} n s_n = t \} $ 
+    (set of states which appears $\infty$--many times in  $\bar{s}$)
+}
+\ex{}
+{
+    HERE BE PICTURE\\
+    $L(\mathbb{A}) = $ all words with odd length $((0+1)(0+1))^{*}(0+1)$\\
+    $L_{\omega}(\mathbb{A}) = (0+1)^{\omega} $ all $\omega$--words\\
+    $\mathbb{A}^{c}, \; L(\mathbb{A}^{c}) = ((0+1)(0+1))^{*}$ \\
+    $L_{\omega}(\mathbb{A}^{c}) = (0+1)^{\omega}$
+
+}
+
+\ex{Consider NFA A}
+{
+    HERE BE PICTURE
+    \[
+    L(\mathbb{A}) = (0+1)^{*}0\\
+    L_{\omega}(\mathbb{A}) = \emptyset
+    .\] 
+    $\bar{\omega} \in \Sigma^{\omega} \; \bar{\omega} \in L_{\omega}(\mathbb{A}) \leftrightarrow \exists \bar{r}\in \omega\text{-run}(\mathbb{A},\bar{\omega})\; \inf(\bar{r})\cap F = \emptyset $
+}
+
+\nt
+{
+    There is a language $L \subset \Sigma^{\omega} $s.t. L is accepted by NBA, but there is no DBA accepting L
+   \begin{myproof}
+       Consider $\Sigma = \{0,1\},\; L = \{ \bar{\omega}:\; \forall^{\infty}_n \omega_n=0\} = (0+1)^{*}0^{\omega} $\\
+       Assume $\mathbb{B}$ is DBA s.t. $L_{\omega}(\mathbb{B}) = L$
+       We will construct $\omega\text{-word }\bar{\omega} \not \in L$, but $\bar{\omega} \in L_{\omega}(\mathbb{B})$ \\
+       $\bar{v}_0 = (1,0,0,0,\cdots )$\\
+       Let $\bar{r}_0 \in \omega\text{-run}(\mathbb{B},\bar{v}_0)$ s.t. $\inf{\bar{r}_0} \cap F \neq \emptyset$\\
+       Find $n_0$ s.t. $\bar{r}_0(n_0) \in F$\\
+       $\bar{v}_1 = (1,0,0,0,\cdots ,0,1,0,0,\cdots ) \in L$\\
+       $\bar{r}_1 \in \omega\text{-run}(\mathbb{B},\bar{v}_1)$ s.t. $\inf{\bar{r}_1}\cap F \neq \emptyset$\\
+       $\bar{r}_0(j) = \bar{r}_1(j) \text{ for }j\leq n_0$\\
+       We can find $n_1 > n_0+1$ s.t. $\bar{r}_1(n_0)\in F$\\
+       We will continue:
+       $\bar{v}_2 = (1,0,\cdots,_{n_0} 0,1,0,\cdots ,_{n_1}0,1,0,0,\cdots )$ \\
+       At the (k+1)'th step:\\
+       We have $n_0 < n_1 < \cdots < n_k$ \\
+       $\bar{v}_{k+1} = (1,0,\cdots,0_{n_0} ,1,0,\cdots ,0_{n_1},1,0,\cdots,0_{n_k},1,0,0,\cdots ,0 )$ \\
+       We have $\bar{r}_{k+W} \in \omega\text{-run}( \mathbb{B},\bar{v}_{k+1})\;\; \inf{\bar{r}_{k+1}}\cap F \neq \emptyset$\\
+       $\cdots $ we get $n_{k+!}$\\
+       Finally, we get a word.
+       $\bar{v}^{*} = (1,0,\cdots,0_{n_0} ,1,0,\cdots ,0_{n_1},1,0,\cdots,0_{n_2},1,0,0,\cdots , )$ \\
+      \[
+          \bar{v}^{*}(j) = \begin{cases}1\; \text{if} j\in \{ 1,n_0+1,n_1+1,\cdots \}\\
+                            0\; \text{otherwise}
+                            \end{cases}\\
+      .\]  
+      So $\bar{v}^{*}\not \in L$, but $\bar{v}^{*} \in L_{\omega}(\mathbb{B})$, a contradiction!
+
+   \end{myproof}
+   The old constriction for the finite case wouldn't work
+}
+What abot $L\cap K$?
+
+\dfn{Generalized Buchi automation}
+{
+    $\mathbb{A}$ is a generalized Buchi automaton if:\\
+    $\mathbb{A} = (S,S_0,\Sigma,\delta,\mathbb{F})$, where $\mathbb{F}$ is a famili of subsets of S\\
+    and $(S,S_0,\Sigma,\delta,\emptyset)$ is NBA (DBA)\\
+    $L_{GB}(\mathbb{A}) \ni \bar{\omega}$ iff $\exists \bar{r} \in \omega\text{-run}(\mathbb{A}) \forall F \in \mathbb{F} \; \inf{\bar{r}}\capF \neq \emptyset  $
+}
+
+\thm{}
+{
+    Assume $\mathbb{A},\mathbb{B}$ are NBA. Then there is $\mathbb{A}\otimes_b \mathbb{B}$ GNBA s.t.\\
+    $L_{GB}(\mathbb{A}\otimes_b \mathbb{B}) = L_{\omega}(\mathbb{A})\cap L_{\omega}(\mathbb{B})$
+    \begin{myproof}
+        $\mathbb{A} = (S_A,S_{OA},\delta_A,\Sigma,F_A)$\\
+        $\mathbb{B} = (S_B,S_{OB},\delta_B,\Sigma,F_B)$\\
+        $\mathbb{A}\otimes_b \mathbb{B} = (S_A\timesS_B,S_{OA}\timesS_{OB},\delta,\Sigma,\{F_A\times S_B, S_A\times F_B\})$\\
+        where $\delta((s,t),a) = \delta_A(s,a)\times\delta_B(t,a)$
+        And it works
+    \end{myproof}
+
+}
+
+\thm{}
+{
+    Assume $\mathbb{A}$ is a GNB. Then there is $\mathbb{B} $ NBA s.t. $L_{GB}(\mathbb{A})=L_{\omega}(\mathbb{B})$.
+    \begin{myproof}
+        $\mathbb{A} = (S,S_0,\Sigma,\delta,\{F_0,F_1,\cdots ,F_{n-1}\}$\\
+        Construct:
+        $\mathbb{B} = (S\times\{0,1,\cdots ,n-1\}, S_0\times\{0\},\Sigma,\tilde{\delta},F_0\times\{0\}$
+        where:
+        \[
+            \tilde{\delta}((s,i),a) = \begin{cases}\delta(s,a) \times \{i\} \text{if} s\not \in F_i\\
+                \delta(s,a) \times\{(i+1) \mod n} \text{ if } s\inF_i 
+            \end{cases}
+        .\]
+    \end{myproof}
+}
+\ex{Let us see that the above works}
+{
+    Assume that $\bar{\omega} \in L_{GB}(\mathbb{A})$\\
+    IT means that there is $\mathbb{r} \in \omega\text{-run}(\mathbb{A},\bar{\omega})$ s.t.\\
+    $\forall i\in \{0,1,\cdots ,n-1\} \inf{\bar{r}}\cap F_i \neq_0 $ \\
+    We will construct an $\omega\text{-run }\bar{s} \in \omega\text{-run}(\mathbb{B},\bar{\omega})$\\
+    $\bar{r}=\{r_0,r_1,r_2,\cdots \}$\\
+    $s_0 = (r_0,0)$\\
+    $s_{j+1} = (r_{j+1},k_{j+1}), $ where $k_{j+1} = k_j \text{ if } r_j \not \in F_{k_j}$\\
+    $k_{j+1} = (k_j+1)\mod n \text{ if } r_j\inF_{k_j}$\\
+    Then $\inf{\bar{s}}\cap F_0\times\{0\} \neq \emptyset$
+}

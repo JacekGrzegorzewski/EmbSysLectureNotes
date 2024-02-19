@@ -1,0 +1,71 @@
+
+
+\chapter{VHDL}
+Main features:
+\begin{itemize}
+    \item Supports the whole design process:
+    \item \begin{itemize}
+            \item system level
+            \item RT level (Register transfer)
+            \item logic level
+                \item circuit level
+        \end{itemize}
+    \item Precise simulation semantics
+    \item Suitable for specificaion both in behavioral and structural domain
+\end{itemize}
+
+\section{RTL synthesis}
+We stat from a textual model, translate it int or set of gates and registers, which is later optimised.
+
+\section{Program structure}
+There are 3 parts to a program:
+\begin{itemize}
+    \item Libraries
+    \item entities and their architecture, always 1 to 1
+    \item the content -- proceses, function, etc.
+\end{itemize}
+
+\nt
+{
+    Port direction does not correspond to the physical port direction. VHDL is a high level language, so the direction
+    is specified on a high level, not on software level.
+}
+
+\subsection{Datatapes}
+In VHDL a type of datatapes called enumerated plays a very important role.
+\nt
+{
+    STD_LOGIC -- this is more or less a bit with a couple of extra features\\
+    STD_LOGIC_VECTOR -- this is a vector of  bits, so a word for example
+}
+
+\subsection{Entity}
+An entity has the following elements:
+\begin{itemize}
+    \item Port -- not technically necessary, but useless without it
+    \item Generic -- a means to poass specific information into an entity(This allows for example to create a universal parity checker)
+\end{itemize}
+
+
+\subsection{Architecture}
+\nt{VHDL is a case insensitive language}
+\subsubsection{Signal}
+        declared as -- name: type := value;(VARIABLES CAN ONLY BE INITIALIZED IN SIMULATION, NOT SYNTHESIS)
+\subsubsection{Constant}
+        Used for readability, declared the same way as a signal
+\subsubsection{Type}
+    \nt
+    {
+        In VHDL enumerations have no values assigned to them, they are referred to by their names
+    }
+    \subsubsection{Everything else}
+    \begin{itemize}
+            \item Component declarations
+            \item Subtype declarations
+            \item Attribute declarations
+            \item Attribute specifications
+            \item Subprogram declarations
+            \item Subprogram body
+            
+    \end{itemize}
+\subsection{Body}

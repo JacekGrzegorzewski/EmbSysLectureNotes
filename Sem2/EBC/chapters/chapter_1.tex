@@ -1,0 +1,67 @@
+
+\chapter{Petri Nets}
+Petri nets are bipartite graphs, with the 2 types of vertices being:
+\begin{itemize}
+        \item Places -- represented by circles and denoted by the letter \textit{S}
+        \item Transitions -- represented by bars or boxes
+\end{itemize}
+No 2 vertices of the same type can connect to each other.\\
+\section{Formal definition}
+A petrinet is a 5-tuple $N = (P,T,F,W,M_0)$ s.t.:
+\begin{itemize}
+    \item P -- a finite set of places
+    \item T -- a finite set of transitions
+    \item $P \cap T = \emptyset$ -- both of these sets are disjoint, a place can't also be a transition and vice versa.
+    \item  $F \subset (P\times T)\cup(T\times P)$ -- the flow relation( depicted by arcs)
+\end{itemize}
+\nt{Notation for the sets of inputs and outputs of a place or transition is as follows:}
+    
+\ex{Example of a net}
+{
+        \begin{tikzpicture}
+            \node[place,
+    label=above:$P_2$,
+    label=right:$P_2$,
+    label=left:$P_2$,
+    label=below:$P_2$] (place2) at (2,0) {};
+        \end{tikzpicture}
+}
+
+\section{Algebraic representation of P / T net}
+Consider the system $N = (P,T,F,W,M_0)$ with the linear ordered set of places and transitions: $P = \{p_1,p_2,\cdots ,p_{\norm{P}}\}$ and $T = \{t_1,t_2,\cdots ,t_{\norm{T}}\}$
+\begin{itemize}
+    \item input incidence matrix: $X^{-} = [x^{-}_{ij} = W(p_i,t_j)_{\norm{P}\times\norm{T}}]$
+    \item output incidence matrix: $X^{+} = [x^{-}_{ij} = W(t_j,p_i)_{\norm{P}\times\norm{T}}]$
+    \item incidence matrix: $X^{+}-X^{-}$
+\end{itemize}
+
+\subsection{Fundamental equation}
+Consider a P / T net $N = (P,T,F,W,M_0)$ at marking M.\\
+\dfn{Firing sequence}
+{
+ A firing sequence is a sequence:
+ \begin{equation}
+     \sigma = \tau_1,\tau_2,\cdots ,\tau_n
+ \end{equation}
+ such that $\tau_i \in T$ and $M \equiv M_1\overset{\tau_1}{\rightarrow}M_2 \cdots \overset{\tau_{n-1}}M_n$
+}
+\dfn{characteristic vector of sequence $\sigma$}
+{
+    A characteristic vector of a sequence is a column vector:
+    \begin{equation}
+        Y_{\sigma} = [y_i \; : \; i\in 1 \cdots \norm{T}]
+    \end{equation}
+    where $y_i$ is the number of occurences of transition  $t_i$ in $\sigma$
+}
+The above allows for defining state transition by matrix multiplication and vector addition.\\
+\dfn{Fundamental equation}
+{
+    If $M \overset{\sigma}{\rightarrow} M'$ then:
+     \begin{equation}
+         M' = M + X Y_{\sigma}
+    \end{equation}
+}
+
+
+\ex{Add examples}
+{...}
